@@ -126,7 +126,9 @@ document.addEventListener('DOMContentLoaded', () => {
             currentLangLabel.textContent = getBgString('lang_auto');
         } else {
             let autoIcon = dropdownBtn.querySelector('.auto-icon-temp');
-            if (autoIcon) autoIcon.remove();
+            if (autoIcon) {
+                autoIcon.remove();
+            }
             currentFlag.style.display = 'block';
             currentFlag.src = `https://flagcdn.com/w40/${getFlagCode(lang)}.png`;
             currentLangLabel.textContent = getBgString(`lang_${lang}`);
@@ -163,11 +165,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const wrapper = document.querySelector('.custom-color-wrapper');
         if (!matched) {
-            if (wrapper) wrapper.classList.add('active');
+            if (wrapper) {
+                wrapper.classList.add('active');
+            }
             colorPicker.value = color;
             updateCustomPreview(color);
         } else {
-            if (wrapper) wrapper.classList.remove('active');
+            if (wrapper) {
+                wrapper.classList.remove('active');
+            }
             updateCustomPreview(colorPicker.value);
         }
     };
@@ -194,6 +200,10 @@ document.addEventListener('DOMContentLoaded', () => {
             selectedLang = items.language;
         }
         updateDropdownVisuals(selectedLang);
+
+        if (typeof applyMaterialTheme === 'function') {
+            applyMaterialTheme(colorPicker.value, themeModeSelect.value);
+        }
     });
 
     /**
@@ -209,10 +219,15 @@ document.addEventListener('DOMContentLoaded', () => {
             language: selectedLang
         }, () => {
             currentLanguage = selectedLang === 'auto' ? navigator.language.split('-')[0] : selectedLang;
-            if (!BG_LOCALES[currentLanguage]) currentLanguage = 'en';
+            if (!BG_LOCALES[currentLanguage]) {
+                currentLanguage = 'en';
+            }
 
             applyLocalizations();
             updateDropdownVisuals(selectedLang);
+            if (typeof applyMaterialTheme === 'function') {
+                applyMaterialTheme(colorPicker.value, themeModeSelect.value);
+            }
             showToast(getBgString('statusSaved'));
         });
     }
