@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "Gemini Expressive",
+  "version": "1.0.0",
+  "description": "Enhances the Gemini web UI with a timeline, collapsible code blocks, and dynamic Material You theming.",
+  "permissions": [
+    "storage"
+  ],
+  "icons": {
+    "128": "assets/icon.png"
+  },
+  "action": {
+    "default_title": "Settings",
+    "default_popup": "options/settings.html",
+    "default_icon": "assets/icon.png"
+  },
+  "options_page": "options/settings.html",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://gemini.google.com/*"
+      ],
+      "css": [
+        "styles/content/variables.css",
+        "styles/content/main.css",
+        "styles/content/timeline.css",
+        "styles/content/code_blocks.css"
+      ],
+      "js": [
+        "scripts/strings.js",
+        "scripts/theme_utils.js",
+        "scripts/code_utils.js",
+        "scripts/code_header_enhancer.js",
+        "scripts/timeline_builder.js",
+        "scripts/code_collapser.js",
+        "scripts/content_main.js"
+      ]
+    }
+  ]
+}
