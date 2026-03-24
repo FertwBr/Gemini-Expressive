@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gemini Expressive Settings</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&family=Poppins:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"/>
+    <link rel="stylesheet" href="../styles/settings/main.css">
+</head>
+<body>
+<div class="page-wrapper">
+    <div class="app-layout-container">
+        <header class="page-header-container">
+            <div class="header-content-wrapper">
+                <img src="../assets/icon.png" alt="Gemini Expressive Icon" class="header-icon">
+                <div>
+                    <h1 class="viewer-title" data-i18n="settingsTitle">Gemini Expressive</h1>
+                    <p class="header-intro" data-i18n="settingsSubtitle">Customize your Gemini experience.</p>
+                </div>
+            </div>
+        </header>
+
+        <div class="viewer-sidebar-card">
+            <div class="setting-row">
+                <div class="setting-info">
+                    <label for="enableTimeline" class="input-label" data-i18n="timelineLabel">Enable Timeline
+                        Navigation</label>
+                    <span class="setting-description" data-i18n="timelineDesc">Adds a floating timeline to easily navigate conversations.</span>
+                </div>
+                <label class="md-switch">
+                    <input type="checkbox" id="enableTimeline" checked>
+                    <span class="md-slider"></span>
+                </label>
+            </div>
+
+            <div class="setting-row">
+                <div class="setting-info">
+                    <label for="enableCollapse" class="input-label" data-i18n="collapseLabel">Enable Code
+                        Collapser</label>
+                    <span class="setting-description" data-i18n="collapseDesc">Allows collapsing and expanding long code blocks.</span>
+                </div>
+                <label class="md-switch">
+                    <input type="checkbox" id="enableCollapse" checked>
+                    <span class="md-slider"></span>
+                </label>
+            </div>
+
+            <div class="setting-row">
+                <div class="setting-info">
+                    <label for="enableHeaders" class="input-label" data-i18n="headersLabel">Enable Enhanced Code
+                        Headers</label>
+                    <span class="setting-description" data-i18n="headersDesc">Displays language icons and extracts file names.</span>
+                </div>
+                <label class="md-switch">
+                    <input type="checkbox" id="enableHeaders" checked>
+                    <span class="md-slider"></span>
+                </label>
+            </div>
+
+            <div class="setting-row">
+                <div class="setting-info">
+                    <label for="themeModeSelect" class="input-label" data-i18n="themeModeLabel">Theme Mode</label>
+                    <span class="setting-description" data-i18n="themeModeDesc">Choose between light, dark, or system default appearance.</span>
+                </div>
+                <div class="custom-select-container">
+                    <select id="themeModeSelect" class="custom-input">
+                        <option value="auto" data-i18n="modeAuto">Auto</option>
+                        <option value="light" data-i18n="modeLight">Light</option>
+                        <option value="dark" data-i18n="modeDark">Dark</option>
+                    </select>
+                    <span class="material-symbols-outlined select-icon">expand_more</span>
+                </div>
+            </div>
+
+            <div class="setting-row" style="margin-bottom: 0; flex-direction: column; align-items: flex-start;">
+                <div class="setting-info" style="width: 100%; margin-bottom: 16px;">
+                    <label for="themeColorPicker" class="input-label" data-i18n="themeColorLabel">Dynamic Color</label>
+                    <span class="setting-description" data-i18n="themeColorDesc">Select a seed color to generate the Material You palette.</span>
+                </div>
+                <div class="color-swatch-grid">
+                    <button class="color-swatch" data-color="#6750A4" data-i18n-title="colorM3Purple"
+                            style="--swatch-p: #6750A4; --swatch-s: #625B71; --swatch-t: #7D5260;"></button>
+                    <button class="color-swatch" data-color="#9C4146" data-i18n-title="colorCrimson"
+                            style="--swatch-p: #9C4146; --swatch-s: #775656; --swatch-t: #755A2F;"></button>
+                    <button class="color-swatch" data-color="#006A6A" data-i18n-title="colorTeal"
+                            style="--swatch-p: #006A6A; --swatch-s: #4A6363; --swatch-t: #4B607C;"></button>
+                    <button class="color-swatch" data-color="#4C662B" data-i18n-title="colorForest"
+                            style="--swatch-p: #4C662B; --swatch-s: #586249; --swatch-t: #386663;"></button>
+                    <button class="color-swatch" data-color="#1B6E4F" data-i18n-title="colorEmerald"
+                            style="--swatch-p: #1B6E4F; --swatch-s: #4E6358; --swatch-t: #3D6473;"></button>
+                    <button class="color-swatch" data-color="#B86E00" data-i18n-title="colorAmber"
+                            style="--swatch-p: #B86E00; --swatch-s: #705D41; --swatch-t: #54643E;"></button>
+                    <button class="color-swatch" data-color="#D65A4A" data-i18n-title="colorCoral"
+                            style="--swatch-p: #D65A4A; --swatch-s: #775753; --swatch-t: #705C32;"></button>
+                    <button class="color-swatch" data-color="#B9375E" data-i18n-title="colorRose"
+                            style="--swatch-p: #B9375E; --swatch-s: #75565F; --swatch-t: #795369;"></button>
+                    <button class="color-swatch" data-color="#8E3A8C" data-i18n-title="colorMagenta"
+                            style="--swatch-p: #8E3A8C; --swatch-s: #6D576B; --swatch-t: #824F75;"></button>
+
+                    <div class="custom-color-wrapper" data-i18n-title="colorCustom">
+                        <div id="customColorPreview" class="custom-color-preview">
+                            <span class="material-symbols-outlined custom-color-icon">edit</span>
+                        </div>
+                        <input type="color" id="themeColorPicker" value="#0b57d0" class="color-picker-input">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer-base">
+        <div class="footer-content">
+            <div class="footer-grid">
+                <div class="footer-column-wrapper">
+                    <h3 class="footer-heading" data-i18n="linksTitle">Resources</h3>
+                    <div class="footer-links-group">
+                        <a href="https://tools.fertwbr.com/bettergemini/help" target="_blank" class="footer-link-btn">
+                            <span class="material-symbols-outlined icon-small">help</span>
+                            <span data-i18n="help">Help</span>
+                        </a>
+                        <a href="https://tools.fertwbr.com/bettergemini/feedback" target="_blank"
+                           class="footer-link-btn">
+                            <span class="material-symbols-outlined icon-small">feedback</span>
+                            <span data-i18n="feedback">Feedback</span>
+                        </a>
+                        <a href="https://tools.fertwbr.com/bettergemini" target="_blank" class="footer-link-btn">
+                            <span class="material-symbols-outlined icon-small">language</span>
+                            <span data-i18n="website">Website</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="footer-column-wrapper">
+                    <h3 class="footer-heading" data-i18n="languageLabel">Language</h3>
+                    <div class="footer-dropdown-wrapper">
+                        <button id="langDropdownBtn" class="footer-dropdown-btn">
+                            <img id="currentFlag" src="" alt="Flag" class="flag-icon"/>
+                            <span id="currentLangLabel">Auto</span>
+                            <span class="material-symbols-outlined footer-dropdown-icon">expand_more</span>
+                        </button>
+                        <div id="langDropdownMenu" class="footer-dropdown-menu align-right">
+                            <div class="footer-dropdown-scroll-area">
+                                <button class="footer-menu-item" data-lang="auto">
+                                    <div class="footer-menu-item-leading"><span class="material-symbols-outlined"
+                                                                                style="font-size: 18px;">auto_awesome</span>
+                                    </div>
+                                    <span data-i18n="lang_auto">Auto</span>
+                                </button>
+                                <div class="menu-divider"></div>
+                                <button class="footer-menu-item" data-lang="en">
+                                    <div class="footer-menu-item-leading"><img src="https://flagcdn.com/w40/us.png"
+                                                                               class="flag-icon"/></div>
+                                    <span data-i18n="lang_en">English</span>
+                                </button>
+                                <button class="footer-menu-item" data-lang="pt">
+                                    <div class="footer-menu-item-leading"><img src="https://flagcdn.com/w40/br.png"
+                                                                               class="flag-icon"/></div>
+                                    <span data-i18n="lang_pt">Português</span>
+                                </button>
+                                <button class="footer-menu-item" data-lang="es">
+                                    <div class="footer-menu-item-leading"><img src="https://flagcdn.com/w40/es.png"
+                                                                               class="flag-icon"/></div>
+                                    <span data-i18n="lang_es">Español</span>
+                                </button>
+                                <button class="footer-menu-item" data-lang="de">
+                                    <div class="footer-menu-item-leading"><img src="https://flagcdn.com/w40/de.png"
+                                                                               class="flag-icon"/></div>
+                                    <span data-i18n="lang_de">Deutsch</span>
+                                </button>
+                                <button class="footer-menu-item" data-lang="hi">
+                                    <div class="footer-menu-item-leading"><img src="https://flagcdn.com/w40/in.png"
+                                                                               class="flag-icon"/></div>
+                                    <span data-i18n="lang_hi">हिन्दी</span>
+                                </button>
+                                <button class="footer-menu-item" data-lang="ja">
+                                    <div class="footer-menu-item-leading"><img src="https://flagcdn.com/w40/jp.png"
+                                                                               class="flag-icon"/></div>
+                                    <span data-i18n="lang_ja">日本語</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-divider"></div>
+            <div class="footer-meta-container">
+                <div class="footer-meta-text">
+                    <span data-i18n="builtBy">Built by</span>
+                    <a href="https://github.com/fertwbr" target="_blank" class="built-by-link">Fertwbr 🇧🇷</a>
+                    <span class="meta-dot">•</span>
+                    <span id="versionText" class="version-text">vX.X.X</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<div id="toast-notification" class="toast-notification">
+    <span class="material-symbols-outlined" style="font-size: 18px;">check_circle</span>
+    <span id="toast-message"></span>
+</div>
+
+<script src="../scripts/strings.js"></script>
+<script src="settings.js"></script>
+</body>
+</html>
