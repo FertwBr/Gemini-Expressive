@@ -26,6 +26,17 @@ function attemptThemeApplication() {
 }
 
 /**
+ * Applies CSS classes to the body to instantly hide/show features based on settings.
+ */
+function applyFeatureToggles() {
+    if (document.body) {
+        document.body.classList.toggle('bg-timeline-disabled', !extensionSettings.timelineEnabled);
+        document.body.classList.toggle('bg-collapse-disabled', !extensionSettings.collapseEnabled);
+        document.body.classList.toggle('bg-headers-disabled', !extensionSettings.headersEnabled);
+    }
+}
+
+/**
  * Main observer to track DOM changes and trigger necessary UI updates based on settings.
  * @type {MutationObserver}
  */
@@ -34,6 +45,7 @@ const observer = new MutationObserver((mutations) => {
     for (const mutation of mutations) {
         if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
             const target = mutation.target;
+            // Catch Gemini's native dark/light theme switch
             if (target === document.body || target === document.documentElement) {
                 themeChanged = true;
             }
@@ -79,6 +91,7 @@ function initializeExtension() {
             extensionSettings.themeColor = items.themeColor;
         }
 
+        applyFeatureToggles();
         attemptThemeApplication();
 
         if (window.matchMedia) {
@@ -122,7 +135,18 @@ function initializeExtension() {
                 extensionSettings.headersEnabled = changes.headersEnabled.newValue;
             }
 
+            applyFeatureToggles();
             attemptThemeApplication();
+
+            if (changes.timelineEnabled && changes.timelineEnabled.newValue && typeof updateTimeline === 'function') {
+                updateTimeline();
+            }
+            if (changes.collapseEnabled && changes.collapseEnabled.newValue && typeof processCodeBlocks === 'function') {
+                processCodeBlocks();
+            }
+            if (changes.headersEnabled && changes.headersEnabled.newValue && typeof enhanceCodeHeaders === 'function') {
+                enhanceCodeHeaders();
+            }
         }
     });
 }

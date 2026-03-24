@@ -1,3 +1,224 @@
-@import url("variables.css");
-@import url("timeline.css");
-@import url("code_blocks.css");
+/* content.css */
+:root {
+    --bg-sys-color-surface: #f3f4f8;
+    --bg-sys-color-on-surface: #1a1c1e;
+    --bg-sys-color-surface-variant: #e1e2e8;
+    --bg-sys-color-primary: #0b57d0;
+    --bg-sys-color-on-primary: #ffffff;
+    --bg-sys-elevation: 0 4px 12px 2px rgba(0, 0, 0, 0.15);
+    --bg-sys-color-surface-container-high: #e1e2e8;
+    --bg-sys-color-surface-container-highest: #d1d2d8;
+    --bg-sys-color-secondary-container: #c2e7ff;
+    --bg-sys-color-on-secondary-container: #001d35;
+    --bg-sys-color-outline-variant: #c4c7c5;
+    --bg-sys-color-on-surface-variant: #444746;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-sys-color-surface: #1e1f22;
+        --bg-sys-color-on-surface: #e3e2e6;
+        --bg-sys-color-surface-variant: #282a2d;
+        --bg-sys-color-primary: #a8c7fa;
+        --bg-sys-color-on-primary: #062e6f;
+        --bg-sys-elevation: 0 4px 12px 2px rgba(0, 0, 0, 0.4);
+        --bg-sys-color-surface-container-high: #2b2930;
+        --bg-sys-color-surface-container-highest: #36343b;
+        --bg-sys-color-secondary-container: #004a77;
+        --bg-sys-color-on-secondary-container: #c2e7ff;
+        --bg-sys-color-outline-variant: #44474e;
+        --bg-sys-color-on-surface-variant: #c4c7c5;
+    }
+}
+
+body.bg-timeline-disabled #better-gemini-timeline {
+    display: none !important;
+}
+
+body.bg-collapse-disabled .bg-collapse-icon-btn {
+    display: none !important;
+}
+
+body.bg-headers-disabled .bg-file-name,
+body.bg-headers-disabled .bg-lang-name > .google-symbols {
+    display: none !important;
+}
+
+body,
+bard-sidenav-content,
+.desktop-ogb-buffer,
+.content-wrapper,
+.main-content,
+.content-container,
+chat-window,
+chat-window-content,
+.chat-history-scroll-container,
+infinite-scroller.chat-history,
+.top-bar-actions,
+.announcement-banner-container,
+chat-app-banners {
+    background: var(--bg-sys-color-surface) !important;
+    color: var(--bg-sys-color-on-surface) !important;
+}
+
+.top-bar-actions .left-section,
+.top-bar-actions .center-section,
+.top-bar-actions .right-section,
+.conversation-title-container {
+    background: transparent !important;
+}
+
+.gds-title-m,
+.conversation-title-column span {
+    color: var(--bg-sys-color-on-surface) !important;
+}
+
+bard-sidenav,
+bard-sidenav .sidenav-with-history-container,
+bard-sidenav div.chat-history,
+bard-sidenav .chat-history-list,
+bard-sidenav .gems-list-container,
+bard-sidenav bot-list,
+bard-sidenav conversations-list,
+bard-sidenav .conversations-container,
+bard-sidenav .side-nav-entry-container,
+bard-sidenav .overflow-container {
+    background: var(--bg-sys-color-surface-container-high) !important;
+}
+
+bard-sidenav .chat-history-list .top-gradient,
+bard-sidenav .top-gradient {
+    background: linear-gradient(to bottom, var(--bg-sys-color-surface-container-high), transparent) !important;
+}
+
+bard-sidenav .chat-history-list .bottom-gradient,
+bard-sidenav .bottom-gradient {
+    background: linear-gradient(to top, var(--bg-sys-color-surface-container-high), transparent) !important;
+}
+
+infinite-scroller.chat-history .top-gradient {
+    background: linear-gradient(to bottom, var(--bg-sys-color-surface), transparent) !important;
+}
+
+infinite-scroller.chat-history .bottom-gradient,
+.bottom-gradient-container .bottom-gradient {
+    background: linear-gradient(to top, var(--bg-sys-color-surface), transparent) !important;
+}
+
+.mat-mdc-list-item,
+.side-nav-entry-button,
+.conversation,
+.mdc-list-item__primary-text,
+.gds-label-l,
+.conversation-title {
+    color: var(--bg-sys-color-on-surface) !important;
+}
+
+.mat-mdc-list-item:hover,
+.side-nav-entry-button:hover,
+.conversation:hover,
+.mat-mdc-menu-item:hover {
+    background-color: var(--bg-sys-color-surface-variant) !important;
+}
+
+.conversation.selected,
+.mat-mdc-list-item.selected {
+    background: var(--bg-sys-color-secondary-container) !important;
+    color: var(--bg-sys-color-on-secondary-container) !important;
+}
+
+.conversation.selected .conversation-title,
+.conversation.selected .gds-label-l,
+.conversation.selected .mat-icon {
+    color: var(--bg-sys-color-on-secondary-container) !important;
+}
+
+input-container,
+.input-gradient,
+.input-area-container,
+input-area-v2,
+.input-area,
+.text-input-field,
+.text-input-field-main-area,
+.leading-actions-wrapper,
+.trailing-actions-wrapper,
+hallucination-disclaimer,
+condensed-tos-disclaimer,
+.capabilities-disclaimer,
+.bottom-gradient-container,
+.restart-chat-button-scroll-placeholder {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+hallucination-disclaimer p,
+.capabilities-disclaimer,
+.capabilities-disclaimer span {
+    color: var(--bg-sys-color-on-surface-variant) !important;
+}
+
+.text-input-field_textarea-wrapper,
+.search-surface {
+    background: var(--bg-sys-color-surface-container-highest) !important;
+    border: 1px solid var(--bg-sys-color-outline-variant) !important;
+    border-radius: 28px !important;
+    overflow: hidden;
+}
+
+rich-textarea,
+.ql-editor,
+.ql-container {
+    background: transparent !important;
+}
+
+.ql-editor.textarea,
+.ql-editor.textarea p {
+    color: var(--bg-sys-color-on-surface) !important;
+}
+
+.ql-editor.ql-blank::before,
+[data-placeholder]::before {
+    color: var(--bg-sys-color-on-surface-variant) !important;
+}
+
+.mdc-icon-button,
+.mdc-button,
+.mat-icon,
+.toolbox-drawer-button-label-icon-text {
+    color: var(--bg-sys-color-on-surface-variant) !important;
+}
+
+.send-button:not([disabled]) .mat-icon,
+.send-button[aria-disabled="false"] .mat-icon {
+    color: var(--bg-sys-color-primary) !important;
+}
+
+.input-area-switch,
+.toolbox-drawer-button,
+.temp-chat-button {
+    background: transparent !important;
+    color: var(--bg-sys-color-on-surface-variant) !important;
+    box-shadow: none !important;
+}
+
+.input-area-switch:hover,
+.toolbox-drawer-button:hover,
+.temp-chat-button:hover {
+    background: var(--bg-sys-color-surface-variant) !important;
+}
+
+.mat-mdc-button-touch-target,
+.mat-mdc-button-ripple {
+    background: transparent !important;
+}
+
+.mat-mdc-menu-panel,
+.mat-mdc-menu-content {
+    background: var(--bg-sys-color-surface-container-highest) !important;
+    border: 1px solid var(--bg-sys-color-outline-variant) !important;
+    border-radius: 12px !important;
+}
+
+.mat-mdc-menu-item .mat-mdc-menu-item-text {
+    color: var(--bg-sys-color-on-surface) !important;
+}
