@@ -1,4 +1,3 @@
-/* content.css */
 :root {
     --bg-sys-color-surface: #f3f4f8;
     --bg-sys-color-on-surface: #1a1c1e;
@@ -242,4 +241,47 @@ rich-textarea,
 
 .mat-mdc-menu-item .mat-mdc-menu-item-text {
     color: var(--bg-sys-color-on-surface) !important;
+}
+
+#create-new-button-inline,
+.bot-creation-button {
+    background: var(--bg-sys-color-primary) !important;
+    color: var(--bg-sys-color-on-primary) !important;
+}
+
+#create-new-button-inline span,
+#create-new-button-inline .g-icon,
+.bot-creation-button span,
+.bot-creation-button .mat-icon {
+    color: var(--bg-sys-color-on-primary) !important;
+}
+
+.bot-logo-text,
+.bot-logo-deleted {
+    background-color: var(--bg-sys-color-secondary-container) !important;
+    color: var(--bg-sys-color-on-secondary-container) !important;
+    border-color: var(--bg-sys-color-secondary-container) !important;
+}
+
+.bot-logo-text mat-icon,
+.bot-logo-deleted mat-icon {
+    color: var(--bg-sys-color-on-secondary-container) !important;
+}
+
+.opal-banner {
+    --left-color: var(--bg-sys-color-secondary-container) !important;
+    --right-color: var(--bg-sys-color-surface-variant) !important;
+}
+
+.banner-emphasis {
+    color: var(--bg-sys-color-primary) !important;
+}
+
+#show-more-button {
+    color: var(--bg-sys-color-primary) !important;
+    background: transparent !important;
+}
+
+#show-more-button .g-icon {
+    background-color: var(--bg-sys-color-primary) !important;
 }
