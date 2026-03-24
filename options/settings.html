@@ -63,16 +63,34 @@
 
             <div class="setting-row">
                 <div class="setting-info">
-                    <label for="themeModeSelect" class="input-label" data-i18n="themeModeLabel">Theme Mode</label>
+                    <label class="input-label" data-i18n="themeModeLabel">Theme Mode</label>
                     <span class="setting-description" data-i18n="themeModeDesc">Choose between light, dark, or system default appearance.</span>
                 </div>
-                <div class="custom-select-container">
-                    <select id="themeModeSelect" class="custom-input">
-                        <option value="auto" data-i18n="modeAuto">Auto</option>
-                        <option value="light" data-i18n="modeLight">Light</option>
-                        <option value="dark" data-i18n="modeDark">Dark</option>
-                    </select>
-                    <span class="material-symbols-outlined select-icon">expand_more</span>
+                <div class="setting-dropdown-wrapper">
+                    <button id="themeDropdownBtn" class="setting-dropdown-btn">
+                        <span id="currentThemeLabel">Auto</span>
+                        <span class="material-symbols-outlined setting-dropdown-icon">expand_more</span>
+                    </button>
+                    <div id="themeDropdownMenu" class="setting-dropdown-menu">
+                        <button class="setting-menu-item" data-theme="auto">
+                            <div class="setting-menu-item-leading"><span class="material-symbols-outlined"
+                                                                         style="font-size: 18px;">brightness_auto</span>
+                            </div>
+                            <span data-i18n="modeAuto">Auto</span>
+                        </button>
+                        <div class="menu-divider"></div>
+                        <button class="setting-menu-item" data-theme="light">
+                            <div class="setting-menu-item-leading"><span class="material-symbols-outlined"
+                                                                         style="font-size: 18px;">light_mode</span>
+                            </div>
+                            <span data-i18n="modeLight">Light</span>
+                        </button>
+                        <button class="setting-menu-item" data-theme="dark">
+                            <div class="setting-menu-item-leading"><span class="material-symbols-outlined"
+                                                                         style="font-size: 18px;">dark_mode</span></div>
+                            <span data-i18n="modeDark">Dark</span>
+                        </button>
+                    </div>
                 </div>
             </div>
 

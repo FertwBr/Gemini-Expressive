@@ -236,3 +236,106 @@ input:checked + .md-slider:before {
     transform: scale(1.1);
     box-shadow: 0 0 0 2px var(--md-sys-color-surface), 0 0 0 4px var(--md-sys-color-primary), inset 0 0 0 1px rgba(128, 128, 128, 0.25);
 }
+
+.setting-dropdown-wrapper {
+    position: relative;
+    width: 140px;
+}
+
+.setting-dropdown-btn {
+    width: 100%;
+    background: var(--md-sys-color-surface-container-high);
+    border: 1px solid var(--md-sys-color-outline-variant);
+    color: var(--md-sys-color-on-surface);
+    padding: 0 12px;
+    height: 40px;
+    box-sizing: border-box;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    outline: none;
+    font-family: inherit;
+}
+
+.setting-dropdown-btn:hover,
+.setting-dropdown-btn.open {
+    border-color: var(--md-sys-color-primary);
+}
+
+.setting-dropdown-icon {
+    font-size: 20px;
+    color: var(--md-sys-color-on-surface-variant);
+    transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.setting-dropdown-btn.open .setting-dropdown-icon {
+    transform: rotate(180deg);
+}
+
+.setting-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    background: var(--md-sys-color-surface-container-high);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    min-width: 180px;
+    z-index: 100;
+    border: 1px solid var(--md-sys-color-outline-variant);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+    overflow: hidden;
+    right: 0;
+    transform-origin: top right;
+    transform: translateY(-8px) scale(0.96);
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.setting-dropdown-menu.open {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    visibility: visible;
+}
+
+.setting-menu-item {
+    background: transparent;
+    color: var(--md-sys-color-on-surface);
+    border: none;
+    padding: 10px 12px;
+    text-align: left;
+    cursor: pointer;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background 0.2s ease;
+    width: 100%;
+}
+
+.setting-menu-item:hover {
+    background: var(--md-sys-color-surface-container-highest);
+}
+
+.setting-menu-item.active {
+    background: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+    font-weight: 600;
+}
+
+.setting-menu-item-leading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+}

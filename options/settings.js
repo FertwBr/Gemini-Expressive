@@ -68,7 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const timelineSwitch = document.getElementById('enableTimeline');
     const collapseSwitch = document.getElementById('enableCollapse');
     const headersSwitch = document.getElementById('enableHeaders');
-    const themeModeSelect = document.getElementById('themeModeSelect');
     const colorPicker = document.getElementById('themeColorPicker');
     const colorSwatches = document.querySelectorAll('.color-swatch');
     const versionText = document.getElementById('versionText');
@@ -84,6 +83,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentFlag = document.getElementById('currentFlag');
     const currentLangLabel = document.getElementById('currentLangLabel');
     const menuItems = dropdownMenu.querySelectorAll('.footer-menu-item');
+
+    const themeDropdownBtn = document.getElementById('themeDropdownBtn');
+    const themeDropdownMenu = document.getElementById('themeDropdownMenu');
+    const currentThemeLabel = document.getElementById('currentThemeLabel');
+    const themeMenuItems = themeDropdownMenu.querySelectorAll('.setting-menu-item');
+    let selectedThemeMode = 'auto';
 
     let toastTimeout;
 
@@ -133,6 +138,20 @@ document.addEventListener('DOMContentLoaded', () => {
             currentFlag.src = `https://flagcdn.com/w40/${getFlagCode(lang)}.png`;
             currentLangLabel.textContent = getBgString(`lang_${lang}`);
         }
+    };
+
+    const updateThemeDropdownVisuals = (theme) => {
+        themeMenuItems.forEach(item => {
+            if (item.getAttribute('data-theme') === theme) {
+                item.classList.add('active');
+                const spanEl = item.querySelector('span[data-i18n]');
+                if (spanEl) {
+                    currentThemeLabel.textContent = spanEl.textContent;
+                }
+            } else {
+                item.classList.remove('active');
+            }
+        });
     };
 
     /**
@@ -186,8 +205,9 @@ document.addEventListener('DOMContentLoaded', () => {
         headersSwitch.checked = items.headersEnabled !== false;
 
         if (items.themeMode) {
-            themeModeSelect.value = items.themeMode;
+            selectedThemeMode = items.themeMode;
         }
+        updateThemeDropdownVisuals(selectedThemeMode);
 
         if (items.themeColor) {
             colorPicker.value = items.themeColor;
@@ -202,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateDropdownVisuals(selectedLang);
 
         if (typeof applyMaterialTheme === 'function') {
-            applyMaterialTheme(colorPicker.value, themeModeSelect.value);
+            applyMaterialTheme(colorPicker.value, selectedThemeMode);
         }
     });
 
@@ -214,7 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
             timelineEnabled: timelineSwitch.checked,
             collapseEnabled: collapseSwitch.checked,
             headersEnabled: headersSwitch.checked,
-            themeMode: themeModeSelect.value,
+            themeMode: selectedThemeMode,
             themeColor: colorPicker.value,
             language: selectedLang
         }, () => {
@@ -225,8 +245,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             applyLocalizations();
             updateDropdownVisuals(selectedLang);
+            updateThemeDropdownVisuals(selectedThemeMode);
             if (typeof applyMaterialTheme === 'function') {
-                applyMaterialTheme(colorPicker.value, themeModeSelect.value);
+                applyMaterialTheme(colorPicker.value, selectedThemeMode);
             }
             showToast(getBgString('statusSaved'));
         });
@@ -235,7 +256,22 @@ document.addEventListener('DOMContentLoaded', () => {
     timelineSwitch.addEventListener('change', saveSettings);
     collapseSwitch.addEventListener('change', saveSettings);
     headersSwitch.addEventListener('change', saveSettings);
-    themeModeSelect.addEventListener('change', saveSettings);
+
+    themeDropdownBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        themeDropdownBtn.classList.toggle('open');
+        themeDropdownMenu.classList.toggle('open');
+    });
+
+    themeMenuItems.forEach(item => {
+        item.addEventListener('click', () => {
+            selectedThemeMode = item.getAttribute('data-theme');
+            updateThemeDropdownVisuals(selectedThemeMode);
+            themeDropdownBtn.classList.remove('open');
+            themeDropdownMenu.classList.remove('open');
+            saveSettings();
+        });
+    });
 
     colorSwatches.forEach(swatch => {
         swatch.addEventListener('click', () => {
@@ -261,6 +297,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!dropdownBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
             dropdownBtn.classList.remove('open');
             dropdownMenu.classList.remove('open');
+        }
+        if (!themeDropdownBtn.contains(e.target) && !themeDropdownMenu.contains(e.target)) {
+            themeDropdownBtn.classList.remove('open');
+            themeDropdownMenu.classList.remove('open');
         }
     });
 
