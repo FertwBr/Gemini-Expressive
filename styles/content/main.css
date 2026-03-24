@@ -138,7 +138,6 @@ input-container,
 .input-area-container,
 input-area-v2,
 .input-area,
-.text-input-field,
 .text-input-field-main-area,
 .leading-actions-wrapper,
 .trailing-actions-wrapper,
@@ -157,12 +156,34 @@ hallucination-disclaimer p,
     color: var(--bg-sys-color-on-surface-variant) !important;
 }
 
-.text-input-field_textarea-wrapper,
-.search-surface {
-    background: var(--bg-sys-color-surface-container-highest) !important;
+.text-input-field {
+    background: var(--bg-sys-color-surface) !important;
     border: 1px solid var(--bg-sys-color-outline-variant) !important;
     border-radius: 28px !important;
-    overflow: hidden;
+}
+
+@media (prefers-color-scheme: dark) {
+    .text-input-field {
+        background: var(--bg-sys-color-surface-container-highest) !important;
+        border-color: transparent !important;
+    }
+}
+
+html.dark-theme .text-input-field {
+    background: var(--bg-sys-color-surface-container-highest) !important;
+    border-color: transparent !important;
+}
+
+html.light-theme .text-input-field {
+    background: var(--bg-sys-color-surface) !important;
+    border: 1px solid var(--bg-sys-color-outline-variant) !important;
+}
+
+.text-input-field_textarea-wrapper,
+.search-surface {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
 rich-textarea,
