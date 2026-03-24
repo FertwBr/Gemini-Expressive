@@ -37,6 +37,100 @@ function applyFeatureToggles() {
 }
 
 /**
+ * Closes any open native Material menus by targeting the backdrop.
+ */
+function closeNativeMenus() {
+    const backdrop = document.querySelector('.cdk-overlay-backdrop');
+    if (backdrop) {
+        backdrop.click();
+    } else {
+        document.body.click();
+    }
+}
+
+/**
+ * Executes the sequence of clicks to select the theme from the native menu.
+ * @param {Element} themeButton The native theme menu button element.
+ * @param {string} targetMode The desired theme mode.
+ */
+function executeThemeClick(themeButton, targetMode) {
+    themeButton.click();
+
+    setTimeout(() => {
+        const openMenus = document.querySelectorAll('.mat-mdc-menu-panel .mat-mdc-menu-content');
+        const activeMenu = openMenus[openMenus.length - 1];
+
+        if (activeMenu) {
+            const options = activeMenu.querySelectorAll('[role="menuitemradio"]');
+            let targetIndex = -1;
+
+            const keywords = {
+                light: ['light', 'claro', 'clair', 'hell', 'chiaro'],
+                dark: ['dark', 'escur', 'oscur', 'sombre', 'dunkel', 'scuro'],
+                auto: ['auto', 'system', 'sistema', 'padrão', 'standard', 'predeterminado']
+            };
+
+            for (let i = 0; i < options.length; i++) {
+                const text = options[i].textContent.toLowerCase();
+                if (keywords[targetMode].some(kw => text.includes(kw))) {
+                    targetIndex = i;
+                    break;
+                }
+            }
+
+            if (targetIndex === -1 && options.length >= 3) {
+                if (targetMode === 'light') targetIndex = 0;
+                else if (targetMode === 'dark') targetIndex = 1;
+                else if (targetMode === 'auto') targetIndex = 2;
+            }
+
+            if (targetIndex !== -1 && options[targetIndex]) {
+                const currentState = options[targetIndex].getAttribute('aria-checked');
+                if (currentState !== 'true') {
+                    options[targetIndex].click();
+                }
+            }
+        }
+
+        setTimeout(closeNativeMenus, 50);
+    }, 150);
+}
+
+/**
+ * Attempts to synchronize the extension's theme with Gemini's native theme setting.
+ * @param {string} targetMode The theme mode to sync.
+ */
+function syncNativeTheme(targetMode) {
+    try {
+        const themeButton = document.querySelector('[data-test-id="desktop-theme-menu-button"]');
+
+        if (!themeButton) {
+            const settingsBtn = document.querySelector('button[aria-controls="settings-menu"]') ||
+                Array.from(document.querySelectorAll('button')).find(b => {
+                    const icon = b.querySelector('mat-icon');
+                    return icon && icon.textContent.trim() === 'settings';
+                });
+
+            if (settingsBtn) {
+                settingsBtn.click();
+                setTimeout(() => {
+                    const dynamicThemeBtn = document.querySelector('[data-test-id="desktop-theme-menu-button"]');
+                    if (dynamicThemeBtn) {
+                        executeThemeClick(dynamicThemeBtn, targetMode);
+                    } else {
+                        closeNativeMenus();
+                    }
+                }, 150);
+            }
+        } else {
+            executeThemeClick(themeButton, targetMode);
+        }
+    } catch (e) {
+        console.error("Failed to sync native theme", e);
+    }
+}
+
+/**
  * Main observer to track DOM changes and trigger necessary UI updates based on settings.
  * @type {MutationObserver}
  */
@@ -45,7 +139,6 @@ const observer = new MutationObserver((mutations) => {
     for (const mutation of mutations) {
         if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
             const target = mutation.target;
-            // Catch Gemini's native dark/light theme switch
             if (target === document.body || target === document.documentElement) {
                 themeChanged = true;
             }
@@ -121,6 +214,7 @@ function initializeExtension() {
         if (namespace === 'sync') {
             if (changes.themeMode) {
                 extensionSettings.themeMode = changes.themeMode.newValue;
+                syncNativeTheme(extensionSettings.themeMode);
             }
             if (changes.themeColor) {
                 extensionSettings.themeColor = changes.themeColor.newValue;
