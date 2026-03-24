@@ -1,0 +1,142 @@
+infinite-scroller.chat-history {
+    padding-right: 64px !important;
+    box-sizing: border-box;
+}
+
+#better-gemini-timeline {
+    position: fixed;
+    right: 16px;
+    top: 80px;
+    bottom: 140px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    background: transparent;
+    box-shadow: none;
+    padding: 0;
+    width: 32px;
+    pointer-events: none;
+}
+
+.bg-timeline-line {
+    position: absolute;
+    right: 15px;
+    top: 16px;
+    bottom: 16px;
+    width: 2px;
+    background: linear-gradient(to bottom, transparent, var(--bg-sys-color-primary) 10%, var(--bg-sys-color-primary) 90%, transparent);
+    opacity: 0.2;
+    z-index: 1;
+}
+
+#bg-timeline-items {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    overflow-y: auto;
+    overflow-x: visible;
+    padding: 20px 0;
+    scrollbar-width: none;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    pointer-events: auto;
+}
+
+#bg-timeline-items::-webkit-scrollbar {
+    display: none;
+}
+
+.timeline-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 20px;
+    cursor: pointer;
+    z-index: 2;
+    text-decoration: none;
+    flex-shrink: 0;
+}
+
+.bg-timeline-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.2s ease;
+    box-shadow: 0 0 0 2px var(--gem-sys-color--surface, var(--bg-sys-color-surface));
+    flex-shrink: 0;
+    z-index: 3;
+}
+
+.timeline-item.user .bg-timeline-dot {
+    background: var(--bg-sys-color-primary);
+}
+
+.timeline-item.gemini .bg-timeline-dot {
+    background: var(--gem-sys-color--surface, var(--bg-sys-color-surface));
+    border: 1px solid var(--bg-sys-color-primary);
+    box-sizing: border-box;
+}
+
+.timeline-item:hover .bg-timeline-dot {
+    transform: scale(1.1);
+}
+
+.timeline-item.active .bg-timeline-dot {
+    transform: scale(1.2);
+    box-shadow: 0 0 0 3px var(--gem-sys-color--surface, var(--bg-sys-color-surface)), 0 0 0 5px var(--bg-sys-color-primary);
+}
+
+.timeline-global-tooltip {
+    position: fixed;
+    transform: translateY(-50%);
+    background: var(--gem-sys-color--surface, var(--bg-sys-color-surface));
+    border: 1px solid var(--bg-sys-color-outline-variant, var(--bg-sys-color-surface-variant));
+    color: var(--bg-sys-color-on-surface);
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-family: 'Google Sans', system-ui, sans-serif;
+    line-height: 1.5;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    box-shadow: var(--bg-sys-elevation);
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    width: max-content;
+    max-width: 340px;
+    z-index: 2147483647;
+}
+
+.timeline-global-tooltip.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.timeline-icon {
+    font-size: 18px !important;
+    color: var(--bg-sys-color-primary);
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.timeline-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+}
+
+@media (max-width: 900px) {
+    .timeline-global-tooltip {
+        display: none !important;
+    }
+}

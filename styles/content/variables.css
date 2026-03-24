@@ -1,0 +1,19 @@
+:root {
+    --bg-sys-color-surface: #f3f4f8;
+    --bg-sys-color-on-surface: #1a1c1e;
+    --bg-sys-color-surface-variant: #e1e2e8;
+    --bg-sys-color-primary: #0b57d0;
+    --bg-sys-color-on-primary: #ffffff;
+    --bg-sys-elevation: 0 4px 12px 2px rgba(0, 0, 0, 0.15);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-sys-color-surface: #1e1f22;
+        --bg-sys-color-on-surface: #e3e2e6;
+        --bg-sys-color-surface-variant: #282a2d;
+        --bg-sys-color-primary: #a8c7fa;
+        --bg-sys-color-on-primary: #062e6f;
+        --bg-sys-elevation: 0 4px 12px 2px rgba(0, 0, 0, 0.4);
+    }
+}

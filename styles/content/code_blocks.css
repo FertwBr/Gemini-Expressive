@@ -1,0 +1,61 @@
+.bg-collapse-icon-btn {
+    background: transparent;
+    border: none;
+    color: var(--gem-sys-color--on-surface-variant, #c4c7c5);
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+    margin: 0 0 0 4px;
+    padding: 0;
+    box-sizing: border-box;
+    flex-shrink: 0;
+}
+
+.bg-collapse-icon-btn:hover {
+    background-color: var(--gem-sys-color--surface-variant, rgba(128, 128, 128, 0.15));
+}
+
+.bg-collapse-icon-btn .google-symbols {
+    font-size: 20px;
+    line-height: 1;
+    width: 20px;
+    height: 20px;
+    font-weight: 400;
+    display: block;
+}
+
+.code-block-decoration .buttons button.mdc-icon-button {
+    width: 32px !important;
+    height: 32px !important;
+    padding: 4px !important;
+}
+
+.code-block-decoration .buttons button.mdc-icon-button .mat-mdc-button-touch-target::before {
+    display: none !important;
+}
+
+pre.bg-collapsed code {
+    display: none;
+}
+
+pre.bg-collapsed {
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    overflow: hidden;
+    opacity: 0;
+    margin: 0;
+    transition: all 0.3s ease;
+}
+
+.code-block-decoration.header-formatted.bg-header-collapsed {
+    border-bottom-left-radius: var(--gem-sys-spacing--l, 24px) !important;
+    border-bottom-right-radius: var(--gem-sys-spacing--l, 24px) !important;
+    margin-bottom: 0 !important;
+    transition: border-bottom-left-radius 0.2s ease, border-bottom-right-radius 0.2s ease;
+}
