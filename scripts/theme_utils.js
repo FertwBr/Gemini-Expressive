@@ -1,12 +1,10 @@
 /**
- * Converts a hex string to an RGB array format.
- * @param {string} hex Hex color code.
- * @returns {Array<number>} RGB array.
+ * Converts a Hex color to an HSL array.
+ * @param {string} hex The hexadecimal color string.
+ * @returns {number[]} An array containing the hue, saturation, and lightness values.
  */
-function hexToRgb(hex) {
-    let r = 0;
-    let g = 0;
-    let b = 0;
+function hexToHsl(hex) {
+    let r = 0, g = 0, b = 0;
     if (hex.length === 4) {
         r = parseInt(hex[1] + hex[1], 16);
         g = parseInt(hex[2] + hex[2], 16);
@@ -16,169 +14,185 @@ function hexToRgb(hex) {
         g = parseInt(hex.slice(3, 5), 16);
         b = parseInt(hex.slice(5, 7), 16);
     }
-    return [r, g, b];
-}
+    r /= 255;
+    g /= 255;
+    b /= 255;
+    const max = Math.max(r, g, b), min = Math.min(r, g, b);
+    let h = 0, s = 0, l = (max + min) / 2;
 
-/**
- * Converts RGB values to a Hex string.
- * @param {number} r Red value.
- * @param {number} g Green value.
- * @param {number} b Blue value.
- * @returns {string} Hex color string.
- */
-function rgbToHex(r, g, b) {
-    return "#" + (1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1);
-}
-
-/**
- * Tints a color with white or black to create tones.
- * @param {Array<number>} rgb RGB array.
- * @param {number} factor Tint factor.
- * @returns {Array<number>} Tinted RGB array.
- */
-function tintColor(rgb, factor) {
-    let r = rgb[0];
-    let g = rgb[1];
-    let b = rgb[2];
-    if (factor > 0) {
-        r = r + (255 - r) * factor;
-        g = g + (255 - g) * factor;
-        b = b + (255 - b) * factor;
-    } else if (factor < 0) {
-        const absFactor = Math.abs(factor);
-        r = r * (1 - absFactor);
-        g = g * (1 - absFactor);
-        b = b * (1 - absFactor);
+    if (max !== min) {
+        const d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        switch (max) {
+            case r:
+                h = (g - b) / d + (g < b ? 6 : 0);
+                break;
+            case g:
+                h = (b - r) / d + 2;
+                break;
+            case b:
+                h = (r - g) / d + 4;
+                break;
+        }
+        h /= 6;
     }
-    return [Math.round(r), Math.round(g), Math.round(b)];
+    return [Math.round(h * 360), Math.round(s * 100), Math.round(l * 100)];
 }
 
 /**
- * Determines if dark mode should be applied based on settings and OS preference.
- * @param {string} themeMode The saved theme mode setting.
- * @returns {boolean} True if dark mode should be applied.
+ * Converts HSL values to a Hex color string.
+ * @param {number} h The hue value.
+ * @param {number} s The saturation value.
+ * @param {number} l The lightness value.
+ * @returns {string} The hexadecimal color string.
+ */
+function hslToHex(h, s, l) {
+    l /= 100;
+    const a = s * Math.min(l, 1 - l) / 100;
+    const f = n => {
+        const k = (n + h / 30) % 12;
+        const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+        return Math.round(255 * color).toString(16).padStart(2, '0');
+    };
+    return `#${f(0)}${f(8)}${f(4)}`;
+}
+
+/**
+ * Converts a Hex color directly to an RGB comma-separated string.
+ * @param {string} hex The hexadecimal color string.
+ * @returns {string} The RGB comma-separated string.
+ */
+function hexToRgbString(hex) {
+    let r = parseInt(hex.slice(1, 3), 16);
+    let g = parseInt(hex.slice(3, 5), 16);
+    let b = parseInt(hex.slice(5, 7), 16);
+    return `${r}, ${g}, ${b}`;
+}
+
+/**
+ * Checks if the dark mode is currently active.
+ * @param {string} themeMode The user's theme preference.
+ * @returns {boolean} True if dark mode should be applied, false otherwise.
  */
 function isDarkModeActive(themeMode) {
-    if (themeMode === 'dark') {
-        return true;
-    }
-    if (themeMode === 'light') {
-        return false;
-    }
-    if (document.body && document.body.classList.contains('dark-theme')) {
-        return true;
-    }
-    if (document.documentElement && document.documentElement.classList.contains('dark-theme')) {
-        return true;
-    }
+    if (themeMode === 'dark') return true;
+    if (themeMode === 'light') return false;
+    if (document.body && document.body.classList.contains('dark-theme')) return true;
+    if (document.documentElement && document.documentElement.classList.contains('dark-theme')) return true;
     return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 }
 
 /**
- * Applies the custom theme to the document root based on the provided settings.
- * @param {string} seedColor Hex color string.
- * @param {string} themeMode Theme mode selection.
+ * Highly accurate approximation of Material 3 Tonal Palettes.
+ * Applies the generated theme to the document structure based on the seed color and the selected mode.
+ * @param {string} seedColor The primary seed color.
+ * @param {string} themeMode The active theme mode.
  */
 function applyMaterialTheme(seedColor, themeMode) {
-    if (!seedColor) {
-        return;
-    }
+    if (!seedColor) return;
 
     try {
         const isDark = isDarkModeActive(themeMode);
         const root = document.documentElement;
-        const baseRgb = hexToRgb(seedColor);
+        const body = document.body;
 
-        let primary, onPrimary, primaryContainer, onPrimaryContainer;
-        let secondaryContainer, onSecondaryContainer;
-        let background, onBackground, surface, onSurface, surfaceVariant, onSurfaceVariant;
-        let outline, outlineVariant;
-        let surfaceContainer, surfaceContainerHigh, surfaceContainerHighest;
+        const [h, s] = hexToHsl(seedColor);
+
+        const sPrimary = s;
+        const sSecondary = Math.min(s * 0.35, 30);
+        const sNeutral = Math.min(s * 0.08, 8);
+        const sNeutralVariant = Math.min(s * 0.16, 16);
+
+        const color = (sat, tone) => hslToHex(h, sat, tone);
+
+        let schemeJson = {};
 
         if (isDark) {
-            primary = rgbToHex(...tintColor(baseRgb, 0.4));
-            onPrimary = rgbToHex(...tintColor(baseRgb, -0.8));
-            primaryContainer = rgbToHex(...tintColor(baseRgb, -0.6));
-            onPrimaryContainer = rgbToHex(...tintColor(baseRgb, 0.8));
+            schemeJson = {
+                primary: color(sPrimary, 80),
+                onPrimary: color(sPrimary, 20),
+                primaryContainer: color(sPrimary, 30),
+                onPrimaryContainer: color(sPrimary, 90),
 
-            secondaryContainer = rgbToHex(...tintColor(baseRgb, -0.7));
-            onSecondaryContainer = rgbToHex(...tintColor(baseRgb, 0.8));
+                secondaryContainer: color(sSecondary, 30),
+                onSecondaryContainer: color(sSecondary, 90),
 
-            surface = rgbToHex(...tintColor(hexToRgb("#1a1c1e"), 0.02));
-            onSurface = "#e3e2e6";
-            background = surface;
-            onBackground = onSurface;
+                background: color(sNeutral, 6),
+                onBackground: color(sNeutral, 90),
+                surface: color(sNeutral, 6),
+                onSurface: color(sNeutral, 90),
 
-            surfaceVariant = "#44474e";
-            onSurfaceVariant = "#c4c7c5";
-            outline = "#8d9199";
-            outlineVariant = "#44474e";
+                surfaceVariant: color(sNeutralVariant, 30),
+                onSurfaceVariant: color(sNeutralVariant, 80),
 
-            surfaceContainer = rgbToHex(...tintColor(hexToRgb("#1e1f22"), 0.04));
-            surfaceContainerHigh = rgbToHex(...tintColor(hexToRgb("#2b2930"), 0.04));
-            surfaceContainerHighest = rgbToHex(...tintColor(hexToRgb("#36343b"), 0.04));
+                outline: color(sNeutralVariant, 60),
+                outlineVariant: color(sNeutralVariant, 30),
+
+                surfaceContainerLowest: color(sNeutral, 4),
+                surfaceContainerLow: color(sNeutral, 10),
+                surfaceContainer: color(sNeutral, 12),
+                surfaceContainerHigh: color(sNeutral, 17),
+                surfaceContainerHighest: color(sNeutral, 22),
+            };
         } else {
-            primary = seedColor;
-            onPrimary = "#ffffff";
-            primaryContainer = rgbToHex(...tintColor(baseRgb, 0.85));
-            onPrimaryContainer = rgbToHex(...tintColor(baseRgb, -0.8));
+            schemeJson = {
+                primary: color(sPrimary, 40),
+                onPrimary: color(sPrimary, 100),
+                primaryContainer: color(sPrimary, 90),
+                onPrimaryContainer: color(sPrimary, 10),
 
-            secondaryContainer = rgbToHex(...tintColor(baseRgb, 0.8));
-            onSecondaryContainer = rgbToHex(...tintColor(baseRgb, -0.8));
+                secondaryContainer: color(sSecondary, 90),
+                onSecondaryContainer: color(sSecondary, 10),
 
-            surface = rgbToHex(...tintColor(baseRgb, 0.98));
-            onSurface = "#1a1c1e";
-            background = surface;
-            onBackground = onSurface;
+                background: color(sNeutral, 99),
+                onBackground: color(sNeutral, 10),
+                surface: color(sNeutral, 99),
+                onSurface: color(sNeutral, 10),
 
-            surfaceVariant = "#e1e2e8";
-            onSurfaceVariant = "#444746";
-            outline = "#74777f";
-            outlineVariant = "#c4c7c5";
+                surfaceVariant: color(sNeutralVariant, 90),
+                onSurfaceVariant: color(sNeutralVariant, 30),
 
-            surfaceContainer = rgbToHex(...tintColor(baseRgb, 0.95));
-            surfaceContainerHigh = rgbToHex(...tintColor(baseRgb, 0.92));
-            surfaceContainerHighest = rgbToHex(...tintColor(baseRgb, 0.90));
+                outline: color(sNeutralVariant, 50),
+                outlineVariant: color(sNeutralVariant, 80),
+
+                surfaceContainerLowest: color(sNeutral, 100),
+                surfaceContainerLow: color(sNeutral, 96),
+                surfaceContainer: color(sNeutral, 94),
+                surfaceContainerHigh: color(sNeutral, 92),
+                surfaceContainerHighest: color(sNeutral, 90),
+            };
         }
-
-        const schemeJson = {
-            primary: primary,
-            onPrimary: onPrimary,
-            primaryContainer: primaryContainer,
-            onPrimaryContainer: onPrimaryContainer,
-            secondaryContainer: secondaryContainer,
-            onSecondaryContainer: onSecondaryContainer,
-            background: background,
-            onBackground: onBackground,
-            surface: surface,
-            onSurface: onSurface,
-            surfaceVariant: surfaceVariant,
-            onSurfaceVariant: onSurfaceVariant,
-            outline: outline,
-            outlineVariant: outlineVariant,
-            surfaceContainer: surfaceContainer,
-            surfaceContainerHigh: surfaceContainerHigh,
-            surfaceContainerHighest: surfaceContainerHighest
-        };
 
         const metaThemeColor = document.querySelector("meta[name=theme-color]");
         if (metaThemeColor) {
-            metaThemeColor.setAttribute("content", surface);
+            metaThemeColor.setAttribute("content", schemeJson.surface);
         }
 
         for (const [key, value] of Object.entries(schemeJson)) {
             const token = key.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
+
             root.style.setProperty(`--bg-sys-color-${token}`, value);
-            root.style.setProperty(`--bg-sys-color-${token}-rgb`, hexToRgb(value).join(', '));
+            root.style.setProperty(`--bg-sys-color-${token}-rgb`, hexToRgbString(value));
 
             root.style.setProperty(`--gem-sys-color--${token}`, value, "important");
             root.style.setProperty(`--md-sys-color-${token}`, value, "important");
+
+            if (body) {
+                body.style.setProperty(`--gem-sys-color--${token}`, value, "important");
+                body.style.setProperty(`--md-sys-color-${token}`, value, "important");
+            }
         }
 
-        root.style.setProperty("--bard-color-synthetic--chat-window-surface", surface, "important");
-        root.style.setProperty("--bard-color-synthetic--mat-card-background", surfaceContainer, "important");
-        root.style.setProperty("--bard-color-synthetic--chat-window-surface-container", surfaceContainer, "important");
-        root.style.setProperty("--bard-color-synthetic--chat-window-surface-container-high", surfaceContainerHigh, "important");
+        if (body) {
+            body.style.setProperty("--bard-color-synthetic--chat-window-surface", schemeJson.surface, "important");
+            body.style.setProperty("--bard-color-synthetic--mat-card-background", schemeJson.surfaceContainerHigh, "important");
+            body.style.setProperty("--bard-color-synthetic--chat-window-surface-container", schemeJson.surfaceContainer, "important");
+            body.style.setProperty("--bard-color-synthetic--chat-window-surface-container-high", schemeJson.surfaceContainerHigh, "important");
+            body.style.setProperty("--bard-color-synthetic--chat-window-surface-container-highest", schemeJson.surfaceContainerHighest, "important");
+
+            body.style.setProperty("--bard-color-sidenav-background-desktop", schemeJson.surfaceContainerHigh, "important");
+            body.style.setProperty("--bard-color-sidenav-background-mobile", schemeJson.surfaceContainerHigh, "important");
+        }
 
         if (themeMode === 'dark') {
             root.classList.add('dark-theme');
@@ -190,11 +204,7 @@ function applyMaterialTheme(seedColor, themeMode) {
             root.style.colorScheme = 'light';
         } else {
             root.classList.remove('dark-theme', 'light-theme');
-            if (isDark) {
-                root.style.colorScheme = 'dark';
-            } else {
-                root.style.colorScheme = 'light';
-            }
+            root.style.colorScheme = isDark ? 'dark' : 'light';
         }
     } catch (error) {
         console.error("Theme update failed", error);
