@@ -197,8 +197,6 @@ function injectUIFixes() {
             .disclaimer-container button.action-button .mdc-button__label {
                 color: var(--gem-sys-color--primary) !important;
             }
-            
-            /* Correção do scroll e limites do bloco de código */
             code-block, .code-block, .code-container {
                 max-width: 100% !important;
             }
@@ -206,7 +204,6 @@ function injectUIFixes() {
                 overflow-x: auto !important;
                 max-width: 100% !important;
             }
-            
             .code-block-decoration, .code-block-header, .header-formatted {
                 border-top-left-radius: inherit;
                 border-top-right-radius: inherit;
@@ -262,6 +259,15 @@ function injectUIFixes() {
             }
             .bg-code-nav-btn:active {
                 transform: scale(0.95);
+            }
+            .edit-button-area button.cancel-button .mdc-button__label {
+                color: var(--gem-sys-color--primary) !important;
+            }
+            .edit-button-area button.update-button:not(:disabled) {
+                background-color: var(--gem-sys-color--primary) !important;
+            }
+            .edit-button-area button.update-button:not(:disabled) .mdc-button__label {
+                color: var(--gem-sys-color--on-primary) !important;
             }
         `;
         document.head.appendChild(style);
