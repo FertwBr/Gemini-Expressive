@@ -228,12 +228,15 @@ function updateTimeline() {
                 link.classList.add('active');
 
                 const targetBlock = document.querySelector(`[data-bg-id="${blockId}"]`) || block;
+
+                targetBlock.style.scrollMarginTop = '100px';
+
                 targetBlock.scrollIntoView({behavior: 'smooth', block: 'start'});
                 globalTooltip.classList.remove('visible');
 
                 scrollTimeout = setTimeout(() => {
                     isManualScrolling = false;
-                }, 800);
+                }, 1200);
             };
 
             itemsContainer.appendChild(link);
