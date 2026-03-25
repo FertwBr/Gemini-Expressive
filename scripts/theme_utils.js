@@ -104,11 +104,14 @@ function applyMaterialTheme(seedColor, themeMode) {
         const [h, s] = hexToHsl(seedColor);
 
         const sPrimary = s;
-        const sSecondary = Math.min(s * 0.35, 30);
+        const sSecondary = Math.min(s * 0.75, 70);
+        const sTertiary = Math.min(s * 0.85, 80);
         const sNeutral = Math.min(s * 0.08, 8);
         const sNeutralVariant = Math.min(s * 0.16, 16);
+        const hTertiary = (h + 60) % 360;
 
         const color = (sat, tone) => hslToHex(h, sat, tone);
+        const colorTertiary = (sat, tone) => hslToHex(hTertiary, sat, tone);
 
         let schemeJson = {};
 
@@ -119,8 +122,15 @@ function applyMaterialTheme(seedColor, themeMode) {
                 primaryContainer: color(sPrimary, 30),
                 onPrimaryContainer: color(sPrimary, 90),
 
+                secondary: color(sSecondary, 80),
+                onSecondary: color(sSecondary, 20),
                 secondaryContainer: color(sSecondary, 30),
                 onSecondaryContainer: color(sSecondary, 90),
+
+                tertiary: colorTertiary(sTertiary, 80),
+                onTertiary: colorTertiary(sTertiary, 20),
+                tertiaryContainer: colorTertiary(sTertiary, 30),
+                onTertiaryContainer: colorTertiary(sTertiary, 90),
 
                 background: color(sNeutral, 6),
                 onBackground: color(sNeutral, 90),
@@ -146,8 +156,15 @@ function applyMaterialTheme(seedColor, themeMode) {
                 primaryContainer: color(sPrimary, 90),
                 onPrimaryContainer: color(sPrimary, 10),
 
+                secondary: color(sSecondary, 40),
+                onSecondary: color(sSecondary, 100),
                 secondaryContainer: color(sSecondary, 90),
                 onSecondaryContainer: color(sSecondary, 10),
+
+                tertiary: colorTertiary(sTertiary, 40),
+                onTertiary: colorTertiary(sTertiary, 100),
+                tertiaryContainer: colorTertiary(sTertiary, 90),
+                onTertiaryContainer: colorTertiary(sTertiary, 10),
 
                 background: color(sNeutral, 99),
                 onBackground: color(sNeutral, 10),
@@ -213,6 +230,5 @@ function applyMaterialTheme(seedColor, themeMode) {
             root.style.colorScheme = isDark ? 'dark' : 'light';
         }
     } catch (error) {
-        console.error("Theme update failed", error);
     }
 }
