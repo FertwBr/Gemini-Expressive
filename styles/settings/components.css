@@ -1,8 +1,21 @@
 .viewer-sidebar-card {
-    padding: 20px;
-    background: var(--md-sys-color-surface-container);
-    border-radius: 20px;
-    border: 1px solid var(--md-sys-color-outline-variant);
+    padding: 0;
+    background: transparent;
+    border-radius: 0;
+    border: none;
+}
+
+.settings-section-header {
+    font-size: 0.85rem;
+    color: var(--md-sys-color-primary);
+    margin: 24px 0 8px 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.settings-section-header:first-child {
+    margin-top: 0;
 }
 
 .setting-row {

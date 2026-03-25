@@ -25,6 +25,8 @@
         </header>
 
         <div class="viewer-sidebar-card">
+            <h2 class="settings-section-header" data-i18n="headerGeneral">General</h2>
+
             <div class="setting-row">
                 <div class="setting-info">
                     <label for="enableTimeline" class="input-label" data-i18n="timelineLabel">Enable Timeline
@@ -73,6 +75,8 @@
                 </label>
             </div>
 
+            <h2 class="settings-section-header" data-i18n="headerAppearance">Appearance</h2>
+
             <div class="setting-row">
                 <div class="setting-info">
                     <label class="input-label" data-i18n="themeModeLabel">Theme Mode</label>
@@ -106,9 +110,22 @@
                 </div>
             </div>
 
-            <div class="setting-row" style="margin-bottom: 0; flex-direction: column; align-items: flex-start;">
+            <div class="setting-row">
+                <div class="setting-info">
+                    <label for="enableDynamicColor" class="input-label" data-i18n="dynamicColorSwitchLabel">Enable
+                        Dynamic Color</label>
+                    <span class="setting-description" data-i18n="dynamicColorSwitchDesc">Applies dynamic theming to the interface.</span>
+                </div>
+                <label class="md-switch">
+                    <input type="checkbox" id="enableDynamicColor" checked>
+                    <span class="md-slider"></span>
+                </label>
+            </div>
+
+            <div class="setting-row" id="colorPickerRow"
+                 style="margin-bottom: 0; flex-direction: column; align-items: flex-start;">
                 <div class="setting-info" style="width: 100%; margin-bottom: 16px;">
-                    <label for="themeColorPicker" class="input-label" data-i18n="themeColorLabel">Dynamic Color</label>
+                    <label for="themeColorPicker" class="input-label" data-i18n="themeColorLabel">Theme Color</label>
                     <span class="setting-description" data-i18n="themeColorDesc">Select a seed color to generate the Material You palette.</span>
                 </div>
                 <div class="color-swatch-grid">

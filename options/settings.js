@@ -62,6 +62,66 @@ function applyLocalizations() {
     });
 }
 
+/**
+ * Removes dynamically injected CSS variables when dynamic color is disabled.
+ */
+function removeDynamicTheme() {
+    const root = document.documentElement;
+    const body = document.body;
+
+    const props = [
+        'primary', 'on-primary', 'primary-container', 'on-primary-container',
+        'secondary', 'on-secondary', 'secondary-container', 'on-secondary-container',
+        'tertiary', 'on-tertiary', 'tertiary-container', 'on-tertiary-container',
+        'background', 'on-background', 'surface', 'on-surface',
+        'surface-variant', 'on-surface-variant', 'outline', 'outline-variant',
+        'surface-container-lowest', 'surface-container-low', 'surface-container',
+        'surface-container-high', 'surface-container-highest'
+    ];
+
+    props.forEach(token => {
+        root.style.removeProperty(`--bg-sys-color-${token}`);
+        root.style.removeProperty(`--bg-sys-color-${token}-rgb`);
+        root.style.removeProperty(`--gem-sys-color--${token}`);
+        root.style.removeProperty(`--md-sys-color-${token}`);
+        root.style.removeProperty(`--sys-color--${token}`);
+        if (body) {
+            body.style.removeProperty(`--gem-sys-color--${token}`);
+            body.style.removeProperty(`--md-sys-color-${token}`);
+            body.style.removeProperty(`--sys-color--${token}`);
+        }
+    });
+
+    if (body) {
+        body.style.removeProperty("--bard-color-synthetic--chat-window-surface");
+        body.style.removeProperty("--bard-color-synthetic--mat-card-background");
+        body.style.removeProperty("--bard-color-synthetic--chat-window-surface-container");
+        body.style.removeProperty("--bard-color-synthetic--chat-window-surface-container-high");
+        body.style.removeProperty("--bard-color-synthetic--chat-window-surface-container-highest");
+        body.style.removeProperty("--bard-color-sidenav-background-desktop");
+        body.style.removeProperty("--bard-color-sidenav-background-mobile");
+    }
+
+    const metaThemeColor = document.querySelector("meta[name=theme-color]");
+    if (metaThemeColor) {
+        metaThemeColor.removeAttribute("content");
+    }
+
+    if (typeof selectedThemeMode !== 'undefined') {
+        if (selectedThemeMode === 'dark') {
+            root.classList.add('dark-theme');
+            root.classList.remove('light-theme');
+            root.style.colorScheme = 'dark';
+        } else if (selectedThemeMode === 'light') {
+            root.classList.add('light-theme');
+            root.classList.remove('dark-theme');
+            root.style.colorScheme = 'light';
+        } else {
+            root.style.colorScheme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+        }
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     applyLocalizations();
 
@@ -69,6 +129,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const collapseSwitch = document.getElementById('enableCollapse');
     const codeNavSwitch = document.getElementById('enableCodeNav');
     const headersSwitch = document.getElementById('enableHeaders');
+    const dynamicColorSwitch = document.getElementById('enableDynamicColor');
+    const colorPickerRow = document.getElementById('colorPickerRow');
     const colorPicker = document.getElementById('themeColorPicker');
     const colorSwatches = document.querySelectorAll('.color-swatch');
     const versionText = document.getElementById('versionText');
@@ -200,11 +262,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let selectedLang = 'auto';
 
-    chrome.storage.sync.get(['timelineEnabled', 'collapseEnabled', 'codeNavEnabled', 'headersEnabled', 'language', 'themeMode', 'themeColor'], (items) => {
+    chrome.storage.sync.get(['timelineEnabled', 'collapseEnabled', 'codeNavEnabled', 'headersEnabled', 'language', 'themeMode', 'themeColor', 'dynamicColorEnabled'], (items) => {
         timelineSwitch.checked = items.timelineEnabled !== false;
         collapseSwitch.checked = items.collapseEnabled !== false;
         codeNavSwitch.checked = items.codeNavEnabled !== false;
         headersSwitch.checked = items.headersEnabled !== false;
+        dynamicColorSwitch.checked = items.dynamicColorEnabled !== false;
+
+        if (!dynamicColorSwitch.checked) {
+            colorPickerRow.style.opacity = '0.5';
+            colorPickerRow.style.pointerEvents = 'none';
+        } else {
+            colorPickerRow.style.opacity = '1';
+            colorPickerRow.style.pointerEvents = 'auto';
+        }
 
         if (items.themeMode) {
             selectedThemeMode = items.themeMode;
@@ -223,8 +294,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         updateDropdownVisuals(selectedLang);
 
-        if (typeof applyMaterialTheme === 'function') {
+        if (typeof applyMaterialTheme === 'function' && dynamicColorSwitch.checked) {
             applyMaterialTheme(colorPicker.value, selectedThemeMode);
+        } else if (!dynamicColorSwitch.checked) {
+            removeDynamicTheme();
         }
     });
 
@@ -239,7 +312,8 @@ document.addEventListener('DOMContentLoaded', () => {
             headersEnabled: headersSwitch.checked,
             themeMode: selectedThemeMode,
             themeColor: colorPicker.value,
-            language: selectedLang
+            language: selectedLang,
+            dynamicColorEnabled: dynamicColorSwitch.checked
         }, () => {
             currentLanguage = selectedLang === 'auto' ? navigator.language.split('-')[0] : selectedLang;
             if (!BG_LOCALES[currentLanguage]) {
@@ -249,9 +323,19 @@ document.addEventListener('DOMContentLoaded', () => {
             applyLocalizations();
             updateDropdownVisuals(selectedLang);
             updateThemeDropdownVisuals(selectedThemeMode);
-            if (typeof applyMaterialTheme === 'function') {
-                applyMaterialTheme(colorPicker.value, selectedThemeMode);
+
+            if (dynamicColorSwitch.checked) {
+                colorPickerRow.style.opacity = '1';
+                colorPickerRow.style.pointerEvents = 'auto';
+                if (typeof applyMaterialTheme === 'function') {
+                    applyMaterialTheme(colorPicker.value, selectedThemeMode);
+                }
+            } else {
+                colorPickerRow.style.opacity = '0.5';
+                colorPickerRow.style.pointerEvents = 'none';
+                removeDynamicTheme();
             }
+
             showToast(getBgString('statusSaved'));
         });
     }
@@ -260,6 +344,7 @@ document.addEventListener('DOMContentLoaded', () => {
     collapseSwitch.addEventListener('change', saveSettings);
     codeNavSwitch.addEventListener('change', saveSettings);
     headersSwitch.addEventListener('change', saveSettings);
+    dynamicColorSwitch.addEventListener('change', saveSettings);
 
     themeDropdownBtn.addEventListener('click', (e) => {
         e.stopPropagation();
