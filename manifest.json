@@ -6,6 +6,16 @@
   "permissions": [
     "storage"
   ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "assets/shapes/*.svg"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ],
   "icons": {
     "128": "assets/icon.png"
   },

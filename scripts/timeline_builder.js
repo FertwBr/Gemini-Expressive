@@ -75,12 +75,13 @@ function createTimelineContainer() {
     const container = document.createElement('div');
     container.id = 'better-gemini-timeline';
 
-    const line = document.createElement('div');
-    line.className = 'bg-timeline-line';
-    container.appendChild(line);
-
     const itemsContainer = document.createElement('div');
     itemsContainer.id = 'bg-timeline-items';
+
+    const line = document.createElement('div');
+    line.className = 'bg-timeline-line';
+    itemsContainer.appendChild(line);
+
     container.appendChild(itemsContainer);
 
     document.body.appendChild(container);
@@ -158,6 +159,16 @@ function updateTimeline() {
                 if (activeLink && !activeLink.classList.contains('active')) {
                     document.querySelectorAll('.timeline-item.active').forEach(el => el.classList.remove('active'));
                     activeLink.classList.add('active');
+
+                    const timelineContainer = document.getElementById('better-gemini-timeline');
+                    if (timelineContainer) {
+                        const linkTop = activeLink.offsetTop;
+                        const containerHalfHeight = timelineContainer.clientHeight / 2;
+                        timelineContainer.scrollTo({
+                            top: linkTop - containerHalfHeight,
+                            behavior: 'smooth'
+                        });
+                    }
                 }
             }
         }, {threshold: [0, 0.1, 0.5, 0.9]});
@@ -178,12 +189,16 @@ function updateTimeline() {
         }
 
         let link = document.getElementById('timeline-link-' + blockId);
+
         const isUser = block.tagName.toLowerCase() === 'user-query' ||
             block.tagName.toLowerCase() === 'user-message' ||
             block.getAttribute('data-message-author') === 'user' ||
             block.getAttribute('data-test-id') === 'user-message' ||
             (block.className && typeof block.className === 'string' && block.className.includes('user')) ||
             block.querySelector('[data-test-id="user-message"]') !== null;
+
+        const hasCode = block.querySelector('code-block') !== null || block.querySelector('pre') !== null;
+
         const defaultText = isUser ? getBgString('userPrompt') : getBgString('geminiResponse');
 
         if (!link) {
@@ -195,12 +210,26 @@ function updateTimeline() {
             const dot = document.createElement('div');
             dot.className = 'bg-timeline-dot';
 
+            let shapeName = 'pill.svg';
+            if (isUser) {
+                shapeName = 'cookie.svg';
+            } else if (hasCode) {
+                shapeName = 'triangle.svg';
+            }
+
+            try {
+                const shapeUrl = chrome.runtime.getURL('assets/shapes/' + shapeName);
+                dot.style.webkitMaskImage = 'url(' + shapeUrl + ')';
+                dot.style.maskImage = 'url(' + shapeUrl + ')';
+            } catch (e) {
+            }
+
             link.appendChild(dot);
 
             link.addEventListener('mouseenter', () => {
                 const rect = link.getBoundingClientRect();
 
-                const currentBlock = document.querySelector(`[data-bg-id="${blockId}"]`);
+                const currentBlock = document.querySelector('[data-bg-id="' + blockId + '"]');
                 let previewData = {text: '', icon: null};
 
                 if (currentBlock) {
@@ -227,7 +256,17 @@ function updateTimeline() {
                 document.querySelectorAll('.timeline-item.active').forEach(el => el.classList.remove('active'));
                 link.classList.add('active');
 
-                const targetBlock = document.querySelector(`[data-bg-id="${blockId}"]`) || block;
+                const timelineContainer = document.getElementById('better-gemini-timeline');
+                if (timelineContainer) {
+                    const linkTop = link.offsetTop;
+                    const containerHalfHeight = timelineContainer.clientHeight / 2;
+                    timelineContainer.scrollTo({
+                        top: linkTop - containerHalfHeight,
+                        behavior: 'smooth'
+                    });
+                }
+
+                const targetBlock = document.querySelector('[data-bg-id="' + blockId + '"]') || block;
                 const scrollTarget = targetBlock.closest('message-row') || targetBlock.closest('.message-row') || targetBlock;
 
                 scrollTarget.style.scrollMarginTop = '80px';

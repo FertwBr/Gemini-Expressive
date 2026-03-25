@@ -1,142 +1,116 @@
-infinite-scroller.chat-history {
-    padding-right: 64px !important;
-    box-sizing: border-box;
-}
-
 #better-gemini-timeline {
     position: fixed;
     right: 16px;
-    top: 80px;
-    bottom: 140px;
-    z-index: 9999;
+    top: 50%;
+    transform: translateY(-50%);
     display: flex;
     flex-direction: column;
-    background: transparent;
-    box-shadow: none;
-    padding: 0;
-    width: 32px;
-    pointer-events: none;
+    align-items: center;
+    z-index: 1000;
+    max-height: 60vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 16px 8px;
+    scrollbar-width: none;
 }
 
-.bg-timeline-line {
-    position: absolute;
-    right: 15px;
-    top: 16px;
-    bottom: 16px;
-    width: 2px;
-    background: linear-gradient(to bottom, transparent, var(--bg-sys-color-primary) 10%, var(--bg-sys-color-primary) 90%, transparent);
-    opacity: 0.2;
-    z-index: 1;
+#better-gemini-timeline::-webkit-scrollbar {
+    display: none;
 }
 
 #bg-timeline-items {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
-    overflow-y: auto;
-    overflow-x: visible;
-    padding: 20px 0;
-    scrollbar-width: none;
-    z-index: 2;
+    gap: 16px;
+    position: relative;
     width: 100%;
-    height: 100%;
-    pointer-events: auto;
 }
 
-#bg-timeline-items::-webkit-scrollbar {
-    display: none;
+.bg-timeline-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    background-color: var(--gem-sys-color--surface-variant, #44474e);
+    z-index: 0;
+    border-radius: 2px;
 }
 
 .timeline-item {
     position: relative;
+    z-index: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    height: 20px;
-    cursor: pointer;
-    z-index: 2;
-    text-decoration: none;
+    width: 28px;
+    height: 28px;
     flex-shrink: 0;
+    cursor: pointer;
+    filter: drop-shadow(0 0 0 transparent);
+    transition: filter 0.3s;
 }
 
 .bg-timeline-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.2s ease;
-    box-shadow: 0 0 0 2px var(--gem-sys-color--surface, var(--bg-sys-color-surface));
-    flex-shrink: 0;
-    z-index: 3;
-}
-
-.timeline-item.user .bg-timeline-dot {
-    background: var(--bg-sys-color-primary);
-}
-
-.timeline-item.gemini .bg-timeline-dot {
-    background: var(--gem-sys-color--surface, var(--bg-sys-color-surface));
-    border: 1px solid var(--bg-sys-color-primary);
-    box-sizing: border-box;
+    width: 16px;
+    height: 16px;
+    background-color: var(--gem-sys-color--tertiary, #8e918f);
+    -webkit-mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .timeline-item:hover .bg-timeline-dot {
-    transform: scale(1.1);
+    transform: scale(1.3);
+    background-color: var(--gem-sys-color--secondary, #c2e7ff);
+}
+
+.timeline-item.active {
+    filter: drop-shadow(0px 2px 6px rgba(0, 0, 0, 0.5));
+    z-index: 2;
 }
 
 .timeline-item.active .bg-timeline-dot {
-    transform: scale(1.2);
-    box-shadow: 0 0 0 3px var(--gem-sys-color--surface, var(--bg-sys-color-surface)), 0 0 0 5px var(--bg-sys-color-primary);
+    width: 22px;
+    height: 22px;
+    background-color: var(--gem-sys-color--primary, #a8c7fa);
 }
 
-.timeline-global-tooltip {
-    position: fixed;
-    transform: translateY(-50%);
-    background: var(--gem-sys-color--surface, var(--bg-sys-color-surface));
-    border: 1px solid var(--bg-sys-color-outline-variant, var(--bg-sys-color-surface-variant));
-    color: var(--bg-sys-color-on-surface);
-    padding: 12px 16px;
-    border-radius: 12px;
-    font-size: 14px;
-    font-family: 'Google Sans', system-ui, sans-serif;
-    line-height: 1.5;
+.timeline-item.active:hover .bg-timeline-dot {
+    background-color: var(--gem-sys-color--primary, #a8c7fa);
+}
+
+#bg-global-tooltip {
+    background: var(--gem-sys-color--surface-container-highest, #36343b);
+    color: var(--gem-sys-color--on-surface, #e3e2e6);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
     opacity: 0;
     visibility: hidden;
-    pointer-events: none;
-    transition: opacity 0.2s ease, visibility 0.2s ease;
-    box-shadow: var(--bg-sys-elevation);
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    width: max-content;
-    max-width: 340px;
-    z-index: 2147483647;
-}
-
-.timeline-global-tooltip.visible {
-    opacity: 1;
-    visibility: visible;
-}
-
-.timeline-icon {
-    font-size: 18px !important;
-    color: var(--bg-sys-color-primary);
-    flex-shrink: 0;
-    margin-top: 2px;
-}
-
-.timeline-text {
-    display: -webkit-box;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical;
+    transition: opacity 0.2s, transform 0.2s;
+    transform: translateY(-50%) translateX(10px);
+    position: fixed;
+    z-index: 1001;
+    white-space: nowrap;
+    max-width: 300px;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: normal;
 }
 
-@media (max-width: 900px) {
-    .timeline-global-tooltip {
-        display: none !important;
-    }
+#bg-global-tooltip.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(-50%) translateX(0);
 }
