@@ -10,8 +10,10 @@
     max-height: 60vh;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 16px 8px;
+    padding: 24px 8px;
     scrollbar-width: none;
+    -webkit-mask-image: linear-gradient(to bottom, transparent, black 24px, black calc(100% - 24px), transparent);
+    mask-image: linear-gradient(to bottom, transparent, black 24px, black calc(100% - 24px), transparent);
 }
 
 #better-gemini-timeline::-webkit-scrollbar {
@@ -29,8 +31,8 @@
 
 .bg-timeline-line {
     position: absolute;
-    top: 0;
-    bottom: 0;
+    top: 14px;
+    bottom: 14px;
     left: 50%;
     transform: translateX(-50%);
     width: 2px;
