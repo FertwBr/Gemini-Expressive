@@ -67,7 +67,7 @@ function executeThemeClick(themeButton, targetMode) {
             const keywords = {
                 light: ['light', 'claro', 'clair', 'hell', 'chiaro'],
                 dark: ['dark', 'escur', 'oscur', 'sombre', 'dunkel', 'scuro'],
-                auto: ['auto', 'system', 'sistema', 'padrão', 'standard', 'predeterminado']
+                auto: ['auto', 'system', 'sistema', 'padrão', 'standard', 'predeterminado', 'device', 'dispositivo']
             };
 
             for (let i = 0; i < options.length; i++) {
@@ -92,7 +92,12 @@ function executeThemeClick(themeButton, targetMode) {
             }
         }
 
-        setTimeout(closeNativeMenus, 50);
+        setTimeout(() => {
+            closeNativeMenus();
+            if (targetMode === 'auto') {
+                attemptThemeApplication();
+            }
+        }, 50);
     }, 150);
 }
 
@@ -137,7 +142,7 @@ function syncNativeTheme(targetMode) {
 const observer = new MutationObserver((mutations) => {
     let themeChanged = false;
     for (const mutation of mutations) {
-        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+        if (mutation.type === 'attributes' && (mutation.attributeName === 'class' || mutation.attributeName === 'data-theme')) {
             const target = mutation.target;
             if (target === document.body || target === document.documentElement) {
                 themeChanged = true;
@@ -164,9 +169,41 @@ const observer = new MutationObserver((mutations) => {
 });
 
 /**
+ * Injects custom CSS to fix specific UI elements affected by aggressive global styles.
+ */
+function injectUIFixes() {
+    if (!document.getElementById('bg-ui-fixes')) {
+        const style = document.createElement('style');
+        style.id = 'bg-ui-fixes';
+        style.textContent = `
+            .disclaimer-container .main-text,
+            .disclaimer-container .content-container,
+            .disclaimer-container.promo .main-text {
+                background: transparent !important;
+                color: var(--gem-sys-color--on-surface-variant) !important;
+            }
+            .disclaimer-container .action-button-wrapper button,
+            .disclaimer-container button.action-button {
+                background: transparent !important;
+                background-color: transparent !important;
+                color: var(--gem-sys-color--primary) !important;
+                box-shadow: none !important;
+            }
+            .disclaimer-container .action-button-wrapper button .mdc-button__label,
+            .disclaimer-container button.action-button .mdc-button__label {
+                color: var(--gem-sys-color--primary) !important;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+}
+
+/**
  * Initializes the extension by fetching settings, starting the observer, and listening for changes.
  */
 function initializeExtension() {
+    injectUIFixes();
+
     chrome.storage.sync.get(['timelineEnabled', 'collapseEnabled', 'headersEnabled', 'themeMode', 'themeColor'], (items) => {
         if (items.timelineEnabled !== undefined) {
             extensionSettings.timelineEnabled = items.timelineEnabled;
