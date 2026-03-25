@@ -89,28 +89,40 @@
 #bg-global-tooltip {
     background: var(--gem-sys-color--surface-container-highest, #36343b);
     color: var(--gem-sys-color--on-surface, #e3e2e6);
-    padding: 8px 12px;
+    padding: 10px 14px;
     border-radius: 8px;
+    font-family: "Google Sans Flex", "Google Sans Text", "Google Sans", "Helvetica Neue", Arial, sans-serif;
     font-size: 13px;
-    font-weight: 500;
+    font-weight: 400;
+    line-height: 1.4;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.2s, transform 0.2s;
     transform: translateY(-50%) translateX(10px);
     position: fixed;
     z-index: 1001;
-    white-space: nowrap;
-    max-width: 300px;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    max-width: 320px;
 }
 
 #bg-global-tooltip.visible {
     opacity: 1;
     visibility: visible;
     transform: translateY(-50%) translateX(0);
+}
+
+#bg-global-tooltip-icon {
+    flex-shrink: 0;
+}
+
+#bg-global-tooltip-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    white-space: normal;
+    word-break: break-word;
 }
