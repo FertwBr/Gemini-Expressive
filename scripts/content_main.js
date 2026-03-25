@@ -137,7 +137,6 @@ function syncNativeTheme(targetMode) {
             executeThemeClick(themeButton, targetMode);
         }
     } catch (e) {
-        console.error("Failed to sync native theme", e);
     }
 }
 
@@ -195,6 +194,62 @@ function injectUIFixes() {
             .disclaimer-container .action-button-wrapper button .mdc-button__label,
             .disclaimer-container button.action-button .mdc-button__label {
                 color: var(--gem-sys-color--primary) !important;
+            }
+            code-block, .code-block, .code-container {
+                overflow: visible !important;
+            }
+            .code-block-decoration, .code-block-header, .header-formatted {
+                border-top-left-radius: inherit;
+                border-top-right-radius: inherit;
+            }
+            pre.bg-processed:not(.bg-collapsed) {
+                padding-bottom: 56px !important;
+            }
+            .bg-code-nav {
+                position: sticky;
+                bottom: 16px;
+                margin-left: auto;
+                margin-right: 16px;
+                margin-top: -52px;
+                width: max-content;
+                display: flex;
+                flex-direction: row;
+                gap: 8px;
+                z-index: 10;
+                opacity: 0;
+                transition: opacity 0.2s ease-in-out;
+                pointer-events: none;
+            }
+            code-block:hover .bg-code-nav, 
+            .code-block:hover .bg-code-nav, 
+            pre:hover ~ .bg-code-nav, 
+            .bg-code-nav:hover {
+                opacity: 1;
+            }
+            pre.bg-collapsed ~ .bg-code-nav {
+                display: none !important;
+            }
+            .bg-code-nav-btn {
+                background: var(--gem-sys-color--surface-container-high, #2b2930);
+                color: var(--gem-sys-color--on-surface, #e3e2e6);
+                border: 1px solid var(--gem-sys-color--outline-variant, #44474e);
+                border-radius: 50%;
+                width: 36px;
+                height: 36px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+                transition: background 0.2s, transform 0.1s;
+                pointer-events: auto;
+            }
+            .bg-code-nav-btn:hover {
+                background: var(--gem-sys-color--surface-container-highest, #36343b);
+                transform: scale(1.05);
+            }
+            .bg-code-nav-btn:active {
+                transform: scale(0.95);
             }
         `;
         document.head.appendChild(style);

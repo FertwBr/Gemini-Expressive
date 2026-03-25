@@ -9,10 +9,16 @@ function processCodeBlocks() {
 
             if (container) {
                 header = container.querySelector('.code-block-decoration.header-formatted, .code-block-header, [data-test-id="code-block-header"], .header-formatted');
+                if (window.getComputedStyle(container).position === 'static') {
+                    container.style.position = 'relative';
+                }
             }
 
             if (!header && block.previousElementSibling && (block.previousElementSibling.classList.contains('code-block-decoration') || block.previousElementSibling.classList.contains('code-block-header') || block.previousElementSibling.classList.contains('header-formatted'))) {
                 header = block.previousElementSibling;
+                if (block.parentElement && window.getComputedStyle(block.parentElement).position === 'static') {
+                    block.parentElement.style.position = 'relative';
+                }
             }
 
             const btn = document.createElement('button');
@@ -59,6 +65,58 @@ function processCodeBlocks() {
                 }
             } else {
                 block.parentNode.insertBefore(btn, block);
+            }
+
+            const navDiv = document.createElement('div');
+            navDiv.className = 'bg-code-nav';
+
+            const upBtn = document.createElement('button');
+            upBtn.className = 'bg-code-nav-btn';
+            upBtn.title = 'Previous Code Block';
+
+            const upIcon = document.createElement('span');
+            upIcon.className = 'mat-icon notranslate google-symbols mat-ligature-font';
+            upIcon.textContent = 'keyboard_arrow_up';
+            upBtn.appendChild(upIcon);
+
+            const downBtn = document.createElement('button');
+            downBtn.className = 'bg-code-nav-btn';
+            downBtn.title = 'Next Code Block';
+
+            const downIcon = document.createElement('span');
+            downIcon.className = 'mat-icon notranslate google-symbols mat-ligature-font';
+            downIcon.textContent = 'keyboard_arrow_down';
+            downBtn.appendChild(downIcon);
+
+            upBtn.onclick = (e) => {
+                e.preventDefault();
+                const allProcessed = Array.from(document.querySelectorAll('pre.bg-processed'));
+                const currentIndex = allProcessed.indexOf(block);
+                if (currentIndex > 0) {
+                    const target = allProcessed[currentIndex - 1];
+                    const targetContainer = target.closest('code-block') || target;
+                    targetContainer.scrollIntoView({behavior: 'smooth', block: 'center'});
+                }
+            };
+
+            downBtn.onclick = (e) => {
+                e.preventDefault();
+                const allProcessed = Array.from(document.querySelectorAll('pre.bg-processed'));
+                const currentIndex = allProcessed.indexOf(block);
+                if (currentIndex < allProcessed.length - 1) {
+                    const target = allProcessed[currentIndex + 1];
+                    const targetContainer = target.closest('code-block') || target;
+                    targetContainer.scrollIntoView({behavior: 'smooth', block: 'center'});
+                }
+            };
+
+            navDiv.appendChild(upBtn);
+            navDiv.appendChild(downBtn);
+
+            if (block.nextSibling) {
+                block.parentNode.insertBefore(navDiv, block.nextSibling);
+            } else {
+                block.parentNode.appendChild(navDiv);
             }
         }
     });

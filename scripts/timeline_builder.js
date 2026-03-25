@@ -228,10 +228,11 @@ function updateTimeline() {
                 link.classList.add('active');
 
                 const targetBlock = document.querySelector(`[data-bg-id="${blockId}"]`) || block;
+                const scrollTarget = targetBlock.closest('message-row') || targetBlock.closest('.message-row') || targetBlock;
 
-                targetBlock.style.scrollMarginTop = '100px';
+                scrollTarget.style.scrollMarginTop = '80px';
+                scrollTarget.scrollIntoView({behavior: 'smooth', block: 'start'});
 
-                targetBlock.scrollIntoView({behavior: 'smooth', block: 'start'});
                 globalTooltip.classList.remove('visible');
 
                 scrollTimeout = setTimeout(() => {
