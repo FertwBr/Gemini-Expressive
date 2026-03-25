@@ -135,9 +135,10 @@ function updateTimeline() {
 
     const dialogBlocks = getMessageBlocks();
     let processedCount = 0;
+    const activeBlockIds = [];
 
     if (!timelineObserver) {
-        timelineObserver = new IntersectionObserver(() => {
+        timelineObserver = new IntersectionObserver((entries) => {
             if (isManualScrolling) {
                 return;
             }
@@ -174,19 +175,22 @@ function updateTimeline() {
         }, {threshold: [0, 0.1, 0.5, 0.9]});
     }
 
-    dialogBlocks.forEach((block, index) => {
+    dialogBlocks.forEach((block) => {
         const textContent = cleanText(block.textContent);
         if (textContent.length === 0) {
             return;
         }
 
         processedCount++;
-        const blockId = 'bg-block-' + index;
 
         if (!block.hasAttribute('data-bg-id')) {
-            block.setAttribute('data-bg-id', blockId);
+            const uniqueId = 'bg-block-' + Date.now().toString() + '-' + Math.floor(Math.random() * 1000000).toString();
+            block.setAttribute('data-bg-id', uniqueId);
             timelineObserver.observe(block);
         }
+
+        const blockId = block.getAttribute('data-bg-id');
+        activeBlockIds.push(blockId);
 
         let link = document.getElementById('timeline-link-' + blockId);
 
@@ -283,8 +287,17 @@ function updateTimeline() {
         }
     });
 
+    const existingLinks = itemsContainer.querySelectorAll('.timeline-item');
+    existingLinks.forEach(link => {
+        const linkId = link.id.replace('timeline-link-', '');
+        if (activeBlockIds.indexOf(linkId) === -1) {
+            link.remove();
+        }
+    });
+
     if (processedCount === 0) {
         container.style.display = 'none';
+        globalTooltip.classList.remove('visible');
     } else {
         container.style.display = 'flex';
     }
