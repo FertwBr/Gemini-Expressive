@@ -27,14 +27,14 @@ function processCodeBlocks() {
 
             const iconSpan = document.createElement('span');
             iconSpan.className = 'mat-icon notranslate google-symbols mat-ligature-font';
-            iconSpan.textContent = 'unfold_less';
+            iconSpan.textContent = 'collapse_content';
 
             btn.appendChild(iconSpan);
 
             btn.onclick = () => {
                 block.classList.toggle('bg-collapsed');
                 const isCollapsed = block.classList.contains('bg-collapsed');
-                iconSpan.textContent = isCollapsed ? 'unfold_more' : 'unfold_less';
+                iconSpan.textContent = isCollapsed ? 'expand_content' : 'collapse_content';
                 btn.title = isCollapsed ? getBgString('expandCode') : getBgString('collapseCode');
 
                 if (header) {

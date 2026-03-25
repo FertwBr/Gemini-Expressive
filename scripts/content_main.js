@@ -14,6 +14,7 @@ let extensionSettings = {
     timelineEnabled: true,
     collapseEnabled: true,
     headersEnabled: true,
+    codeNavEnabled: true,
     themeMode: 'auto',
     themeColor: '#0b57d0'
 };
@@ -39,6 +40,7 @@ function applyFeatureToggles() {
         document.body.classList.toggle('bg-timeline-disabled', !extensionSettings.timelineEnabled);
         document.body.classList.toggle('bg-collapse-disabled', !extensionSettings.collapseEnabled);
         document.body.classList.toggle('bg-headers-disabled', !extensionSettings.headersEnabled);
+        document.body.classList.toggle('bg-code-nav-disabled', !extensionSettings.codeNavEnabled);
     }
 }
 
@@ -195,9 +197,16 @@ function injectUIFixes() {
             .disclaimer-container button.action-button .mdc-button__label {
                 color: var(--gem-sys-color--primary) !important;
             }
+            
+            /* Correção do scroll e limites do bloco de código */
             code-block, .code-block, .code-container {
-                overflow: visible !important;
+                max-width: 100% !important;
             }
+            pre {
+                overflow-x: auto !important;
+                max-width: 100% !important;
+            }
+            
             .code-block-decoration, .code-block-header, .header-formatted {
                 border-top-left-radius: inherit;
                 border-top-right-radius: inherit;
@@ -219,6 +228,9 @@ function injectUIFixes() {
                 opacity: 0;
                 transition: opacity 0.2s ease-in-out;
                 pointer-events: none;
+            }
+            .bg-code-nav-disabled .bg-code-nav {
+                display: none !important;
             }
             code-block:hover .bg-code-nav, 
             .code-block:hover .bg-code-nav, 
@@ -262,7 +274,7 @@ function injectUIFixes() {
 function initializeExtension() {
     injectUIFixes();
 
-    chrome.storage.sync.get(['timelineEnabled', 'collapseEnabled', 'headersEnabled', 'themeMode', 'themeColor'], (items) => {
+    chrome.storage.sync.get(['timelineEnabled', 'collapseEnabled', 'codeNavEnabled', 'headersEnabled', 'themeMode', 'themeColor'], (items) => {
         if (items.timelineEnabled !== undefined) {
             extensionSettings.timelineEnabled = items.timelineEnabled;
         }
@@ -271,6 +283,9 @@ function initializeExtension() {
         }
         if (items.headersEnabled !== undefined) {
             extensionSettings.headersEnabled = items.headersEnabled;
+        }
+        if (items.codeNavEnabled !== undefined) {
+            extensionSettings.codeNavEnabled = items.codeNavEnabled;
         }
         if (items.themeMode !== undefined) {
             extensionSettings.themeMode = items.themeMode;
@@ -319,6 +334,9 @@ function initializeExtension() {
             }
             if (changes.collapseEnabled) {
                 extensionSettings.collapseEnabled = changes.collapseEnabled.newValue;
+            }
+            if (changes.codeNavEnabled) {
+                extensionSettings.codeNavEnabled = changes.codeNavEnabled.newValue;
             }
             if (changes.headersEnabled) {
                 extensionSettings.headersEnabled = changes.headersEnabled.newValue;

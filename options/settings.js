@@ -67,6 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const timelineSwitch = document.getElementById('enableTimeline');
     const collapseSwitch = document.getElementById('enableCollapse');
+    const codeNavSwitch = document.getElementById('enableCodeNav');
     const headersSwitch = document.getElementById('enableHeaders');
     const colorPicker = document.getElementById('themeColorPicker');
     const colorSwatches = document.querySelectorAll('.color-swatch');
@@ -199,9 +200,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let selectedLang = 'auto';
 
-    chrome.storage.sync.get(['timelineEnabled', 'collapseEnabled', 'headersEnabled', 'language', 'themeMode', 'themeColor'], (items) => {
+    chrome.storage.sync.get(['timelineEnabled', 'collapseEnabled', 'codeNavEnabled', 'headersEnabled', 'language', 'themeMode', 'themeColor'], (items) => {
         timelineSwitch.checked = items.timelineEnabled !== false;
         collapseSwitch.checked = items.collapseEnabled !== false;
+        codeNavSwitch.checked = items.codeNavEnabled !== false;
         headersSwitch.checked = items.headersEnabled !== false;
 
         if (items.themeMode) {
@@ -233,6 +235,7 @@ document.addEventListener('DOMContentLoaded', () => {
         chrome.storage.sync.set({
             timelineEnabled: timelineSwitch.checked,
             collapseEnabled: collapseSwitch.checked,
+            codeNavEnabled: codeNavSwitch.checked,
             headersEnabled: headersSwitch.checked,
             themeMode: selectedThemeMode,
             themeColor: colorPicker.value,
@@ -255,6 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     timelineSwitch.addEventListener('change', saveSettings);
     collapseSwitch.addEventListener('change', saveSettings);
+    codeNavSwitch.addEventListener('change', saveSettings);
     headersSwitch.addEventListener('change', saveSettings);
 
     themeDropdownBtn.addEventListener('click', (e) => {
