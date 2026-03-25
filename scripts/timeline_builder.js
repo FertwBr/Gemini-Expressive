@@ -227,7 +227,8 @@ function updateTimeline() {
                 document.querySelectorAll('.timeline-item.active').forEach(el => el.classList.remove('active'));
                 link.classList.add('active');
 
-                block.scrollIntoView({behavior: 'smooth', block: 'center'});
+                const targetBlock = document.querySelector(`[data-bg-id="${blockId}"]`) || block;
+                targetBlock.scrollIntoView({behavior: 'smooth', block: 'start'});
                 globalTooltip.classList.remove('visible');
 
                 scrollTimeout = setTimeout(() => {
