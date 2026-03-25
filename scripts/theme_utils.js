@@ -77,8 +77,13 @@ function hexToRgbString(hex) {
 function isDarkModeActive(themeMode) {
     if (themeMode === 'dark') return true;
     if (themeMode === 'light') return false;
+
+    if (document.body && document.body.getAttribute('data-theme') === 'dark') return true;
+    if (document.documentElement && document.documentElement.getAttribute('data-theme') === 'dark') return true;
+
     if (document.body && document.body.classList.contains('dark-theme')) return true;
     if (document.documentElement && document.documentElement.classList.contains('dark-theme')) return true;
+
     return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 }
 
@@ -176,10 +181,12 @@ function applyMaterialTheme(seedColor, themeMode) {
 
             root.style.setProperty(`--gem-sys-color--${token}`, value, "important");
             root.style.setProperty(`--md-sys-color-${token}`, value, "important");
+            root.style.setProperty(`--sys-color--${token}`, value, "important");
 
             if (body) {
                 body.style.setProperty(`--gem-sys-color--${token}`, value, "important");
                 body.style.setProperty(`--md-sys-color-${token}`, value, "important");
+                body.style.setProperty(`--sys-color--${token}`, value, "important");
             }
         }
 
@@ -203,7 +210,6 @@ function applyMaterialTheme(seedColor, themeMode) {
             root.classList.remove('dark-theme');
             root.style.colorScheme = 'light';
         } else {
-            root.classList.remove('dark-theme', 'light-theme');
             root.style.colorScheme = isDark ? 'dark' : 'light';
         }
     } catch (error) {

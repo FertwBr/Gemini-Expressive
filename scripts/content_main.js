@@ -4,6 +4,8 @@
  */
 let debounceTimer = null;
 
+let isApplyingTheme = false;
+
 /**
  * Extension settings cache to respect user preferences.
  * @type {Object}
@@ -20,8 +22,12 @@ let extensionSettings = {
  * Applies dynamic themes specifically via the bundled or exposed theme utilities.
  */
 function attemptThemeApplication() {
-    if (typeof applyMaterialTheme === 'function') {
+    if (typeof applyMaterialTheme === 'function' && !isApplyingTheme) {
+        isApplyingTheme = true;
         applyMaterialTheme(extensionSettings.themeColor, extensionSettings.themeMode);
+        setTimeout(() => {
+            isApplyingTheme = false;
+        }, 150);
     }
 }
 
@@ -150,7 +156,7 @@ const observer = new MutationObserver((mutations) => {
         }
     }
 
-    if (themeChanged && extensionSettings.themeMode === 'auto') {
+    if (themeChanged && extensionSettings.themeMode === 'auto' && !isApplyingTheme) {
         attemptThemeApplication();
     }
 
@@ -168,9 +174,6 @@ const observer = new MutationObserver((mutations) => {
     }, 800);
 });
 
-/**
- * Injects custom CSS to fix specific UI elements affected by aggressive global styles.
- */
 function injectUIFixes() {
     if (!document.getElementById('bg-ui-fixes')) {
         const style = document.createElement('style');
