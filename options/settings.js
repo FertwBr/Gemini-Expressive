@@ -1,3 +1,4 @@
+// options/settings.js
 /**
  * Maps a language code to the appropriate flag country code using timezone heuristics.
  * @param {string} languageCode The broad language code.
@@ -98,14 +99,15 @@ document.addEventListener('DOMContentLoaded', () => {
     /**
      * Shows a brief success toast notification.
      * @param {string} msg The message to show.
+     * @param {boolean} [isLong=false] Whether the toast should stay on screen longer.
      */
-    function showToast(msg) {
+    function showToast(msg, isLong = false) {
         toastMessage.textContent = msg;
         toast.classList.add('show');
         clearTimeout(toastTimeout);
         toastTimeout = setTimeout(() => {
             toast.classList.remove('show');
-        }, 5000);
+        }, isLong ? 5000 : 2500);
     }
 
     /**
@@ -241,8 +243,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /**
      * Saves settings automatically to Chrome storage.
+     * @param {boolean} [isThemeToggle=false] Whether the action was toggling the Dynamic Color switch.
      */
-    function saveSettings() {
+    function saveSettings(isThemeToggle = false) {
         chrome.storage.sync.set({
             timelineEnabled: timelineSwitch.checked,
             collapseEnabled: collapseSwitch.checked,
@@ -273,15 +276,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 colorPickerRow.style.pointerEvents = 'none';
             }
 
-            showToast(getBgString('statusSavedRefresh'));
+            if (isThemeToggle) {
+                showToast(getBgString('statusSavedRefresh'), true);
+            } else {
+                showToast(getBgString('statusSaved'));
+            }
         });
     }
 
-    timelineSwitch.addEventListener('change', saveSettings);
-    collapseSwitch.addEventListener('change', saveSettings);
-    codeNavSwitch.addEventListener('change', saveSettings);
-    headersSwitch.addEventListener('change', saveSettings);
-    dynamicColorSwitch.addEventListener('change', saveSettings);
+    timelineSwitch.addEventListener('change', () => saveSettings(false));
+    collapseSwitch.addEventListener('change', () => saveSettings(false));
+    codeNavSwitch.addEventListener('change', () => saveSettings(false));
+    headersSwitch.addEventListener('change', () => saveSettings(false));
+    dynamicColorSwitch.addEventListener('change', () => saveSettings(true));
 
     themeDropdownBtn.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -295,7 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
             updateThemeDropdownVisuals(selectedThemeMode);
             themeDropdownBtn.classList.remove('open');
             themeDropdownMenu.classList.remove('open');
-            saveSettings();
+            saveSettings(false);
         });
     });
 
@@ -304,13 +311,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const color = swatch.getAttribute('data-color');
             colorPicker.value = color;
             updateSwatchSelection(color);
-            saveSettings();
+            saveSettings(false);
         });
     });
 
     colorPicker.addEventListener('change', () => {
         updateSwatchSelection(colorPicker.value);
-        saveSettings();
+        saveSettings(false);
     });
 
     dropdownBtn.addEventListener('click', (e) => {
@@ -335,7 +342,7 @@ document.addEventListener('DOMContentLoaded', () => {
             selectedLang = item.getAttribute('data-lang');
             dropdownBtn.classList.remove('open');
             dropdownMenu.classList.remove('open');
-            saveSettings();
+            saveSettings(false);
         });
     });
 });
