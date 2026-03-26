@@ -1,3 +1,4 @@
+// scripts/code_collapser.js
 function processCodeBlocks() {
     const blocks = document.querySelectorAll('pre');
     blocks.forEach(block => {
@@ -25,46 +26,32 @@ function processCodeBlocks() {
             btn.className = 'bg-collapse-icon-btn';
             btn.title = getBgString('collapseCode');
 
-            const iconSpan = document.createElement('span');
-            iconSpan.className = 'mat-icon notranslate google-symbols mat-ligature-font';
-            iconSpan.textContent = 'collapse_content';
+            const icon = document.createElement('span');
+            icon.className = 'google-symbols';
+            icon.textContent = 'unfold_less';
+            btn.appendChild(icon);
 
-            btn.appendChild(iconSpan);
-
-            btn.onclick = () => {
-                block.classList.toggle('bg-collapsed');
-                const isCollapsed = block.classList.contains('bg-collapsed');
-                iconSpan.textContent = isCollapsed ? 'expand_content' : 'collapse_content';
-                btn.title = isCollapsed ? getBgString('expandCode') : getBgString('collapseCode');
-
+            btn.onclick = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const isCollapsed = block.classList.toggle('bg-collapsed');
                 if (header) {
-                    if (isCollapsed) {
-                        header.classList.add('bg-header-collapsed');
-                    } else {
-                        header.classList.remove('bg-header-collapsed');
-                    }
+                    header.classList.toggle('bg-header-collapsed', isCollapsed);
                 }
+                icon.textContent = isCollapsed ? 'unfold_more' : 'unfold_less';
+                btn.title = isCollapsed ? getBgString('expandCode') : getBgString('collapseCode');
             };
 
             if (header) {
-                const touchTarget = header.querySelector('.mat-mdc-button-touch-target');
-                const copyBtn = touchTarget ? touchTarget.closest('button') : (header.querySelector('button[aria-label*="Copy"]') || header.querySelector('button'));
-
-                if (copyBtn && copyBtn.parentElement) {
-                    copyBtn.parentElement.style.display = 'flex';
-                    copyBtn.parentElement.style.alignItems = 'center';
-                    copyBtn.style.margin = '0';
-
-                    if (copyBtn.nextSibling) {
-                        copyBtn.parentElement.insertBefore(btn, copyBtn.nextSibling);
-                    } else {
-                        copyBtn.parentElement.appendChild(btn);
-                    }
-                } else {
-                    header.appendChild(btn);
+                let buttonsArea = header.querySelector('.buttons, .action-buttons');
+                if (!buttonsArea) {
+                    buttonsArea = document.createElement('div');
+                    buttonsArea.className = 'buttons';
+                    buttonsArea.style.display = 'flex';
+                    buttonsArea.style.alignItems = 'center';
+                    header.appendChild(buttonsArea);
                 }
-            } else {
-                block.parentNode.insertBefore(btn, block);
+                buttonsArea.insertBefore(btn, buttonsArea.firstChild);
             }
 
             const navDiv = document.createElement('div');
@@ -72,19 +59,17 @@ function processCodeBlocks() {
 
             const upBtn = document.createElement('button');
             upBtn.className = 'bg-code-nav-btn';
-            upBtn.title = 'Previous Code Block';
-
+            upBtn.title = "Previous code block";
             const upIcon = document.createElement('span');
-            upIcon.className = 'mat-icon notranslate google-symbols mat-ligature-font';
+            upIcon.className = 'google-symbols';
             upIcon.textContent = 'keyboard_arrow_up';
             upBtn.appendChild(upIcon);
 
             const downBtn = document.createElement('button');
             downBtn.className = 'bg-code-nav-btn';
-            downBtn.title = 'Next Code Block';
-
+            downBtn.title = "Next code block";
             const downIcon = document.createElement('span');
-            downIcon.className = 'mat-icon notranslate google-symbols mat-ligature-font';
+            downIcon.className = 'google-symbols';
             downIcon.textContent = 'keyboard_arrow_down';
             downBtn.appendChild(downIcon);
 

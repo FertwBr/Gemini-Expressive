@@ -1,3 +1,4 @@
+// scripts/content_main.js
 /**
  * Timeout reference for debouncing the mutation observer.
  * @type {number|null}
@@ -153,7 +154,6 @@ function injectSettingsShortcut() {
     const nativeSettingsBtn = document.querySelector('side-nav-action-button[data-test-id="settings-and-help-button"]');
 
     if (nativeSettingsBtn) {
-        // Clonamos o botão original com toda a estrutura
         const customWrapper = nativeSettingsBtn.cloneNode(true);
         customWrapper.id = 'bg-expressive-settings-shortcut';
         customWrapper.removeAttribute('data-test-id');
@@ -172,13 +172,9 @@ function injectSettingsShortcut() {
             });
         }
 
-        // Modificamos apenas os atributos necessários para o CSS do Angular puxar o ícone "palette"
-        const icon = customWrapper.querySelector('mat-icon');
-        if (icon) {
-            icon.setAttribute('data-mat-icon-name', 'palette');
-            icon.setAttribute('fonticon', 'palette');
-            icon.setAttribute('fontIcon', 'palette');
-            icon.textContent = 'palette'; // Garante que a ligature por texto funcione como fallback
+        const iconContainer = customWrapper.querySelector('.mat-mdc-list-item-icon');
+        if (iconContainer) {
+            iconContainer.innerHTML = '<span class="google-symbols" style="font-size: var(--gem-sys-typography-icon-scale--icon-l-font-size, 20px); width: var(--gem-sys-typography-icon-scale--icon-l-font-size, 20px); height: var(--gem-sys-typography-icon-scale--icon-l-font-size, 20px); line-height: 1; display: block; color: inherit;">palette</span>';
         }
 
         const textSpan = customWrapper.querySelector('.mdc-list-item__primary-text span');
@@ -221,7 +217,6 @@ const observer = new MutationObserver((mutations) => {
             updateTimeline();
         }
 
-        // Injeta o atalho sempre que o menu for renderizado
         injectSettingsShortcut();
     }, 800);
 });
@@ -265,20 +260,23 @@ function injectUIFixes() {
             pre.bg-processed:not(.bg-collapsed) {
                 padding-bottom: 56px !important;
             }
+            
+            /* --- NAVEGAÇÃO ENTRE BLOCOS DE CÓDIGO --- */
             .bg-code-nav {
                 position: sticky;
                 bottom: 16px;
-                margin-left: auto;
-                margin-right: 16px;
-                margin-top: -52px;
+                left: 50%;
+                transform: translateX(-50%);
                 width: max-content;
                 display: flex;
                 flex-direction: row;
-                gap: 8px;
+                gap: 12px;
                 z-index: 10;
                 opacity: 0;
                 transition: opacity 0.2s ease-in-out;
                 pointer-events: none;
+                margin-top: -52px;
+                margin-bottom: 16px;
             }
             .bg-code-nav-disabled .bg-code-nav {
                 display: none !important;
@@ -293,27 +291,35 @@ function injectUIFixes() {
                 display: none !important;
             }
             .bg-code-nav-btn {
-                background: var(--gem-sys-color--surface-container-high, #2b2930);
+                background: var(--gem-sys-color--surface-container-highest, #36343b);
                 color: var(--gem-sys-color--on-surface, #e3e2e6);
                 border: 1px solid var(--gem-sys-color--outline-variant, #44474e);
                 border-radius: 50%;
                 width: 36px;
                 height: 36px;
-                display: flex;
+                display: inline-flex;
                 align-items: center;
                 justify-content: center;
+                padding: 0;
                 cursor: pointer;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+                box-shadow: 0 4px 10px rgba(0,0,0,0.15);
                 transition: background 0.2s, transform 0.1s;
                 pointer-events: auto;
             }
+            .bg-code-nav-btn .google-symbols {
+                margin: 0 !important;
+                display: block !important;
+                font-size: 24px;
+                line-height: 1;
+            }
             .bg-code-nav-btn:hover {
-                background: var(--gem-sys-color--surface-container-highest, #36343b);
+                background: var(--gem-sys-color--surface-variant, #44474e);
                 transform: scale(1.05);
             }
             .bg-code-nav-btn:active {
                 transform: scale(0.95);
             }
+            
             .edit-button-area button.cancel-button .mdc-button__label {
                 color: var(--gem-sys-color--primary) !important;
             }
@@ -322,6 +328,21 @@ function injectUIFixes() {
             }
             .edit-button-area button.update-button:not(:disabled) .mdc-button__label {
                 color: var(--gem-sys-color--on-primary) !important;
+            }
+            
+            /* --- CORREÇÃO DO ÍCONE NATIVO DE COPIAR --- */
+            .code-block-decoration .buttons button.mdc-icon-button {
+                width: 32px !important;
+                height: 32px !important;
+                padding: 0 !important; 
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+            .code-block-decoration .buttons button.mdc-icon-button mat-icon,
+            .code-block-decoration .buttons button.mdc-icon-button .google-symbols {
+                margin: 0 !important;
+                display: block !important;
             }
         `;
         document.head.appendChild(style);
