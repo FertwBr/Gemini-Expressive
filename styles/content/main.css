@@ -43,245 +43,245 @@ body.bg-headers-disabled .bg-lang-name > .google-symbols {
     display: none !important;
 }
 
-body,
-bard-sidenav-content,
-.desktop-ogb-buffer,
-.content-wrapper,
-.main-content,
-.content-container,
-chat-window,
-chat-window-content,
-.chat-history-scroll-container,
-infinite-scroller.chat-history,
-.top-bar-actions,
-.announcement-banner-container,
-chat-app-banners {
+body.bg-dynamic-theme-enabled,
+body.bg-dynamic-theme-enabled bard-sidenav-content,
+body.bg-dynamic-theme-enabled .desktop-ogb-buffer,
+body.bg-dynamic-theme-enabled .content-wrapper,
+body.bg-dynamic-theme-enabled .main-content,
+body.bg-dynamic-theme-enabled .content-container,
+body.bg-dynamic-theme-enabled chat-window,
+body.bg-dynamic-theme-enabled chat-window-content,
+body.bg-dynamic-theme-enabled .chat-history-scroll-container,
+body.bg-dynamic-theme-enabled infinite-scroller.chat-history,
+body.bg-dynamic-theme-enabled .top-bar-actions,
+body.bg-dynamic-theme-enabled .announcement-banner-container,
+body.bg-dynamic-theme-enabled chat-app-banners {
     background: var(--bg-sys-color-surface) !important;
     color: var(--bg-sys-color-on-surface) !important;
 }
 
-.top-bar-actions .left-section,
-.top-bar-actions .center-section,
-.top-bar-actions .right-section,
-.conversation-title-container {
+body.bg-dynamic-theme-enabled .top-bar-actions .left-section,
+body.bg-dynamic-theme-enabled .top-bar-actions .center-section,
+body.bg-dynamic-theme-enabled .top-bar-actions .right-section,
+body.bg-dynamic-theme-enabled .conversation-title-container {
     background: transparent !important;
 }
 
-.gds-title-m,
-.conversation-title-column span {
+body.bg-dynamic-theme-enabled .gds-title-m,
+body.bg-dynamic-theme-enabled .conversation-title-column span {
     color: var(--bg-sys-color-on-surface) !important;
 }
 
-bard-sidenav,
-bard-sidenav .sidenav-with-history-container,
-bard-sidenav div.chat-history,
-bard-sidenav .chat-history-list,
-bard-sidenav .gems-list-container,
-bard-sidenav bot-list,
-bard-sidenav conversations-list,
-bard-sidenav .conversations-container,
-bard-sidenav .side-nav-entry-container,
-bard-sidenav .overflow-container {
+body.bg-dynamic-theme-enabled bard-sidenav,
+body.bg-dynamic-theme-enabled bard-sidenav .sidenav-with-history-container,
+body.bg-dynamic-theme-enabled bard-sidenav div.chat-history,
+body.bg-dynamic-theme-enabled bard-sidenav .chat-history-list,
+body.bg-dynamic-theme-enabled bard-sidenav .gems-list-container,
+body.bg-dynamic-theme-enabled bard-sidenav bot-list,
+body.bg-dynamic-theme-enabled bard-sidenav conversations-list,
+body.bg-dynamic-theme-enabled bard-sidenav .conversations-container,
+body.bg-dynamic-theme-enabled bard-sidenav .side-nav-entry-container,
+body.bg-dynamic-theme-enabled bard-sidenav .overflow-container {
     background: var(--bg-sys-color-surface-container-high) !important;
 }
 
-bard-sidenav .chat-history-list .top-gradient,
-bard-sidenav .top-gradient {
+body.bg-dynamic-theme-enabled bard-sidenav .chat-history-list .top-gradient,
+body.bg-dynamic-theme-enabled bard-sidenav .top-gradient {
     background: linear-gradient(to bottom, var(--bg-sys-color-surface-container-high), transparent) !important;
 }
 
-bard-sidenav .chat-history-list .bottom-gradient,
-bard-sidenav .bottom-gradient {
+body.bg-dynamic-theme-enabled bard-sidenav .chat-history-list .bottom-gradient,
+body.bg-dynamic-theme-enabled bard-sidenav .bottom-gradient {
     background: linear-gradient(to top, var(--bg-sys-color-surface-container-high), transparent) !important;
 }
 
-infinite-scroller.chat-history .top-gradient {
+body.bg-dynamic-theme-enabled infinite-scroller.chat-history .top-gradient {
     background: linear-gradient(to bottom, var(--bg-sys-color-surface), transparent) !important;
 }
 
-infinite-scroller.chat-history .bottom-gradient,
-.bottom-gradient-container .bottom-gradient {
+body.bg-dynamic-theme-enabled infinite-scroller.chat-history .bottom-gradient,
+body.bg-dynamic-theme-enabled .bottom-gradient-container .bottom-gradient {
     background: linear-gradient(to top, var(--bg-sys-color-surface), transparent) !important;
 }
 
-.mat-mdc-list-item,
-.side-nav-entry-button,
-.conversation,
-.mdc-list-item__primary-text,
-.gds-label-l,
-.conversation-title {
+body.bg-dynamic-theme-enabled .mat-mdc-list-item,
+body.bg-dynamic-theme-enabled .side-nav-entry-button,
+body.bg-dynamic-theme-enabled .conversation,
+body.bg-dynamic-theme-enabled .mdc-list-item__primary-text,
+body.bg-dynamic-theme-enabled .gds-label-l,
+body.bg-dynamic-theme-enabled .conversation-title {
     color: var(--bg-sys-color-on-surface) !important;
 }
 
-.mat-mdc-list-item:hover,
-.side-nav-entry-button:hover,
-.conversation:hover,
-.mat-mdc-menu-item:hover {
+body.bg-dynamic-theme-enabled .mat-mdc-list-item:hover,
+body.bg-dynamic-theme-enabled .side-nav-entry-button:hover,
+body.bg-dynamic-theme-enabled .conversation:hover,
+body.bg-dynamic-theme-enabled .mat-mdc-menu-item:hover {
     background-color: var(--bg-sys-color-surface-variant) !important;
 }
 
-.conversation.selected,
-.mat-mdc-list-item.selected {
+body.bg-dynamic-theme-enabled .conversation.selected,
+body.bg-dynamic-theme-enabled .mat-mdc-list-item.selected {
     background: var(--bg-sys-color-secondary-container) !important;
     color: var(--bg-sys-color-on-secondary-container) !important;
 }
 
-.conversation.selected .conversation-title,
-.conversation.selected .gds-label-l,
-.conversation.selected .mat-icon {
+body.bg-dynamic-theme-enabled .conversation.selected .conversation-title,
+body.bg-dynamic-theme-enabled .conversation.selected .gds-label-l,
+body.bg-dynamic-theme-enabled .conversation.selected .mat-icon {
     color: var(--bg-sys-color-on-secondary-container) !important;
 }
 
-input-container,
-.input-gradient,
-.input-area-container,
-input-area-v2,
-.input-area,
-.text-input-field-main-area,
-.leading-actions-wrapper,
-.trailing-actions-wrapper,
-hallucination-disclaimer,
-condensed-tos-disclaimer,
-.capabilities-disclaimer,
-.bottom-gradient-container,
-.restart-chat-button-scroll-placeholder {
+body.bg-dynamic-theme-enabled input-container,
+body.bg-dynamic-theme-enabled .input-gradient,
+body.bg-dynamic-theme-enabled .input-area-container,
+body.bg-dynamic-theme-enabled input-area-v2,
+body.bg-dynamic-theme-enabled .input-area,
+body.bg-dynamic-theme-enabled .text-input-field-main-area,
+body.bg-dynamic-theme-enabled .leading-actions-wrapper,
+body.bg-dynamic-theme-enabled .trailing-actions-wrapper,
+body.bg-dynamic-theme-enabled hallucination-disclaimer,
+body.bg-dynamic-theme-enabled condensed-tos-disclaimer,
+body.bg-dynamic-theme-enabled .capabilities-disclaimer,
+body.bg-dynamic-theme-enabled .bottom-gradient-container,
+body.bg-dynamic-theme-enabled .restart-chat-button-scroll-placeholder {
     background: transparent !important;
     box-shadow: none !important;
 }
 
-hallucination-disclaimer p,
-.capabilities-disclaimer,
-.capabilities-disclaimer span {
+body.bg-dynamic-theme-enabled hallucination-disclaimer p,
+body.bg-dynamic-theme-enabled .capabilities-disclaimer,
+body.bg-dynamic-theme-enabled .capabilities-disclaimer span {
     color: var(--bg-sys-color-on-surface-variant) !important;
 }
 
-.text-input-field {
+body.bg-dynamic-theme-enabled .text-input-field {
     background: var(--bg-sys-color-surface) !important;
     border: 1px solid var(--bg-sys-color-outline-variant) !important;
     border-radius: 28px !important;
 }
 
 @media (prefers-color-scheme: dark) {
-    .text-input-field {
+    body.bg-dynamic-theme-enabled .text-input-field {
         background: var(--bg-sys-color-surface-container-highest) !important;
         border-color: transparent !important;
     }
 }
 
-html.dark-theme .text-input-field {
+html.dark-theme body.bg-dynamic-theme-enabled .text-input-field {
     background: var(--bg-sys-color-surface-container-highest) !important;
     border-color: transparent !important;
 }
 
-html.light-theme .text-input-field {
+html.light-theme body.bg-dynamic-theme-enabled .text-input-field {
     background: var(--bg-sys-color-surface) !important;
     border: 1px solid var(--bg-sys-color-outline-variant) !important;
 }
 
-.text-input-field_textarea-wrapper,
-.search-surface {
+body.bg-dynamic-theme-enabled .text-input-field_textarea-wrapper,
+body.bg-dynamic-theme-enabled .search-surface {
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
 }
 
-rich-textarea,
-.ql-editor,
-.ql-container {
+body.bg-dynamic-theme-enabled rich-textarea,
+body.bg-dynamic-theme-enabled .ql-editor,
+body.bg-dynamic-theme-enabled .ql-container {
     background: transparent !important;
 }
 
-.ql-editor.textarea,
-.ql-editor.textarea p {
+body.bg-dynamic-theme-enabled .ql-editor.textarea,
+body.bg-dynamic-theme-enabled .ql-editor.textarea p {
     color: var(--bg-sys-color-on-surface) !important;
 }
 
-.ql-editor.ql-blank::before,
-[data-placeholder]::before {
+body.bg-dynamic-theme-enabled .ql-editor.ql-blank::before,
+body.bg-dynamic-theme-enabled [data-placeholder]::before {
     color: var(--bg-sys-color-on-surface-variant) !important;
 }
 
-.mdc-icon-button,
-.mdc-button,
-.mat-icon,
-.toolbox-drawer-button-label-icon-text {
+body.bg-dynamic-theme-enabled .mdc-icon-button,
+body.bg-dynamic-theme-enabled .mdc-button,
+body.bg-dynamic-theme-enabled .mat-icon,
+body.bg-dynamic-theme-enabled .toolbox-drawer-button-label-icon-text {
     color: var(--bg-sys-color-on-surface-variant) !important;
 }
 
-.send-button:not([disabled]) .mat-icon,
-.send-button[aria-disabled="false"] .mat-icon {
+body.bg-dynamic-theme-enabled .send-button:not([disabled]) .mat-icon,
+body.bg-dynamic-theme-enabled .send-button[aria-disabled="false"] .mat-icon {
     color: var(--bg-sys-color-primary) !important;
 }
 
-.input-area-switch,
-.toolbox-drawer-button,
-.temp-chat-button {
+body.bg-dynamic-theme-enabled .input-area-switch,
+body.bg-dynamic-theme-enabled .toolbox-drawer-button,
+body.bg-dynamic-theme-enabled .temp-chat-button {
     background: transparent !important;
     color: var(--bg-sys-color-on-surface-variant) !important;
     box-shadow: none !important;
 }
 
-.input-area-switch:hover,
-.toolbox-drawer-button:hover,
-.temp-chat-button:hover {
+body.bg-dynamic-theme-enabled .input-area-switch:hover,
+body.bg-dynamic-theme-enabled .toolbox-drawer-button:hover,
+body.bg-dynamic-theme-enabled .temp-chat-button:hover {
     background: var(--bg-sys-color-surface-variant) !important;
 }
 
-.mat-mdc-button-touch-target,
-.mat-mdc-button-ripple {
+body.bg-dynamic-theme-enabled .mat-mdc-button-touch-target,
+body.bg-dynamic-theme-enabled .mat-mdc-button-ripple {
     background: transparent !important;
 }
 
-.mat-mdc-menu-panel,
-.mat-mdc-menu-content {
+body.bg-dynamic-theme-enabled .mat-mdc-menu-panel,
+body.bg-dynamic-theme-enabled .mat-mdc-menu-content {
     background: var(--bg-sys-color-surface-container-highest) !important;
     border: 1px solid var(--bg-sys-color-outline-variant) !important;
     border-radius: 12px !important;
 }
 
-.mat-mdc-menu-item .mat-mdc-menu-item-text {
+body.bg-dynamic-theme-enabled .mat-mdc-menu-item .mat-mdc-menu-item-text {
     color: var(--bg-sys-color-on-surface) !important;
 }
 
-#create-new-button-inline,
-.bot-creation-button {
+body.bg-dynamic-theme-enabled #create-new-button-inline,
+body.bg-dynamic-theme-enabled .bot-creation-button {
     background: var(--bg-sys-color-primary) !important;
     color: var(--bg-sys-color-on-primary) !important;
 }
 
-#create-new-button-inline span,
-#create-new-button-inline .g-icon,
-.bot-creation-button span,
-.bot-creation-button .mat-icon {
+body.bg-dynamic-theme-enabled #create-new-button-inline span,
+body.bg-dynamic-theme-enabled #create-new-button-inline .g-icon,
+body.bg-dynamic-theme-enabled .bot-creation-button span,
+body.bg-dynamic-theme-enabled .bot-creation-button .mat-icon {
     color: var(--bg-sys-color-on-primary) !important;
 }
 
-.bot-logo-text,
-.bot-logo-deleted {
+body.bg-dynamic-theme-enabled .bot-logo-text,
+body.bg-dynamic-theme-enabled .bot-logo-deleted {
     background-color: var(--bg-sys-color-secondary-container) !important;
     color: var(--bg-sys-color-on-secondary-container) !important;
     border-color: var(--bg-sys-color-secondary-container) !important;
 }
 
-.bot-logo-text mat-icon,
-.bot-logo-deleted mat-icon {
+body.bg-dynamic-theme-enabled .bot-logo-text mat-icon,
+body.bg-dynamic-theme-enabled .bot-logo-deleted mat-icon {
     color: var(--bg-sys-color-on-secondary-container) !important;
 }
 
-.opal-banner {
+body.bg-dynamic-theme-enabled .opal-banner {
     --left-color: var(--bg-sys-color-secondary-container) !important;
     --right-color: var(--bg-sys-color-surface-variant) !important;
 }
 
-.banner-emphasis {
+body.bg-dynamic-theme-enabled .banner-emphasis {
     color: var(--bg-sys-color-primary) !important;
 }
 
-#show-more-button {
+body.bg-dynamic-theme-enabled #show-more-button {
     color: var(--bg-sys-color-primary) !important;
     background: transparent !important;
 }
 
-#show-more-button .g-icon {
+body.bg-dynamic-theme-enabled #show-more-button .g-icon {
     background-color: var(--bg-sys-color-primary) !important;
 }

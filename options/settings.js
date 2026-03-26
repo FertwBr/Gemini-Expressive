@@ -1,3 +1,4 @@
+// settings.js
 /**
  * Maps a language code to the appropriate flag country code using timezone heuristics.
  * @param {string} languageCode The broad language code.
@@ -60,66 +61,6 @@ function applyLocalizations() {
         const key = el.getAttribute('data-i18n-title');
         el.setAttribute('title', getBgString(key));
     });
-}
-
-/**
- * Removes dynamically injected CSS variables when dynamic color is disabled.
- */
-function removeDynamicTheme() {
-    const root = document.documentElement;
-    const body = document.body;
-
-    const props = [
-        'primary', 'on-primary', 'primary-container', 'on-primary-container',
-        'secondary', 'on-secondary', 'secondary-container', 'on-secondary-container',
-        'tertiary', 'on-tertiary', 'tertiary-container', 'on-tertiary-container',
-        'background', 'on-background', 'surface', 'on-surface',
-        'surface-variant', 'on-surface-variant', 'outline', 'outline-variant',
-        'surface-container-lowest', 'surface-container-low', 'surface-container',
-        'surface-container-high', 'surface-container-highest'
-    ];
-
-    props.forEach(token => {
-        root.style.removeProperty(`--bg-sys-color-${token}`);
-        root.style.removeProperty(`--bg-sys-color-${token}-rgb`);
-        root.style.removeProperty(`--gem-sys-color--${token}`);
-        root.style.removeProperty(`--md-sys-color-${token}`);
-        root.style.removeProperty(`--sys-color--${token}`);
-        if (body) {
-            body.style.removeProperty(`--gem-sys-color--${token}`);
-            body.style.removeProperty(`--md-sys-color-${token}`);
-            body.style.removeProperty(`--sys-color--${token}`);
-        }
-    });
-
-    if (body) {
-        body.style.removeProperty("--bard-color-synthetic--chat-window-surface");
-        body.style.removeProperty("--bard-color-synthetic--mat-card-background");
-        body.style.removeProperty("--bard-color-synthetic--chat-window-surface-container");
-        body.style.removeProperty("--bard-color-synthetic--chat-window-surface-container-high");
-        body.style.removeProperty("--bard-color-synthetic--chat-window-surface-container-highest");
-        body.style.removeProperty("--bard-color-sidenav-background-desktop");
-        body.style.removeProperty("--bard-color-sidenav-background-mobile");
-    }
-
-    const metaThemeColor = document.querySelector("meta[name=theme-color]");
-    if (metaThemeColor) {
-        metaThemeColor.removeAttribute("content");
-    }
-
-    if (typeof selectedThemeMode !== 'undefined') {
-        if (selectedThemeMode === 'dark') {
-            root.classList.add('dark-theme');
-            root.classList.remove('light-theme');
-            root.style.colorScheme = 'dark';
-        } else if (selectedThemeMode === 'light') {
-            root.classList.add('light-theme');
-            root.classList.remove('dark-theme');
-            root.style.colorScheme = 'light';
-        } else {
-            root.style.colorScheme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
-        }
-    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -296,8 +237,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (typeof applyMaterialTheme === 'function' && dynamicColorSwitch.checked) {
             applyMaterialTheme(colorPicker.value, selectedThemeMode);
-        } else if (!dynamicColorSwitch.checked) {
-            removeDynamicTheme();
         }
     });
 
@@ -333,7 +272,6 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 colorPickerRow.style.opacity = '0.5';
                 colorPickerRow.style.pointerEvents = 'none';
-                removeDynamicTheme();
             }
 
             showToast(getBgString('statusSaved'));

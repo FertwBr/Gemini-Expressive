@@ -16,13 +16,18 @@ let extensionSettings = {
     headersEnabled: true,
     codeNavEnabled: true,
     themeMode: 'auto',
-    themeColor: '#0b57d0'
+    themeColor: '#0b57d0',
+    dynamicColorEnabled: true
 };
 
 /**
  * Applies dynamic themes specifically via the bundled or exposed theme utilities.
  */
 function attemptThemeApplication() {
+    if (!extensionSettings.dynamicColorEnabled) {
+        return;
+    }
+
     if (typeof applyMaterialTheme === 'function' && !isApplyingTheme) {
         isApplyingTheme = true;
         applyMaterialTheme(extensionSettings.themeColor, extensionSettings.themeMode);
@@ -41,6 +46,7 @@ function applyFeatureToggles() {
         document.body.classList.toggle('bg-collapse-disabled', !extensionSettings.collapseEnabled);
         document.body.classList.toggle('bg-headers-disabled', !extensionSettings.headersEnabled);
         document.body.classList.toggle('bg-code-nav-disabled', !extensionSettings.codeNavEnabled);
+        document.body.classList.toggle('bg-dynamic-theme-enabled', extensionSettings.dynamicColorEnabled === true);
     }
 }
 
@@ -175,28 +181,12 @@ const observer = new MutationObserver((mutations) => {
     }, 800);
 });
 
-function injectUIFixes() {
+function injectUIFixes(dynamicColorEnabled) {
     if (!document.getElementById('bg-ui-fixes')) {
         const style = document.createElement('style');
         style.id = 'bg-ui-fixes';
-        style.textContent = `
-            .disclaimer-container .main-text,
-            .disclaimer-container .content-container,
-            .disclaimer-container.promo .main-text {
-                background: transparent !important;
-                color: var(--gem-sys-color--on-surface-variant) !important;
-            }
-            .disclaimer-container .action-button-wrapper button,
-            .disclaimer-container button.action-button {
-                background: transparent !important;
-                background-color: transparent !important;
-                color: var(--gem-sys-color--primary) !important;
-                box-shadow: none !important;
-            }
-            .disclaimer-container .action-button-wrapper button .mdc-button__label,
-            .disclaimer-container button.action-button .mdc-button__label {
-                color: var(--gem-sys-color--primary) !important;
-            }
+
+        let cssContent = `
             code-block, .code-block, .code-container {
                 max-width: 100% !important;
             }
@@ -260,6 +250,27 @@ function injectUIFixes() {
             .bg-code-nav-btn:active {
                 transform: scale(0.95);
             }
+        `;
+
+        if (dynamicColorEnabled) {
+            cssContent += `
+            .disclaimer-container .main-text,
+            .disclaimer-container .content-container,
+            .disclaimer-container.promo .main-text {
+                background: transparent !important;
+                color: var(--gem-sys-color--on-surface-variant) !important;
+            }
+            .disclaimer-container .action-button-wrapper button,
+            .disclaimer-container button.action-button {
+                background: transparent !important;
+                background-color: transparent !important;
+                color: var(--gem-sys-color--primary) !important;
+                box-shadow: none !important;
+            }
+            .disclaimer-container .action-button-wrapper button .mdc-button__label,
+            .disclaimer-container button.action-button .mdc-button__label {
+                color: var(--gem-sys-color--primary) !important;
+            }
             .edit-button-area button.cancel-button .mdc-button__label {
                 color: var(--gem-sys-color--primary) !important;
             }
@@ -269,7 +280,10 @@ function injectUIFixes() {
             .edit-button-area button.update-button:not(:disabled) .mdc-button__label {
                 color: var(--gem-sys-color--on-primary) !important;
             }
-        `;
+            `;
+        }
+
+        style.textContent = cssContent;
         document.head.appendChild(style);
     }
 }
@@ -278,9 +292,7 @@ function injectUIFixes() {
  * Initializes the extension by fetching settings, starting the observer, and listening for changes.
  */
 function initializeExtension() {
-    injectUIFixes();
-
-    chrome.storage.sync.get(['timelineEnabled', 'collapseEnabled', 'codeNavEnabled', 'headersEnabled', 'themeMode', 'themeColor'], (items) => {
+    chrome.storage.sync.get(['timelineEnabled', 'collapseEnabled', 'codeNavEnabled', 'headersEnabled', 'themeMode', 'themeColor', 'dynamicColorEnabled'], (items) => {
         if (items.timelineEnabled !== undefined) {
             extensionSettings.timelineEnabled = items.timelineEnabled;
         }
@@ -299,6 +311,11 @@ function initializeExtension() {
         if (items.themeColor !== undefined) {
             extensionSettings.themeColor = items.themeColor;
         }
+        if (items.dynamicColorEnabled !== undefined) {
+            extensionSettings.dynamicColorEnabled = items.dynamicColorEnabled;
+        }
+
+        injectUIFixes(extensionSettings.dynamicColorEnabled);
 
         applyFeatureToggles();
         attemptThemeApplication();
@@ -328,9 +345,14 @@ function initializeExtension() {
 
     chrome.storage.onChanged.addListener((changes, namespace) => {
         if (namespace === 'sync') {
+            if (changes.dynamicColorEnabled) {
+                extensionSettings.dynamicColorEnabled = changes.dynamicColorEnabled.newValue;
+            }
             if (changes.themeMode) {
                 extensionSettings.themeMode = changes.themeMode.newValue;
-                syncNativeTheme(extensionSettings.themeMode);
+                if (extensionSettings.dynamicColorEnabled) {
+                    syncNativeTheme(extensionSettings.themeMode);
+                }
             }
             if (changes.themeColor) {
                 extensionSettings.themeColor = changes.themeColor.newValue;
