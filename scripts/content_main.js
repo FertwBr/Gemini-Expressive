@@ -16,18 +16,13 @@ let extensionSettings = {
     headersEnabled: true,
     codeNavEnabled: true,
     themeMode: 'auto',
-    themeColor: '#0b57d0',
-    dynamicColorEnabled: true
+    themeColor: '#0b57d0'
 };
 
 /**
  * Applies dynamic themes specifically via the bundled or exposed theme utilities.
  */
 function attemptThemeApplication() {
-    if (!extensionSettings.dynamicColorEnabled) {
-        return;
-    }
-
     if (typeof applyMaterialTheme === 'function' && !isApplyingTheme) {
         isApplyingTheme = true;
         applyMaterialTheme(extensionSettings.themeColor, extensionSettings.themeMode);
@@ -46,7 +41,6 @@ function applyFeatureToggles() {
         document.body.classList.toggle('bg-collapse-disabled', !extensionSettings.collapseEnabled);
         document.body.classList.toggle('bg-headers-disabled', !extensionSettings.headersEnabled);
         document.body.classList.toggle('bg-code-nav-disabled', !extensionSettings.codeNavEnabled);
-        document.body.classList.toggle('bg-dynamic-theme-enabled', extensionSettings.dynamicColorEnabled === true);
     }
 }
 
@@ -149,6 +143,54 @@ function syncNativeTheme(targetMode) {
 }
 
 /**
+ * Injects a settings shortcut button into the Gemini sidebar natively.
+ */
+function injectSettingsShortcut() {
+    if (document.getElementById('bg-expressive-settings-shortcut')) {
+        return;
+    }
+
+    const nativeSettingsBtn = document.querySelector('side-nav-action-button[data-test-id="settings-and-help-button"]');
+
+    if (nativeSettingsBtn) {
+        // Clonamos o botão original com toda a estrutura
+        const customWrapper = nativeSettingsBtn.cloneNode(true);
+        customWrapper.id = 'bg-expressive-settings-shortcut';
+        customWrapper.removeAttribute('data-test-id');
+
+        const button = customWrapper.querySelector('button');
+        if (button) {
+            button.removeAttribute('aria-controls');
+            button.removeAttribute('aria-expanded');
+            button.removeAttribute('aria-haspopup');
+            button.removeAttribute('data-test-id');
+
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                chrome.runtime.sendMessage({action: 'openSettings'});
+            });
+        }
+
+        // Modificamos apenas os atributos necessários para o CSS do Angular puxar o ícone "palette"
+        const icon = customWrapper.querySelector('mat-icon');
+        if (icon) {
+            icon.setAttribute('data-mat-icon-name', 'palette');
+            icon.setAttribute('fonticon', 'palette');
+            icon.setAttribute('fontIcon', 'palette');
+            icon.textContent = 'palette'; // Garante que a ligature por texto funcione como fallback
+        }
+
+        const textSpan = customWrapper.querySelector('.mdc-list-item__primary-text span');
+        if (textSpan) {
+            textSpan.textContent = 'Expressive';
+        }
+
+        nativeSettingsBtn.parentNode.insertBefore(customWrapper, nativeSettingsBtn);
+    }
+}
+
+/**
  * Main observer to track DOM changes and trigger necessary UI updates based on settings.
  * @type {MutationObserver}
  */
@@ -178,15 +220,37 @@ const observer = new MutationObserver((mutations) => {
         if (extensionSettings.timelineEnabled && typeof updateTimeline === 'function') {
             updateTimeline();
         }
+
+        // Injeta o atalho sempre que o menu for renderizado
+        injectSettingsShortcut();
     }, 800);
 });
 
-function injectUIFixes(dynamicColorEnabled) {
+/**
+ * Injects necessary UI CSS fixes to prevent layout breakages.
+ */
+function injectUIFixes() {
     if (!document.getElementById('bg-ui-fixes')) {
         const style = document.createElement('style');
         style.id = 'bg-ui-fixes';
-
-        let cssContent = `
+        style.textContent = `
+            .disclaimer-container .main-text,
+            .disclaimer-container .content-container,
+            .disclaimer-container.promo .main-text {
+                background: transparent !important;
+                color: var(--gem-sys-color--on-surface-variant) !important;
+            }
+            .disclaimer-container .action-button-wrapper button,
+            .disclaimer-container button.action-button {
+                background: transparent !important;
+                background-color: transparent !important;
+                color: var(--gem-sys-color--primary) !important;
+                box-shadow: none !important;
+            }
+            .disclaimer-container .action-button-wrapper button .mdc-button__label,
+            .disclaimer-container button.action-button .mdc-button__label {
+                color: var(--gem-sys-color--primary) !important;
+            }
             code-block, .code-block, .code-container {
                 max-width: 100% !important;
             }
@@ -250,27 +314,6 @@ function injectUIFixes(dynamicColorEnabled) {
             .bg-code-nav-btn:active {
                 transform: scale(0.95);
             }
-        `;
-
-        if (dynamicColorEnabled) {
-            cssContent += `
-            .disclaimer-container .main-text,
-            .disclaimer-container .content-container,
-            .disclaimer-container.promo .main-text {
-                background: transparent !important;
-                color: var(--gem-sys-color--on-surface-variant) !important;
-            }
-            .disclaimer-container .action-button-wrapper button,
-            .disclaimer-container button.action-button {
-                background: transparent !important;
-                background-color: transparent !important;
-                color: var(--gem-sys-color--primary) !important;
-                box-shadow: none !important;
-            }
-            .disclaimer-container .action-button-wrapper button .mdc-button__label,
-            .disclaimer-container button.action-button .mdc-button__label {
-                color: var(--gem-sys-color--primary) !important;
-            }
             .edit-button-area button.cancel-button .mdc-button__label {
                 color: var(--gem-sys-color--primary) !important;
             }
@@ -280,10 +323,7 @@ function injectUIFixes(dynamicColorEnabled) {
             .edit-button-area button.update-button:not(:disabled) .mdc-button__label {
                 color: var(--gem-sys-color--on-primary) !important;
             }
-            `;
-        }
-
-        style.textContent = cssContent;
+        `;
         document.head.appendChild(style);
     }
 }
@@ -292,7 +332,9 @@ function injectUIFixes(dynamicColorEnabled) {
  * Initializes the extension by fetching settings, starting the observer, and listening for changes.
  */
 function initializeExtension() {
-    chrome.storage.sync.get(['timelineEnabled', 'collapseEnabled', 'codeNavEnabled', 'headersEnabled', 'themeMode', 'themeColor', 'dynamicColorEnabled'], (items) => {
+    injectUIFixes();
+
+    chrome.storage.sync.get(['timelineEnabled', 'collapseEnabled', 'codeNavEnabled', 'headersEnabled', 'themeMode', 'themeColor'], (items) => {
         if (items.timelineEnabled !== undefined) {
             extensionSettings.timelineEnabled = items.timelineEnabled;
         }
@@ -311,11 +353,6 @@ function initializeExtension() {
         if (items.themeColor !== undefined) {
             extensionSettings.themeColor = items.themeColor;
         }
-        if (items.dynamicColorEnabled !== undefined) {
-            extensionSettings.dynamicColorEnabled = items.dynamicColorEnabled;
-        }
-
-        injectUIFixes(extensionSettings.dynamicColorEnabled);
 
         applyFeatureToggles();
         attemptThemeApplication();
@@ -345,14 +382,9 @@ function initializeExtension() {
 
     chrome.storage.onChanged.addListener((changes, namespace) => {
         if (namespace === 'sync') {
-            if (changes.dynamicColorEnabled) {
-                extensionSettings.dynamicColorEnabled = changes.dynamicColorEnabled.newValue;
-            }
             if (changes.themeMode) {
                 extensionSettings.themeMode = changes.themeMode.newValue;
-                if (extensionSettings.dynamicColorEnabled) {
-                    syncNativeTheme(extensionSettings.themeMode);
-                }
+                syncNativeTheme(extensionSettings.themeMode);
             }
             if (changes.themeColor) {
                 extensionSettings.themeColor = changes.themeColor.newValue;
