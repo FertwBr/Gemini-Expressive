@@ -1,8 +1,28 @@
+/* styles/settings/components.css */
 .viewer-sidebar-card {
     padding: 0;
     background: transparent;
     border-radius: 0;
     border: none;
+}
+
+.settings-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0 32px;
+    width: 100%;
+}
+
+@media (min-width: 800px) {
+    .settings-grid {
+        grid-template-columns: 1fr 1fr;
+        align-items: start;
+    }
+}
+
+.settings-section {
+    display: flex;
+    flex-direction: column;
 }
 
 .settings-section-header {
@@ -16,6 +36,16 @@
 
 .settings-section-header:first-child {
     margin-top: 0;
+}
+
+@media (min-width: 800px) {
+    .settings-grid .settings-section:first-child .settings-section-header {
+        margin-top: 0;
+    }
+
+    .settings-grid .settings-section .settings-section-header {
+        margin-top: 0;
+    }
 }
 
 .setting-row {
