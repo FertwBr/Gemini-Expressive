@@ -1,4 +1,3 @@
-// settings.js
 /**
  * Maps a language code to the appropriate flag country code using timezone heuristics.
  * @param {string} languageCode The broad language code.
@@ -106,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
         clearTimeout(toastTimeout);
         toastTimeout = setTimeout(() => {
             toast.classList.remove('show');
-        }, 2000);
+        }, 5000);
     }
 
     /**
@@ -274,7 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 colorPickerRow.style.pointerEvents = 'none';
             }
 
-            showToast(getBgString('statusSaved'));
+            showToast(getBgString('statusSavedRefresh'));
         });
     }
 
