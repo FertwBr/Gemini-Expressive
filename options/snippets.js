@@ -407,4 +407,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     loadSnippets();
+
+    const backToSettingsBtn = document.querySelector('a[href="settings.html"]');
+    if (backToSettingsBtn) {
+        backToSettingsBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.querySelector('.page-wrapper').classList.add('page-transition-exit');
+            setTimeout(() => {
+                window.location.href = 'settings.html';
+            }, 150);
+        });
+    }
 });

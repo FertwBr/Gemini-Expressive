@@ -353,4 +353,15 @@ document.addEventListener('DOMContentLoaded', () => {
             saveSettings(false);
         });
     });
+
+    const manageSnippetsBtn = document.querySelector('a[href="snippets.html"]');
+    if (manageSnippetsBtn) {
+        manageSnippetsBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.querySelector('.page-wrapper').classList.add('page-transition-exit');
+            setTimeout(() => {
+                window.location.href = 'snippets.html';
+            }, 150);
+        });
+    }
 });
