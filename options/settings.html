@@ -31,18 +31,34 @@
 
                     <div class="setting-row">
                         <div class="setting-info">
-                            <label for="snippetPrefix" class="input-label" data-i18n="snippetPrefixLabel">Snippet
-                                Prefix</label>
+                            <label class="input-label" data-i18n="snippetPrefixLabel">Snippet Prefix</label>
                             <span class="setting-description" data-i18n="snippetPrefixDesc">Choose the symbol to trigger your snippets.</span>
                         </div>
-                        <div class="custom-select-container">
-                            <select id="snippetPrefix" class="setting-dropdown-btn"
-                                    style="appearance: none; -webkit-appearance: none; width: 100%;">
-                                <option value="/">/ (Slash)</option>
-                                <option value="!">! (Exclamation)</option>
-                                <option value="#"># (Hash)</option>
-                            </select>
-                            <span class="material-symbols-outlined select-icon">expand_more</span>
+                        <div class="setting-dropdown-wrapper">
+                            <button id="prefixDropdownBtn" class="setting-dropdown-btn">
+                                <span id="currentPrefixLabel">/ (Slash)</span>
+                                <span class="material-symbols-outlined setting-dropdown-icon">expand_more</span>
+                            </button>
+                            <div id="prefixDropdownMenu" class="setting-dropdown-menu">
+                                <button class="setting-menu-item" data-prefix="/">
+                                    <div class="setting-menu-item-leading"><span
+                                            style="font-family: monospace; font-size: 16px; font-weight: bold;">/</span>
+                                    </div>
+                                    <span>Slash</span>
+                                </button>
+                                <button class="setting-menu-item" data-prefix="!">
+                                    <div class="setting-menu-item-leading"><span
+                                            style="font-family: monospace; font-size: 16px; font-weight: bold;">!</span>
+                                    </div>
+                                    <span>Exclamation</span>
+                                </button>
+                                <button class="setting-menu-item" data-prefix="#">
+                                    <div class="setting-menu-item-leading"><span
+                                            style="font-family: monospace; font-size: 16px; font-weight: bold;">#</span>
+                                    </div>
+                                    <span>Hash</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
 

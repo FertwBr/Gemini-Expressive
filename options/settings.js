@@ -76,7 +76,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const versionText = document.getElementById('versionText');
     const toast = document.getElementById('toast-notification');
     const toastMessage = document.getElementById('toast-message');
-    const snippetPrefixSelect = document.getElementById('snippetPrefix');
+
+    const prefixDropdownBtn = document.getElementById('prefixDropdownBtn');
+    const prefixDropdownMenu = document.getElementById('prefixDropdownMenu');
+    const currentPrefixLabel = document.getElementById('currentPrefixLabel');
+    const prefixMenuItems = prefixDropdownMenu.querySelectorAll('.setting-menu-item');
+    let selectedPrefix = '/';
 
     if (chrome.runtime && chrome.runtime.getManifest) {
         versionText.textContent = 'v' + chrome.runtime.getManifest().version;
@@ -159,6 +164,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
+    const updatePrefixDropdownVisuals = (prefix) => {
+        prefixMenuItems.forEach(item => {
+            if (item.getAttribute('data-prefix') === prefix) {
+                item.classList.add('active');
+                const spans = item.getElementsByTagName('span');
+                if (spans.length > 1) {
+                    currentPrefixLabel.textContent = prefix + ' (' + spans[1].textContent + ')';
+                }
+            } else {
+                item.classList.remove('active');
+            }
+        });
+    };
+
     /**
      * Updates the dynamic split layout preview for the custom color picker.
      * @param {string} color The hex color to use.
@@ -212,10 +231,11 @@ document.addEventListener('DOMContentLoaded', () => {
         dynamicColorSwitch.checked = items.dynamicColorEnabled !== false;
 
         if (items.snippetPrefix) {
-            snippetPrefixSelect.value = items.snippetPrefix;
+            selectedPrefix = items.snippetPrefix;
         } else {
-            snippetPrefixSelect.value = '/';
+            selectedPrefix = '/';
         }
+        updatePrefixDropdownVisuals(selectedPrefix);
 
         if (!dynamicColorSwitch.checked) {
             colorPickerRow.style.opacity = '0.5';
@@ -261,7 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
             themeColor: colorPicker.value,
             language: selectedLang,
             dynamicColorEnabled: dynamicColorSwitch.checked,
-            snippetPrefix: snippetPrefixSelect.value
+            snippetPrefix: selectedPrefix
         }, () => {
             currentLanguage = selectedLang === 'auto' ? navigator.language.split('-')[0] : selectedLang;
             if (!BG_LOCALES[currentLanguage]) {
@@ -271,6 +291,7 @@ document.addEventListener('DOMContentLoaded', () => {
             applyLocalizations();
             updateDropdownVisuals(selectedLang);
             updateThemeDropdownVisuals(selectedThemeMode);
+            updatePrefixDropdownVisuals(selectedPrefix);
 
             if (dynamicColorSwitch.checked) {
                 colorPickerRow.style.opacity = '1';
@@ -296,7 +317,22 @@ document.addEventListener('DOMContentLoaded', () => {
     codeNavSwitch.addEventListener('change', () => saveSettings(false));
     headersSwitch.addEventListener('change', () => saveSettings(false));
     dynamicColorSwitch.addEventListener('change', () => saveSettings(true));
-    snippetPrefixSelect.addEventListener('change', () => saveSettings(false));
+
+    prefixDropdownBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        prefixDropdownBtn.classList.toggle('open');
+        prefixDropdownMenu.classList.toggle('open');
+    });
+
+    prefixMenuItems.forEach(item => {
+        item.addEventListener('click', () => {
+            selectedPrefix = item.getAttribute('data-prefix');
+            updatePrefixDropdownVisuals(selectedPrefix);
+            prefixDropdownBtn.classList.remove('open');
+            prefixDropdownMenu.classList.remove('open');
+            saveSettings(false);
+        });
+    });
 
     themeDropdownBtn.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -342,6 +378,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!themeDropdownBtn.contains(e.target) && !themeDropdownMenu.contains(e.target)) {
             themeDropdownBtn.classList.remove('open');
             themeDropdownMenu.classList.remove('open');
+        }
+        if (!prefixDropdownBtn.contains(e.target) && !prefixDropdownMenu.contains(e.target)) {
+            prefixDropdownBtn.classList.remove('open');
+            prefixDropdownMenu.classList.remove('open');
         }
     });
 
