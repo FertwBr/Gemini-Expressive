@@ -1,3 +1,4 @@
+// options/snippets.js
 /**
  * Maps a language code to the appropriate flag country code using timezone heuristics.
  * @param {string} languageCode The broad language code.
@@ -217,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
             deleteBtn.style.display = 'inline-flex';
             renderList();
             if (window.innerWidth < 800) {
-                editorCard.scrollIntoView({ behavior: 'smooth' });
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         }
     }
@@ -231,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
         keywordInput.focus();
         renderList();
         if (window.innerWidth < 800) {
-            editorCard.scrollIntoView({ behavior: 'smooth' });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     };
 
@@ -292,8 +293,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     chrome.storage.sync.get(['themeMode', 'themeColor', 'dynamicColorEnabled', 'language'], (items) => {
-        if (items.dynamicColorEnabled !== false && typeof applyMaterialTheme === 'function') {
-            applyMaterialTheme(items.themeColor || '#0b57d0', items.themeMode || 'auto');
+        if (typeof applyMaterialTheme === 'function') {
+            const colorToApply = items.dynamicColorEnabled !== false ? (items.themeColor || '#0b57d0') : '#0b57d0';
+            applyMaterialTheme(colorToApply, items.themeMode || 'auto');
         }
         updateDropdownVisuals(items.language || 'auto');
     });
