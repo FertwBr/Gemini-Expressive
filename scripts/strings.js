@@ -1,4 +1,3 @@
-// scripts/strings.js
 /**
  * Aggregator for localization resources.
  * Handles the distribution of shared strings across the extension.
@@ -9,6 +8,8 @@ const BG_LOCALES = {
         settingsTitle: "Gemini Expressive",
         settingsSubtitle: "Customize your Gemini experience.",
         headerProductivity: "Productivity",
+        snippetPrefixLabel: "Snippet Prefix",
+        snippetPrefixDesc: "Choose the symbol to trigger your snippets.",
         manageSnippetsLabel: "Prompt Snippets",
         manageSnippetsDesc: "Create shortcuts to auto-complete long prompts.",
         manageSnippetsBtn: "Manage",
@@ -86,6 +87,8 @@ const BG_LOCALES = {
         settingsTitle: "Gemini Expressive",
         settingsSubtitle: "Personalize sua experiência no Gemini.",
         headerProductivity: "Produtividade",
+        snippetPrefixLabel: "Snippet Prefix",
+        snippetPrefixDesc: "Choose the symbol to trigger your snippets.",
         manageSnippetsLabel: "Atalhos de Prompts",
         manageSnippetsDesc: "Crie atalhos para preencher automaticamente prompts longos.",
         manageSnippetsBtn: "Gerenciar",
@@ -163,6 +166,8 @@ const BG_LOCALES = {
         settingsTitle: "Gemini Expressive",
         settingsSubtitle: "Personaliza tu experiencia en Gemini.",
         headerProductivity: "Productividad",
+        snippetPrefixLabel: "Snippet Prefix",
+        snippetPrefixDesc: "Choose the symbol to trigger your snippets.",
         manageSnippetsLabel: "Atajos de Prompts",
         manageSnippetsDesc: "Crea atajos para autocompletar prompts largos.",
         manageSnippetsBtn: "Gestionar",
@@ -240,6 +245,8 @@ const BG_LOCALES = {
         settingsTitle: "Gemini Expressive",
         settingsSubtitle: "Passen Sie Ihr Gemini-Erlebnis an.",
         headerProductivity: "Produktivität",
+        snippetPrefixLabel: "Snippet Prefix",
+        snippetPrefixDesc: "Choose the symbol to trigger your snippets.",
         manageSnippetsLabel: "Prompt-Schnipsel",
         manageSnippetsDesc: "Erstellen Sie Verknüpfungen zum automatischen Vervollständigen langer Prompts.",
         manageSnippetsBtn: "Verwalten",
@@ -317,6 +324,8 @@ const BG_LOCALES = {
         settingsTitle: "Gemini Expressive",
         settingsSubtitle: "अपने Gemini अनुभव को अनुकूलित करें।",
         headerProductivity: "उत्पादकता",
+        snippetPrefixLabel: "Snippet Prefix",
+        snippetPrefixDesc: "Choose the symbol to trigger your snippets.",
         manageSnippetsLabel: "प्रॉम्प्ट स्निपेट्स",
         manageSnippetsDesc: "लंबे प्रॉम्प्ट को स्वतः पूर्ण करने के लिए शॉर्टकट बनाएं।",
         manageSnippetsBtn: "प्रबंधित करें",
@@ -394,6 +403,8 @@ const BG_LOCALES = {
         settingsTitle: "Gemini Expressive",
         settingsSubtitle: "Geminiのエクスペリエンスをカスタマイズします。",
         headerProductivity: "生産性",
+        snippetPrefixLabel: "Snippet Prefix",
+        snippetPrefixDesc: "Choose the symbol to trigger your snippets.",
         manageSnippetsLabel: "プロンプトスニペット",
         manageSnippetsDesc: "長いプロンプトを自動補完するショートカットを作成します。",
         manageSnippetsBtn: "管理",

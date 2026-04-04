@@ -1,4 +1,3 @@
-// options/settings.js
 /**
  * Maps a language code to the appropriate flag country code using timezone heuristics.
  * @param {string} languageCode The broad language code.
@@ -77,6 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const versionText = document.getElementById('versionText');
     const toast = document.getElementById('toast-notification');
     const toastMessage = document.getElementById('toast-message');
+    const snippetPrefixSelect = document.getElementById('snippetPrefix');
 
     if (chrome.runtime && chrome.runtime.getManifest) {
         versionText.textContent = 'v' + chrome.runtime.getManifest().version;
@@ -204,12 +204,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let selectedLang = 'auto';
 
-    chrome.storage.sync.get(['timelineEnabled', 'collapseEnabled', 'codeNavEnabled', 'headersEnabled', 'language', 'themeMode', 'themeColor', 'dynamicColorEnabled'], (items) => {
+    chrome.storage.sync.get(['timelineEnabled', 'collapseEnabled', 'codeNavEnabled', 'headersEnabled', 'language', 'themeMode', 'themeColor', 'dynamicColorEnabled', 'snippetPrefix'], (items) => {
         timelineSwitch.checked = items.timelineEnabled !== false;
         collapseSwitch.checked = items.collapseEnabled !== false;
         codeNavSwitch.checked = items.codeNavEnabled !== false;
         headersSwitch.checked = items.headersEnabled !== false;
         dynamicColorSwitch.checked = items.dynamicColorEnabled !== false;
+
+        if (items.snippetPrefix) {
+            snippetPrefixSelect.value = items.snippetPrefix;
+        } else {
+            snippetPrefixSelect.value = '/';
+        }
 
         if (!dynamicColorSwitch.checked) {
             colorPickerRow.style.opacity = '0.5';
@@ -254,7 +260,8 @@ document.addEventListener('DOMContentLoaded', () => {
             themeMode: selectedThemeMode,
             themeColor: colorPicker.value,
             language: selectedLang,
-            dynamicColorEnabled: dynamicColorSwitch.checked
+            dynamicColorEnabled: dynamicColorSwitch.checked,
+            snippetPrefix: snippetPrefixSelect.value
         }, () => {
             currentLanguage = selectedLang === 'auto' ? navigator.language.split('-')[0] : selectedLang;
             if (!BG_LOCALES[currentLanguage]) {
@@ -289,6 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
     codeNavSwitch.addEventListener('change', () => saveSettings(false));
     headersSwitch.addEventListener('change', () => saveSettings(false));
     dynamicColorSwitch.addEventListener('change', () => saveSettings(true));
+    snippetPrefixSelect.addEventListener('change', () => saveSettings(false));
 
     themeDropdownBtn.addEventListener('click', (e) => {
         e.stopPropagation();

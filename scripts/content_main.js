@@ -17,7 +17,8 @@ let extensionSettings = {
     codeNavEnabled: true,
     themeMode: 'auto',
     themeColor: '#0b57d0',
-    snippets: []
+    snippets: [],
+    snippetPrefix: '/'
 };
 
 /**
@@ -267,7 +268,9 @@ function renderSnippetMenu() {
 
         const keywordNode = document.createElement('span');
         keywordNode.className = 'bg-snippet-keyword';
-        keywordNode.textContent = snippet.keyword;
+        // Clean the keyword just in case legacy data is present, then prepend active prefix
+        const cleanKw = snippet.keyword.replace(/^[/*!#@]+/, '');
+        keywordNode.textContent = extensionSettings.snippetPrefix + cleanKw;
 
         const previewNode = document.createElement('span');
         previewNode.className = 'bg-snippet-preview';
@@ -343,15 +346,26 @@ function checkSnippetTrigger() {
     const offset = range.startOffset;
     const textBeforeCursor = text.substring(0, offset);
 
-    const match = textBeforeCursor.match(/(?:^|\s)(\/[\w-]*)$/);
+    // Escape regex characters just in case the prefix is special
+    const safePrefix = extensionSettings.snippetPrefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+    // Group 1 captures the FULL trigger (e.g., "!react"). Group 2 captures the WORD ("react")
+    const regex = new RegExp('(?:^|\\s)(' + safePrefix + '([\\w-]*))$');
+    const match = textBeforeCursor.match(regex);
 
     if (match) {
-        const query = match[1];
+        const fullTypedText = match[1];
+        const searchWord = match[2].toLowerCase();
+
         if (extensionSettings.snippets && Array.isArray(extensionSettings.snippets)) {
-            const matches = extensionSettings.snippets.filter(s => s.keyword.startsWith(query));
+            const matches = extensionSettings.snippets.filter(s => {
+                const cleanKw = s.keyword.replace(/^[/*!#@]+/, '').toLowerCase();
+                return cleanKw.startsWith(searchWord);
+            });
+
             if (matches.length > 0) {
-                const startOffset = offset - query.length;
-                openSnippetMenu(query, matches, node, startOffset, offset);
+                const startOffset = offset - fullTypedText.length;
+                openSnippetMenu(fullTypedText, matches, node, startOffset, offset);
             } else {
                 closeSnippetMenu();
             }
@@ -475,6 +489,7 @@ function injectUIFixes() {
             pre.bg-processed:not(.bg-collapsed) {
                 padding-bottom: 56px !important;
             }
+            
             .bg-code-nav {
                 position: sticky;
                 bottom: 16px;
@@ -532,6 +547,7 @@ function injectUIFixes() {
             .bg-code-nav-btn:active {
                 transform: scale(0.95);
             }
+            
             .edit-button-area button.cancel-button .mdc-button__label {
                 color: var(--gem-sys-color--primary) !important;
             }
@@ -541,6 +557,7 @@ function injectUIFixes() {
             .edit-button-area button.update-button:not(:disabled) .mdc-button__label {
                 color: var(--gem-sys-color--on-primary) !important;
             }
+            
             .code-block-decoration .buttons button.mdc-icon-button {
                 width: 32px !important;
                 height: 32px !important;
@@ -554,6 +571,7 @@ function injectUIFixes() {
                 margin: 0 !important;
                 display: block !important;
             }
+
             #bg-snippet-menu {
                 position: absolute;
                 bottom: calc(100% + 8px);
@@ -566,7 +584,7 @@ function injectUIFixes() {
                 max-width: 400px;
                 max-height: 300px;
                 overflow-y: auto;
-                z-index: 1000;
+                z-index: 2147483647 !important;
                 display: none;
                 flex-direction: column;
                 padding: 8px 0;
@@ -638,7 +656,7 @@ function initializeExtension() {
         extensionSettings.snippets = localItems.geminiSnippets || [];
     });
 
-    chrome.storage.sync.get(['timelineEnabled', 'collapseEnabled', 'codeNavEnabled', 'headersEnabled', 'themeMode', 'themeColor'], (items) => {
+    chrome.storage.sync.get(['timelineEnabled', 'collapseEnabled', 'codeNavEnabled', 'headersEnabled', 'themeMode', 'themeColor', 'snippetPrefix'], (items) => {
         if (items.timelineEnabled !== undefined) {
             extensionSettings.timelineEnabled = items.timelineEnabled;
         }
@@ -656,6 +674,9 @@ function initializeExtension() {
         }
         if (items.themeColor !== undefined) {
             extensionSettings.themeColor = items.themeColor;
+        }
+        if (items.snippetPrefix !== undefined) {
+            extensionSettings.snippetPrefix = items.snippetPrefix;
         }
 
         applyFeatureToggles();
@@ -713,6 +734,9 @@ function initializeExtension() {
             }
             if (changes.headersEnabled) {
                 extensionSettings.headersEnabled = changes.headersEnabled.newValue;
+            }
+            if (changes.snippetPrefix) {
+                extensionSettings.snippetPrefix = changes.snippetPrefix.newValue;
             }
 
             applyFeatureToggles();

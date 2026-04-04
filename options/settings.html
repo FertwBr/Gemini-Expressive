@@ -31,6 +31,23 @@
 
                     <div class="setting-row">
                         <div class="setting-info">
+                            <label for="snippetPrefix" class="input-label" data-i18n="snippetPrefixLabel">Snippet
+                                Prefix</label>
+                            <span class="setting-description" data-i18n="snippetPrefixDesc">Choose the symbol to trigger your snippets.</span>
+                        </div>
+                        <div class="custom-select-container">
+                            <select id="snippetPrefix" class="setting-dropdown-btn"
+                                    style="appearance: none; -webkit-appearance: none; width: 100%;">
+                                <option value="/">/ (Slash)</option>
+                                <option value="!">! (Exclamation)</option>
+                                <option value="#"># (Hash)</option>
+                            </select>
+                            <span class="material-symbols-outlined select-icon">expand_more</span>
+                        </div>
+                    </div>
+
+                    <div class="setting-row">
+                        <div class="setting-info">
                             <label class="input-label" data-i18n="manageSnippetsLabel">Prompt Snippets</label>
                             <span class="setting-description" data-i18n="manageSnippetsDesc">Create shortcuts to auto-complete long prompts.</span>
                         </div>

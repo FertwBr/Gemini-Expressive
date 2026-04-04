@@ -1,4 +1,3 @@
-// options/snippets.js
 /**
  * Maps a language code to the appropriate flag country code using timezone heuristics.
  * @param {string} languageCode The broad language code.
@@ -66,6 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let snippets = [];
     let currentEditingId = null;
     let toastTimeout;
+    let currentPrefix = '/';
 
     if (versionText && chrome.runtime && chrome.runtime.getManifest) {
         versionText.textContent = 'v' + chrome.runtime.getManifest().version;
@@ -155,11 +155,26 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * Loads the saved snippets from local storage.
+     * Loads the saved snippets from local storage and cleans old prefixed keywords.
      */
     function loadSnippets() {
         chrome.storage.local.get(['geminiSnippets'], (result) => {
-            snippets = result.geminiSnippets || [];
+            let rawSnippets = result.geminiSnippets || [];
+
+            // MIGRATION: Remove any prefix saved historically in the keyword field
+            let needsMigration = false;
+            snippets = rawSnippets.map(s => {
+                if (s.keyword && s.keyword.match(/^[/*!#@]+/)) {
+                    s.keyword = s.keyword.replace(/^[/*!#@]+/, '');
+                    needsMigration = true;
+                }
+                return s;
+            });
+
+            if (needsMigration) {
+                chrome.storage.local.set({geminiSnippets: snippets});
+            }
+
             renderList();
             if (snippets.length === 0) {
                 editorCard.style.display = 'none';
@@ -196,7 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const item = document.createElement('div');
             item.className = `snippet-list-item ${currentEditingId === snippet.id ? 'active' : ''}`;
             item.innerHTML = `
-                <div class="snippet-item-keyword">${snippet.keyword}</div>
+                <div class="snippet-item-keyword">${currentPrefix}${snippet.keyword}</div>
                 <div class="snippet-item-preview">${snippet.content}</div>
             `;
             item.onclick = () => selectSnippet(snippet.id);
@@ -218,7 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
             deleteBtn.style.display = 'inline-flex';
             renderList();
             if (window.innerWidth < 800) {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                window.scrollTo({top: 0, behavior: 'smooth'});
             }
         }
     }
@@ -232,15 +247,18 @@ document.addEventListener('DOMContentLoaded', () => {
         keywordInput.focus();
         renderList();
         if (window.innerWidth < 800) {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.scrollTo({top: 0, behavior: 'smooth'});
         }
     };
 
     saveBtn.onclick = () => {
-        const kw = keywordInput.value.trim();
+        const rawKw = keywordInput.value.trim();
         const ct = contentInput.value.trim();
 
-        if (!kw || !ct) {
+        // Strip any prefix the user might have typed by habit
+        const cleanKw = rawKw.replace(/^[/*!#@]+/, '');
+
+        if (!cleanKw || !ct) {
             return;
         }
 
@@ -248,7 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isNew) {
             const newSnippet = {
                 id: 'snip_' + Date.now(),
-                keyword: kw.startsWith('/') ? kw : '/' + kw,
+                keyword: cleanKw,
                 content: ct,
                 createdAt: Date.now()
             };
@@ -257,7 +275,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             const index = snippets.findIndex(s => s.id === currentEditingId);
             if (index !== -1) {
-                snippets[index].keyword = kw.startsWith('/') ? kw : '/' + kw;
+                snippets[index].keyword = cleanKw;
                 snippets[index].content = ct;
             }
         }
@@ -292,8 +310,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    chrome.storage.sync.get(['themeMode', 'themeColor', 'dynamicColorEnabled', 'language'], (items) => {
-        if (typeof applyMaterialTheme === 'function') {
+    chrome.storage.sync.get(['themeMode', 'themeColor', 'dynamicColorEnabled', 'language', 'snippetPrefix'], (items) => {
+        currentPrefix = items.snippetPrefix || '/';
+        if (items.dynamicColorEnabled !== false && typeof applyMaterialTheme === 'function') {
             const colorToApply = items.dynamicColorEnabled !== false ? (items.themeColor || '#0b57d0') : '#0b57d0';
             applyMaterialTheme(colorToApply, items.themeMode || 'auto');
         }
