@@ -1,4 +1,3 @@
-// scripts/content_main.js
 /**
  * Timeout reference for debouncing the mutation observer.
  * @type {number|null}
@@ -17,7 +16,8 @@ let extensionSettings = {
     headersEnabled: true,
     codeNavEnabled: true,
     themeMode: 'auto',
-    themeColor: '#0b57d0'
+    themeColor: '#0b57d0',
+    snippets: []
 };
 
 /**
@@ -187,6 +187,61 @@ function injectSettingsShortcut() {
 }
 
 /**
+ * Intercepts Tab key presses in the editor to expand snippet keywords.
+ * @param {KeyboardEvent} event The keyboard event.
+ */
+function handleSnippetExpansion(event) {
+    if (event.key !== 'Tab') {
+        return;
+    }
+
+    const target = event.target;
+    if (!target.classList.contains('ql-editor') && !target.closest('.ql-editor')) {
+        return;
+    }
+
+    const selection = window.getSelection();
+    if (!selection || !selection.rangeCount) {
+        return;
+    }
+
+    const range = selection.getRangeAt(0);
+    if (!range.collapsed) {
+        return;
+    }
+
+    const node = range.startContainer;
+    if (node.nodeType !== Node.TEXT_NODE) {
+        return;
+    }
+
+    const offset = range.startOffset;
+    const textBefore = node.textContent.substring(0, offset);
+    const words = textBefore.split(/\s+/);
+    const lastWord = words[words.length - 1];
+
+    if (!lastWord || !extensionSettings.snippets) {
+        return;
+    }
+
+    const snippet = extensionSettings.snippets.find(s => s.keyword === lastWord);
+
+    if (snippet) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        range.setStart(node, offset - lastWord.length);
+        range.setEnd(node, offset);
+        selection.removeAllRanges();
+        selection.addRange(range);
+
+        document.execCommand('insertText', false, snippet.content);
+
+        target.dispatchEvent(new Event('input', {bubbles: true}));
+    }
+}
+
+/**
  * Main observer to track DOM changes and trigger necessary UI updates based on settings.
  * @type {MutationObserver}
  */
@@ -261,7 +316,6 @@ function injectUIFixes() {
                 padding-bottom: 56px !important;
             }
             
-            /* --- NAVEGAÇÃO ENTRE BLOCOS DE CÓDIGO --- */
             .bg-code-nav {
                 position: sticky;
                 bottom: 16px;
@@ -330,7 +384,6 @@ function injectUIFixes() {
                 color: var(--gem-sys-color--on-primary) !important;
             }
             
-            /* --- CORREÇÃO DO ÍCONE NATIVO DE COPIAR --- */
             .code-block-decoration .buttons button.mdc-icon-button {
                 width: 32px !important;
                 height: 32px !important;
@@ -354,6 +407,10 @@ function injectUIFixes() {
  */
 function initializeExtension() {
     injectUIFixes();
+
+    chrome.storage.local.get(['geminiSnippets'], (localItems) => {
+        extensionSettings.snippets = localItems.geminiSnippets || [];
+    });
 
     chrome.storage.sync.get(['timelineEnabled', 'collapseEnabled', 'codeNavEnabled', 'headersEnabled', 'themeMode', 'themeColor'], (items) => {
         if (items.timelineEnabled !== undefined) {
@@ -399,9 +456,16 @@ function initializeExtension() {
                 attributeFilter: ['class', 'data-theme']
             });
         }
+
+        document.addEventListener('keydown', handleSnippetExpansion, true);
     });
 
     chrome.storage.onChanged.addListener((changes, namespace) => {
+        if (namespace === 'local') {
+            if (changes.geminiSnippets) {
+                extensionSettings.snippets = changes.geminiSnippets.newValue || [];
+            }
+        }
         if (namespace === 'sync') {
             if (changes.themeMode) {
                 extensionSettings.themeMode = changes.themeMode.newValue;
