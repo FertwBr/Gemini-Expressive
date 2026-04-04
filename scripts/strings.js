@@ -7,6 +7,7 @@ const BG_LOCALES = {
     en: {
         settingsTitle: "Gemini Expressive",
         settingsSubtitle: "Customize your Gemini experience.",
+        expressiveSettings: "Expressive Settings",
         headerProductivity: "Productivity",
         snippetPrefixLabel: "Snippet Prefix",
         snippetPrefixDesc: "Choose the symbol to trigger your snippets.",
@@ -90,6 +91,7 @@ const BG_LOCALES = {
     pt: {
         settingsTitle: "Gemini Expressive",
         settingsSubtitle: "Personalize sua experiência no Gemini.",
+        expressiveSettings: "Configurações do Expressive",
         headerProductivity: "Produtividade",
         snippetPrefixLabel: "Prefixo do Atalho",
         snippetPrefixDesc: "Escolha o símbolo para acionar seus atalhos.",
@@ -173,6 +175,7 @@ const BG_LOCALES = {
     es: {
         settingsTitle: "Gemini Expressive",
         settingsSubtitle: "Personaliza tu experiencia en Gemini.",
+        expressiveSettings: "Configuración de Expressive",
         headerProductivity: "Productividad",
         snippetPrefixLabel: "Prefijo de Atajo",
         snippetPrefixDesc: "Elige el símbolo para activar tus atajos.",
@@ -256,6 +259,7 @@ const BG_LOCALES = {
     de: {
         settingsTitle: "Gemini Expressive",
         settingsSubtitle: "Passen Sie Ihr Gemini-Erlebnis an.",
+        expressiveSettings: "Expressive Einstellungen",
         headerProductivity: "Produktivität",
         snippetPrefixLabel: "Schnipsel-Präfix",
         snippetPrefixDesc: "Wählen Sie das Symbol zum Auslösen Ihrer Schnipsel.",
@@ -339,6 +343,7 @@ const BG_LOCALES = {
     hi: {
         settingsTitle: "Gemini Expressive",
         settingsSubtitle: "अपने Gemini अनुभव को अनुकूलित करें।",
+        expressiveSettings: "Expressive सेटिंग्स",
         headerProductivity: "उत्पादकता",
         snippetPrefixLabel: "स्निपेट उपसर्ग",
         snippetPrefixDesc: "अपने स्निपेट ट्रिगर करने के लिए प्रतीक चुनें।",
@@ -422,6 +427,7 @@ const BG_LOCALES = {
     ja: {
         settingsTitle: "Gemini Expressive",
         settingsSubtitle: "Geminiのエクスペリエンスをカスタマイズします。",
+        expressiveSettings: "Expressive 設定",
         headerProductivity: "生産性",
         snippetPrefixLabel: "スニペットプレフィックス",
         snippetPrefixDesc: "スニペットをトリガーする記号を選択します。",
