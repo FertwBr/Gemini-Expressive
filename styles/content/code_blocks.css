@@ -1,7 +1,16 @@
+.code-block-decoration .buttons,
+.code-block-decoration .action-buttons {
+    display: flex !important;
+    align-items: center !important;
+}
+
 .bg-collapse-icon-btn {
     margin: 0 4px 0 0 !important;
     position: relative;
     overflow: visible !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
 }
 
 .bg-collapse-svg-icon {
