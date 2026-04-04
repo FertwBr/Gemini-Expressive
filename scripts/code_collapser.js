@@ -1,4 +1,6 @@
-// scripts/code_collapser.js
+/**
+ * Processes code blocks to add collapse/expand functionality and navigation.
+ */
 function processCodeBlocks() {
     const blocks = document.querySelectorAll('pre');
     blocks.forEach(block => {
@@ -22,26 +24,6 @@ function processCodeBlocks() {
                 }
             }
 
-            const btn = document.createElement('button');
-            btn.className = 'bg-collapse-icon-btn';
-            btn.title = getBgString('collapseCode');
-
-            const icon = document.createElement('span');
-            icon.className = 'google-symbols';
-            icon.textContent = 'unfold_less';
-            btn.appendChild(icon);
-
-            btn.onclick = (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                const isCollapsed = block.classList.toggle('bg-collapsed');
-                if (header) {
-                    header.classList.toggle('bg-header-collapsed', isCollapsed);
-                }
-                icon.textContent = isCollapsed ? 'unfold_more' : 'unfold_less';
-                btn.title = isCollapsed ? getBgString('expandCode') : getBgString('collapseCode');
-            };
-
             if (header) {
                 let buttonsArea = header.querySelector('.buttons, .action-buttons');
                 if (!buttonsArea) {
@@ -51,6 +33,54 @@ function processCodeBlocks() {
                     buttonsArea.style.alignItems = 'center';
                     header.appendChild(buttonsArea);
                 }
+
+                let btn;
+                const existingBtn = buttonsArea.querySelector('button.mdc-icon-button, button.mat-mdc-icon-button');
+
+                if (existingBtn) {
+                    btn = existingBtn.cloneNode(true);
+                    btn.classList.add('bg-collapse-icon-btn');
+                    btn.removeAttribute('data-test-id');
+                    btn.removeAttribute('mattooltip');
+                    btn.removeAttribute('title');
+
+                    const existingIcons = btn.querySelectorAll('mat-icon, .google-symbols, svg, img');
+                    existingIcons.forEach(i => i.remove());
+                } else {
+                    btn = document.createElement('button');
+                    btn.className = 'mdc-icon-button mat-mdc-icon-button bg-collapse-icon-btn';
+                    const touchTarget = document.createElement('span');
+                    touchTarget.className = 'mat-mdc-button-touch-target';
+                    btn.appendChild(touchTarget);
+                }
+
+                btn.setAttribute('aria-label', getBgString('collapseCode'));
+
+                const icon = document.createElement('span');
+                icon.className = 'bg-collapse-svg-icon';
+                icon.style.setProperty('--bg-icon-url', `url(${chrome.runtime.getURL('assets/icons/expanded.svg')})`);
+                btn.appendChild(icon);
+
+                const tooltip = document.createElement('div');
+                tooltip.className = 'bg-custom-tooltip';
+                tooltip.textContent = getBgString('collapseCode');
+                btn.appendChild(tooltip);
+
+                btn.onclick = (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const isCollapsed = block.classList.toggle('bg-collapsed');
+                    if (header) {
+                        header.classList.toggle('bg-header-collapsed', isCollapsed);
+                    }
+
+                    icon.style.setProperty('--bg-icon-url', `url(${chrome.runtime.getURL(isCollapsed ? 'assets/icons/collapsed.svg' : 'assets/icons/expanded.svg')})`);
+
+                    const newText = isCollapsed ? getBgString('expandCode') : getBgString('collapseCode');
+                    tooltip.textContent = newText;
+                    btn.setAttribute('aria-label', newText);
+                };
+
                 buttonsArea.insertBefore(btn, buttonsArea.firstChild);
             }
 
@@ -59,7 +89,12 @@ function processCodeBlocks() {
 
             const upBtn = document.createElement('button');
             upBtn.className = 'bg-code-nav-btn';
-            upBtn.title = "Previous code block";
+
+            const upTooltip = document.createElement('div');
+            upTooltip.className = 'bg-custom-tooltip';
+            upTooltip.textContent = "Previous code block";
+            upBtn.appendChild(upTooltip);
+
             const upIcon = document.createElement('span');
             upIcon.className = 'google-symbols';
             upIcon.textContent = 'keyboard_arrow_up';
@@ -67,7 +102,12 @@ function processCodeBlocks() {
 
             const downBtn = document.createElement('button');
             downBtn.className = 'bg-code-nav-btn';
-            downBtn.title = "Next code block";
+
+            const downTooltip = document.createElement('div');
+            downTooltip.className = 'bg-custom-tooltip';
+            downTooltip.textContent = "Next code block";
+            downBtn.appendChild(downTooltip);
+
             const downIcon = document.createElement('span');
             downIcon.className = 'google-symbols';
             downIcon.textContent = 'keyboard_arrow_down';

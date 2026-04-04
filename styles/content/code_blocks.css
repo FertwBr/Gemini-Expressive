@@ -1,51 +1,51 @@
-/* styles/content/code_blocks.css */
 .bg-collapse-icon-btn {
-    background: transparent;
-    border: none;
-    color: var(--gem-sys-color--on-surface-variant, #c4c7c5);
-    cursor: pointer;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.2s;
-    margin: 0 0 0 4px;
-    padding: 0;
-    box-sizing: border-box;
-    flex-shrink: 0;
+    margin: 0 4px 0 0 !important;
+    position: relative;
+    overflow: visible !important;
 }
 
-.bg-collapse-icon-btn:hover {
-    background-color: var(--gem-sys-color--surface-variant, rgba(128, 128, 128, 0.15));
+.bg-collapse-svg-icon {
+    width: 20px !important;
+    height: 20px !important;
+    display: inline-block;
+    background-color: currentColor;
+    -webkit-mask-image: var(--bg-icon-url);
+    mask-image: var(--bg-icon-url);
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    pointer-events: none;
+    position: relative;
+    z-index: 2;
 }
 
-.bg-collapse-icon-btn .google-symbols {
-    font-size: 20px;
-    line-height: 1;
-    font-weight: 400;
-    margin: 0 !important;
-    display: block !important;
+.bg-custom-tooltip {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) scale(0.9);
+    background-color: var(--gem-sys-color--inverse-surface, #303030);
+    color: var(--gem-sys-color--inverse-on-surface, #f2f2f2);
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-family: "Google Sans Flex", "Google Sans Text", "Google Sans", sans-serif;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: all 0.15s cubic-bezier(0.2, 0, 0, 1);
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
-.code-block-decoration .buttons button.mdc-icon-button {
-    width: 32px !important;
-    height: 32px !important;
-    padding: 0 !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-}
-
-.code-block-decoration .buttons button.mdc-icon-button mat-icon,
-.code-block-decoration .buttons button.mdc-icon-button .google-symbols {
-    margin: 0 !important;
-    display: block !important;
-}
-
-.code-block-decoration .buttons button.mdc-icon-button .mat-mdc-button-touch-target::before {
-    display: none !important;
+button:hover > .bg-custom-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) scale(1);
 }
 
 pre.bg-collapsed code {
