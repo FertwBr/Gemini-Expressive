@@ -186,58 +186,218 @@ function injectSettingsShortcut() {
     }
 }
 
-/**
- * Intercepts Tab key presses in the editor to expand snippet keywords.
- * @param {KeyboardEvent} event The keyboard event.
- */
-function handleSnippetExpansion(event) {
-    if (event.key !== 'Tab') {
-        return;
-    }
+let snippetState = {
+    isOpen: false,
+    query: '',
+    matches: [],
+    activeIndex: 0,
+    node: null,
+    startOffset: 0,
+    endOffset: 0
+};
 
-    const target = event.target;
-    if (!target.classList.contains('ql-editor') && !target.closest('.ql-editor')) {
+function closeSnippetMenu() {
+    snippetState.isOpen = false;
+    snippetState.matches = [];
+    const menu = document.getElementById('bg-snippet-menu');
+    if (menu) {
+        menu.classList.remove('visible');
+    }
+}
+
+function insertSnippet(snippet) {
+    if (!snippetState.node) {
         return;
     }
+    const range = document.createRange();
+    range.setStart(snippetState.node, snippetState.startOffset);
+    range.setEnd(snippetState.node, snippetState.endOffset);
 
     const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+
+    const formattedContent = snippet.content.replace(/\n/g, '<br>');
+    document.execCommand('insertHTML', false, formattedContent);
+
+    const targetEditor = snippetState.node.parentElement ? snippetState.node.parentElement.closest('.ql-editor') : null;
+    if (targetEditor) {
+        targetEditor.dispatchEvent(new Event('input', {bubbles: true}));
+    }
+
+    closeSnippetMenu();
+}
+
+function renderSnippetMenu() {
+    let menu = document.getElementById('bg-snippet-menu');
+    if (!menu) {
+        menu = document.createElement('div');
+        menu.id = 'bg-snippet-menu';
+        const inputContainer = document.querySelector('.text-input-field');
+        if (inputContainer) {
+            inputContainer.appendChild(menu);
+        } else {
+            document.body.appendChild(menu);
+        }
+    }
+
+    menu.innerHTML = '';
+
+    const header = document.createElement('div');
+    header.className = 'bg-snippet-menu-header';
+    header.textContent = 'Snippets';
+    menu.appendChild(header);
+
+    snippetState.matches.forEach((snippet, index) => {
+        const item = document.createElement('button');
+        item.className = 'bg-snippet-menu-item';
+        if (index === snippetState.activeIndex) {
+            item.classList.add('active');
+        }
+
+        const iconContainer = document.createElement('div');
+        iconContainer.className = 'bg-snippet-icon-container';
+        const icon = document.createElement('span');
+        icon.className = 'google-symbols';
+        icon.textContent = 'edit_note';
+        iconContainer.appendChild(icon);
+
+        const textContainer = document.createElement('div');
+        textContainer.className = 'bg-snippet-text-container';
+
+        const keywordNode = document.createElement('span');
+        keywordNode.className = 'bg-snippet-keyword';
+        keywordNode.textContent = snippet.keyword;
+
+        const previewNode = document.createElement('span');
+        previewNode.className = 'bg-snippet-preview';
+        previewNode.textContent = snippet.content;
+
+        textContainer.appendChild(keywordNode);
+        textContainer.appendChild(previewNode);
+
+        item.appendChild(iconContainer);
+        item.appendChild(textContainer);
+
+        item.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            insertSnippet(snippet);
+        });
+
+        item.addEventListener('mouseenter', () => {
+            snippetState.activeIndex = index;
+            const allItems = menu.querySelectorAll('.bg-snippet-menu-item');
+            allItems.forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
+        });
+
+        menu.appendChild(item);
+    });
+
+    menu.classList.add('visible');
+
+    const activeItem = menu.querySelector('.bg-snippet-menu-item.active');
+    if (activeItem) {
+        activeItem.scrollIntoView({block: 'nearest'});
+    }
+}
+
+function openSnippetMenu(query, matches, node, startOffset, endOffset) {
+    snippetState.isOpen = true;
+    snippetState.query = query;
+    snippetState.matches = matches;
+    snippetState.activeIndex = 0;
+    snippetState.node = node;
+    snippetState.startOffset = startOffset;
+    snippetState.endOffset = endOffset;
+    renderSnippetMenu();
+}
+
+function checkSnippetTrigger() {
+    const selection = window.getSelection();
     if (!selection || !selection.rangeCount) {
+        closeSnippetMenu();
         return;
     }
 
     const range = selection.getRangeAt(0);
     if (!range.collapsed) {
+        closeSnippetMenu();
         return;
     }
 
     const node = range.startContainer;
     if (node.nodeType !== Node.TEXT_NODE) {
+        closeSnippetMenu();
         return;
     }
 
+    const editor = node.parentElement ? node.parentElement.closest('.ql-editor') : null;
+    if (!editor) {
+        closeSnippetMenu();
+        return;
+    }
+
+    const text = node.textContent;
     const offset = range.startOffset;
-    const textBefore = node.textContent.substring(0, offset);
-    const words = textBefore.split(/\s+/);
-    const lastWord = words[words.length - 1];
+    const textBeforeCursor = text.substring(0, offset);
 
-    if (!lastWord || !extensionSettings.snippets) {
+    const match = textBeforeCursor.match(/(?:^|\s)(\/[\w-]*)$/);
+
+    if (match) {
+        const query = match[1];
+        if (extensionSettings.snippets && Array.isArray(extensionSettings.snippets)) {
+            const matches = extensionSettings.snippets.filter(s => s.keyword.startsWith(query));
+            if (matches.length > 0) {
+                const startOffset = offset - query.length;
+                openSnippetMenu(query, matches, node, startOffset, offset);
+            } else {
+                closeSnippetMenu();
+            }
+        }
+    } else {
+        closeSnippetMenu();
+    }
+}
+
+function handleSnippetKeydown(event) {
+    if (!snippetState.isOpen) {
         return;
     }
 
-    const snippet = extensionSettings.snippets.find(s => s.keyword === lastWord);
-
-    if (snippet) {
+    if (event.key === 'ArrowDown') {
         event.preventDefault();
         event.stopPropagation();
+        snippetState.activeIndex = (snippetState.activeIndex + 1) % snippetState.matches.length;
+        renderSnippetMenu();
+    } else if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        event.stopPropagation();
+        snippetState.activeIndex = (snippetState.activeIndex - 1 + snippetState.matches.length) % snippetState.matches.length;
+        renderSnippetMenu();
+    } else if (event.key === 'Enter' || event.key === 'Tab') {
+        event.preventDefault();
+        event.stopPropagation();
+        insertSnippet(snippetState.matches[snippetState.activeIndex]);
+    } else if (event.key === 'Escape') {
+        event.preventDefault();
+        event.stopPropagation();
+        closeSnippetMenu();
+    }
+}
 
-        range.setStart(node, offset - lastWord.length);
-        range.setEnd(node, offset);
-        selection.removeAllRanges();
-        selection.addRange(range);
+function handleSnippetKeyup(event) {
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp' || event.key === 'Enter' || event.key === 'Tab' || event.key === 'Escape') {
+        return;
+    }
+    checkSnippetTrigger();
+}
 
-        document.execCommand('insertText', false, snippet.content);
-
-        target.dispatchEvent(new Event('input', {bubbles: true}));
+function handleSnippetClick(event) {
+    const menu = document.getElementById('bg-snippet-menu');
+    if (menu && !menu.contains(event.target)) {
+        closeSnippetMenu();
     }
 }
 
@@ -315,7 +475,6 @@ function injectUIFixes() {
             pre.bg-processed:not(.bg-collapsed) {
                 padding-bottom: 56px !important;
             }
-            
             .bg-code-nav {
                 position: sticky;
                 bottom: 16px;
@@ -373,7 +532,6 @@ function injectUIFixes() {
             .bg-code-nav-btn:active {
                 transform: scale(0.95);
             }
-            
             .edit-button-area button.cancel-button .mdc-button__label {
                 color: var(--gem-sys-color--primary) !important;
             }
@@ -383,7 +541,6 @@ function injectUIFixes() {
             .edit-button-area button.update-button:not(:disabled) .mdc-button__label {
                 color: var(--gem-sys-color--on-primary) !important;
             }
-            
             .code-block-decoration .buttons button.mdc-icon-button {
                 width: 32px !important;
                 height: 32px !important;
@@ -396,6 +553,75 @@ function injectUIFixes() {
             .code-block-decoration .buttons button.mdc-icon-button .google-symbols {
                 margin: 0 !important;
                 display: block !important;
+            }
+            #bg-snippet-menu {
+                position: absolute;
+                bottom: calc(100% + 8px);
+                left: 24px;
+                background: var(--bg-sys-color-surface-container-highest, #36343b);
+                border: 1px solid var(--bg-sys-color-outline-variant, #44474e);
+                border-radius: 16px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                min-width: 250px;
+                max-width: 400px;
+                max-height: 300px;
+                overflow-y: auto;
+                z-index: 1000;
+                display: none;
+                flex-direction: column;
+                padding: 8px 0;
+                font-family: "Google Sans", "Google Sans Text", "Google Sans Flex", sans-serif;
+            }
+            #bg-snippet-menu.visible {
+                display: flex;
+            }
+            .bg-snippet-menu-header {
+                font-size: 0.75rem;
+                color: var(--bg-sys-color-on-surface-variant, #c4c7c5);
+                padding: 4px 16px 8px 16px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+            .bg-snippet-menu-item {
+                background: transparent;
+                border: none;
+                padding: 10px 16px;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                cursor: pointer;
+                width: 100%;
+                text-align: left;
+                color: var(--bg-sys-color-on-surface, #e3e2e6);
+                transition: background 0.2s;
+            }
+            .bg-snippet-menu-item.active {
+                background: var(--bg-sys-color-surface-variant, #44474e);
+            }
+            .bg-snippet-icon-container {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: var(--bg-sys-color-primary, #a8c7fa);
+            }
+            .bg-snippet-text-container {
+                display: flex;
+                flex-direction: column;
+                overflow: hidden;
+                flex: 1;
+            }
+            .bg-snippet-keyword {
+                font-weight: 600;
+                font-size: 0.9rem;
+                color: var(--bg-sys-color-on-surface, #e3e2e6);
+            }
+            .bg-snippet-preview {
+                font-size: 0.8rem;
+                color: var(--bg-sys-color-on-surface-variant, #c4c7c5);
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
         `;
         document.head.appendChild(style);
@@ -457,7 +683,9 @@ function initializeExtension() {
             });
         }
 
-        document.addEventListener('keydown', handleSnippetExpansion, true);
+        document.addEventListener('keydown', handleSnippetKeydown, true);
+        document.addEventListener('keyup', handleSnippetKeyup, true);
+        document.addEventListener('mousedown', handleSnippetClick, true);
     });
 
     chrome.storage.onChanged.addListener((changes, namespace) => {
