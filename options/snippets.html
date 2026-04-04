@@ -10,6 +10,7 @@
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"/>
     <link rel="stylesheet" href="../styles/settings/main.css">
+    <link rel="stylesheet" href="../styles/settings/snippets.css">
 </head>
 <body>
 <div class="page-wrapper">
@@ -69,6 +70,107 @@
             </div>
         </div>
     </div>
+
+    <footer class="footer-base">
+        <div class="footer-content">
+            <div class="footer-grid">
+                <div class="footer-column-wrapper">
+                    <h3 class="footer-heading" data-i18n="linksTitle">Resources</h3>
+                    <div class="footer-links-group">
+                        <a href="https://tools.fertwbr.com/geminiexpressive/help" target="_blank"
+                           class="footer-link-btn">
+                            <span class="material-symbols-outlined icon-small">help</span>
+                            <span data-i18n="help">Help</span>
+                        </a>
+                        <a href="https://tools.fertwbr.com/geminiexpressive/feedback" target="_blank"
+                           class="footer-link-btn">
+                            <span class="material-symbols-outlined icon-small">feedback</span>
+                            <span data-i18n="feedback">Feedback</span>
+                        </a>
+                        <a href="https://tools.fertwbr.com/geminiexpressive" target="_blank" class="footer-link-btn">
+                            <span class="material-symbols-outlined icon-small">language</span>
+                            <span data-i18n="website">Website</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="footer-column-wrapper align-right-desktop">
+                    <h3 class="footer-heading" data-i18n="languageLabel">Language</h3>
+                    <div class="footer-dropdown-wrapper">
+                        <button id="langDropdownBtn" class="footer-dropdown-btn">
+                            <img id="currentFlag" src="" alt="Flag" class="flag-icon"/>
+                            <span id="currentLangLabel">Auto</span>
+                            <span class="material-symbols-outlined footer-dropdown-icon">expand_more</span>
+                        </button>
+                        <div id="langDropdownMenu" class="footer-dropdown-menu align-right">
+                            <div class="footer-dropdown-scroll-area">
+                                <button class="footer-menu-item" data-lang="auto">
+                                    <div class="footer-menu-item-leading"><span class="material-symbols-outlined"
+                                                                                style="font-size: 18px;">auto_awesome</span>
+                                    </div>
+                                    <span data-i18n="lang_auto">Auto</span>
+                                </button>
+                                <div class="menu-divider"></div>
+                                <button class="footer-menu-item" data-lang="en">
+                                    <div class="footer-menu-item-leading"><img src="https://flagcdn.com/w40/us.png"
+                                                                               class="flag-icon"/></div>
+                                    <span data-i18n="lang_en">English</span>
+                                </button>
+                                <button class="footer-menu-item" data-lang="pt">
+                                    <div class="footer-menu-item-leading"><img src="https://flagcdn.com/w40/br.png"
+                                                                               class="flag-icon"/></div>
+                                    <span data-i18n="lang_pt">Português</span>
+                                </button>
+                                <button class="footer-menu-item" data-lang="es">
+                                    <div class="footer-menu-item-leading"><img src="https://flagcdn.com/w40/es.png"
+                                                                               class="flag-icon"/></div>
+                                    <span data-i18n="lang_es">Español</span>
+                                </button>
+                                <button class="footer-menu-item" data-lang="de">
+                                    <div class="footer-menu-item-leading"><img src="https://flagcdn.com/w40/de.png"
+                                                                               class="flag-icon"/></div>
+                                    <span data-i18n="lang_de">Deutsch</span>
+                                </button>
+                                <button class="footer-menu-item" data-lang="hi">
+                                    <div class="footer-menu-item-leading"><img src="https://flagcdn.com/w40/in.png"
+                                                                               class="flag-icon"/></div>
+                                    <span data-i18n="lang_hi">हिन्दी</span>
+                                </button>
+                                <button class="footer-menu-item" data-lang="ja">
+                                    <div class="footer-menu-item-leading"><img src="https://flagcdn.com/w40/jp.png"
+                                                                               class="flag-icon"/></div>
+                                    <span data-i18n="lang_ja">日本語</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-divider"></div>
+            <div class="footer-bottom">
+                <div class="footer-meta-text">
+                    <span>&copy; 2026 <span data-i18n="builtBy">Built by</span></span>
+                    <a href="https://github.com/fertwbr" target="_blank" class="built-by-link">Fertwbr 🇧🇷</a>
+                    <span class="meta-dot">•</span>
+                    <a href="https://github.com/fertwbr" target="_blank" id="versionText"
+                       class="version-text">vX.X.X</a>
+                </div>
+                <div class="footer-social-links">
+                    <a href="https://github.com/fertwbr/Better-Gemini" target="_blank" rel="noreferrer"
+                       class="footer-social-btn-circular" title="GitHub">
+                        <span class="material-symbols-outlined">code</span>
+                    </a>
+                    <a href="mailto:contato@fertwbr.com" class="footer-social-btn-circular" title="Email">
+                        <span class="material-symbols-outlined">mail</span>
+                    </a>
+                    <a href="https://tools.fertwbr.com/geminiexpressive" target="_blank" rel="noreferrer"
+                       class="footer-social-btn-circular" title="Website">
+                        <span class="material-symbols-outlined">language</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
 </div>
 
 <div id="toast-notification" class="toast-notification">
