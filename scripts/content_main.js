@@ -153,31 +153,55 @@ function getExpressiveLabel() {
 }
 
 /**
- * Injects a settings shortcut button into the Gemini sidebar natively.
+ * Injects a settings shortcut button into the Gemini sidebar natively (Supports Desktop and Mobile).
  */
 function injectSettingsShortcut() {
-    const nativeSettingsBtns = document.querySelectorAll('side-nav-action-button[data-test-id="settings-and-help-button"], button[data-test-id="settings-and-help-button"]');
+    const nativeSettingsBtns = document.querySelectorAll(
+        'side-nav-action-button[data-test-id="settings-and-help-button"], ' +
+        'button[data-test-id="mobile-settings-and-help-control"]'
+    );
 
     nativeSettingsBtns.forEach(nativeBtn => {
         let wrapperToClone = nativeBtn;
-        if (nativeBtn.tagName !== 'SIDE-NAV-ACTION-BUTTON') {
-            wrapperToClone = nativeBtn.closest('side-nav-action-button') || nativeBtn;
+
+        // Ensure we grab the desktop wrapper component if applicable
+        if (nativeBtn.tagName !== 'SIDE-NAV-ACTION-BUTTON' && nativeBtn.closest('side-nav-action-button')) {
+            wrapperToClone = nativeBtn.closest('side-nav-action-button');
         }
 
+        // Prevent duplicating if already injected ABOVE the native setting
         if (wrapperToClone.previousElementSibling && wrapperToClone.previousElementSibling.classList.contains('bg-expressive-settings-shortcut')) {
             return;
         }
 
-        const customWrapper = wrapperToClone.cloneNode(true);
-        customWrapper.classList.add('bg-expressive-settings-shortcut');
-        customWrapper.removeAttribute('id');
+        let customWrapper;
+        let isMobile = false;
 
+        // Desktop uses custom element, Mobile uses raw button
+        if (wrapperToClone.tagName.includes('-')) {
+            customWrapper = document.createElement('div');
+            Array.from(wrapperToClone.attributes).forEach(attr => {
+                if (attr.name !== 'id' && attr.name !== 'data-test-id') {
+                    customWrapper.setAttribute(attr.name, attr.value);
+                }
+            });
+            customWrapper.innerHTML = wrapperToClone.innerHTML;
+        } else {
+            isMobile = true;
+            customWrapper = wrapperToClone.cloneNode(true);
+            customWrapper.removeAttribute('id');
+        }
+
+        customWrapper.classList.add('bg-expressive-settings-shortcut');
+
+        // Remove ALL data-test-id from the clone and its children so Angular tests ignore it
         customWrapper.removeAttribute('data-test-id');
         customWrapper.querySelectorAll('[data-test-id]').forEach(el => el.removeAttribute('data-test-id'));
 
         const button = customWrapper.tagName === 'BUTTON' ? customWrapper : customWrapper.querySelector('button');
 
         if (button) {
+            // Strip out Angular's reactive UI classes
             button.classList.remove('mat-mdc-menu-trigger', 'mat-mdc-tooltip-trigger');
             button.removeAttribute('aria-controls');
             button.removeAttribute('aria-expanded');
@@ -189,57 +213,81 @@ function injectSettingsShortcut() {
             const labelText = getExpressiveLabel();
             button.setAttribute('aria-label', labelText);
 
-            let tooltip = document.getElementById('bg-expressive-sidebar-tooltip');
-            if (!tooltip) {
-                tooltip = document.createElement('div');
-                tooltip.id = 'bg-expressive-sidebar-tooltip';
-                tooltip.className = 'bg-sidebar-tooltip';
-                document.body.appendChild(tooltip);
-            }
-
-            button.addEventListener('mouseenter', () => {
-                tooltip.textContent = getExpressiveLabel();
-                const expandedSidebar = document.querySelector('.sidenav-with-history-container.expanded');
-
-                if (!expandedSidebar) {
-                    const rect = button.getBoundingClientRect();
-                    tooltip.style.left = (rect.right + 8) + 'px';
-                    tooltip.style.top = (rect.top + rect.height / 2) + 'px';
-                    tooltip.classList.add('visible');
+            // Global Body Tooltip logic to escape overflow: hidden (Desktop only)
+            if (!isMobile) {
+                let tooltip = document.getElementById('bg-expressive-sidebar-tooltip');
+                if (!tooltip) {
+                    tooltip = document.createElement('div');
+                    tooltip.id = 'bg-expressive-sidebar-tooltip';
+                    tooltip.className = 'bg-sidebar-tooltip';
+                    document.body.appendChild(tooltip);
                 }
-            });
 
-            button.addEventListener('mouseleave', () => {
-                tooltip.classList.remove('visible');
-            });
+                button.addEventListener('mouseenter', () => {
+                    tooltip.textContent = getExpressiveLabel();
+                    const expandedSidebar = document.querySelector('.sidenav-with-history-container.expanded');
+
+                    // Show tooltip ONLY if sidebar is closed (collapsed)
+                    if (!expandedSidebar) {
+                        const rect = button.getBoundingClientRect();
+                        tooltip.style.left = (rect.right + 8) + 'px';
+                        tooltip.style.top = (rect.top + rect.height / 2) + 'px';
+                        tooltip.classList.add('visible');
+                    }
+                });
+
+                button.addEventListener('mouseleave', () => {
+                    tooltip.classList.remove('visible');
+                });
+            }
 
             button.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                tooltip.classList.remove('visible');
+                const tooltip = document.getElementById('bg-expressive-sidebar-tooltip');
+                if (tooltip) tooltip.classList.remove('visible');
                 chrome.runtime.sendMessage({action: 'openSettings'});
             });
         }
 
-        const iconContainer = customWrapper.querySelector('.mat-mdc-list-item-icon, .icon-container');
-        if (iconContainer) {
-            iconContainer.innerHTML = '';
-            const customIcon = document.createElement('span');
-            customIcon.className = 'bg-expressive-sidebar-icon';
-            customIcon.style.setProperty('--bg-icon-url', `url(${chrome.runtime.getURL('assets/icons/expressive.svg')})`);
-            iconContainer.appendChild(customIcon);
-        }
+        // Replace Icon and Text based on layout (Desktop vs Mobile)
+        if (isMobile) {
+            const matIcon = customWrapper.querySelector('mat-icon');
+            if (matIcon) {
+                const customIcon = document.createElement('span');
+                customIcon.className = 'bg-expressive-sidebar-icon mat-mdc-list-item-icon mdc-list-item__start';
+                customIcon.style.setProperty('--bg-icon-url', `url(${chrome.runtime.getURL('assets/icons/expressive.svg')})`);
+                matIcon.parentNode.replaceChild(customIcon, matIcon);
+            }
 
-        const textContainer = customWrapper.querySelector('.mdc-list-item__primary-text');
-        if (textContainer) {
-            const innerSpan = textContainer.querySelector('span');
-            if (innerSpan) {
-                innerSpan.textContent = getExpressiveLabel();
-            } else {
-                textContainer.textContent = getExpressiveLabel();
+            const textSpan = customWrapper.querySelector('.mdc-button__label .gds-label-l');
+            if (textSpan) {
+                textSpan.textContent = getExpressiveLabel();
+                textSpan.removeAttribute('mattooltip');
+                textSpan.classList.remove('mat-mdc-tooltip-trigger');
+            }
+        } else {
+            const iconContainer = customWrapper.querySelector('.mat-mdc-list-item-icon, .icon-container');
+            if (iconContainer) {
+                iconContainer.innerHTML = '';
+                const customIcon = document.createElement('span');
+                customIcon.className = 'bg-expressive-sidebar-icon';
+                customIcon.style.setProperty('--bg-icon-url', `url(${chrome.runtime.getURL('assets/icons/expressive.svg')})`);
+                iconContainer.appendChild(customIcon);
+            }
+
+            const textContainer = customWrapper.querySelector('.mdc-list-item__primary-text');
+            if (textContainer) {
+                const innerSpan = textContainer.querySelector('span');
+                if (innerSpan) {
+                    innerSpan.textContent = getExpressiveLabel();
+                } else {
+                    textContainer.textContent = getExpressiveLabel();
+                }
             }
         }
 
+        // Insert BEFORE the original settings button so it appears above it
         wrapperToClone.parentNode.insertBefore(customWrapper, wrapperToClone);
     });
 }
@@ -715,7 +763,6 @@ function injectUIFixes() {
                filter: invert(1);
             }
 
-            /* Custom Sidebar Icon Styling */
             .bg-expressive-sidebar-icon {
                 width: var(--gem-sys-typography-icon-scale--icon-l-font-size, 20px);
                 height: var(--gem-sys-typography-icon-scale--icon-l-font-size, 20px);
@@ -729,9 +776,9 @@ function injectUIFixes() {
                 mask-repeat: no-repeat;
                 -webkit-mask-position: center;
                 mask-position: center;
+                margin-right: 12px !important;
             }
 
-            /* Global Fixed Tooltip styling to bypass overflow hidden */
             .bg-expressive-settings-shortcut button {
                 overflow: visible !important;
             }

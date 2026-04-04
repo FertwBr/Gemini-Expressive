@@ -343,6 +343,7 @@ body.bg-dynamic-theme-enabled .mdc-linear-progress__buffer-bar {
     mask-repeat: no-repeat;
     -webkit-mask-position: center;
     mask-position: center;
+    margin-right: 12px !important
 }
 
 .bg-expressive-settings-shortcut button {
