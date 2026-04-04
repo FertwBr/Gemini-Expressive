@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gemini Expressive Snippets</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&family=Poppins:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"/>
+    <link rel="stylesheet" href="../styles/settings/main.css">
+</head>
+<body>
+<div class="page-wrapper">
+    <div class="app-layout-container">
+        <div style="margin-bottom: 24px;">
+            <a href="settings.html" class="action-btn-outline" style="padding: 6px 16px; font-size: 0.85rem;">
+                <span class="material-symbols-outlined" style="font-size: 18px;">arrow_back</span>
+                <span data-i18n="backToSettings">Back to Settings</span>
+            </a>
+        </div>
+
+        <header class="page-header-container" style="margin-bottom: 24px;">
+            <div class="header-content-wrapper">
+                <span class="material-symbols-outlined" style="font-size: 42px; color: var(--md-sys-color-primary);">edit_note</span>
+                <div>
+                    <h1 class="viewer-title" data-i18n="snippetsTitle">Prompt Snippets</h1>
+                    <p class="header-intro" data-i18n="snippetsSubtitle">Manage your saved prompts and quick
+                        shortcuts.</p>
+                </div>
+            </div>
+        </header>
+
+        <div class="snippets-layout">
+            <div class="snippets-sidebar">
+                <button id="addNewBtn" class="action-btn-primary"
+                        style="width: 100%; justify-content: center; margin-bottom: 16px;">
+                    <span class="material-symbols-outlined">add</span>
+                    <span data-i18n="addSnippetBtn">New Snippet</span>
+                </button>
+                <div id="snippetsList" class="snippets-list-container">
+                </div>
+            </div>
+
+            <div class="snippet-editor-card" id="editorCard" style="display: none;">
+                <div>
+                    <label class="input-label" data-i18n="snippetKeywordLabel">Keyword / Shortcut</label>
+                    <input type="text" id="snippetKeyword" class="custom-input" placeholder="/keyword"
+                           data-i18n-placeholder="snippetKeywordPlaceholder">
+                </div>
+                <div>
+                    <label class="input-label" data-i18n="snippetContentLabel">Prompt Content</label>
+                    <textarea id="snippetContent" class="custom-input custom-textarea"
+                              placeholder="Write your detailed prompt here..."
+                              data-i18n-placeholder="snippetContentPlaceholder"></textarea>
+                </div>
+                <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 8px;">
+                    <button id="deleteSnippetBtn" class="action-btn-outline"
+                            style="color: #d32f2f; border-color: #d32f2f;">
+                        <span class="material-symbols-outlined" style="font-size: 18px;">delete</span>
+                        <span data-i18n="deleteSnippetBtn">Delete</span>
+                    </button>
+                    <button id="saveSnippetBtn" class="action-btn-primary">
+                        <span class="material-symbols-outlined" style="font-size: 18px;">save</span>
+                        <span data-i18n="saveSnippetBtn">Save</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="toast-notification" class="toast-notification">
+    <span class="material-symbols-outlined" style="font-size: 18px;">check_circle</span>
+    <span id="toast-message"></span>
+</div>
+
+<script src="../scripts/strings.js"></script>
+<script src="../scripts/theme_utils.js"></script>
+<script src="snippets.js"></script>
+</body>
+</html>
