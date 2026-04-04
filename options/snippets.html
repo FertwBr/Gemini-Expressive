@@ -45,9 +45,13 @@
             </div>
 
             <div class="snippet-editor-card" id="editorCard" style="display: none;">
+                <div class="editor-header">
+                    <span id="editorTitleIcon" class="material-symbols-outlined">add_circle</span>
+                    <h3 id="editorTitleText" data-i18n="createSnippetTitle">Create New Snippet</h3>
+                </div>
                 <div>
                     <label class="input-label" data-i18n="snippetKeywordLabel">Keyword / Shortcut</label>
-                    <input type="text" id="snippetKeyword" class="custom-input" placeholder="/keyword"
+                    <input type="text" id="snippetKeyword" class="custom-input" placeholder="keyword"
                            data-i18n-placeholder="snippetKeywordPlaceholder">
                 </div>
                 <div>
@@ -64,7 +68,7 @@
                     </button>
                     <button id="saveSnippetBtn" class="action-btn-primary">
                         <span class="material-symbols-outlined" style="font-size: 18px;">save</span>
-                        <span data-i18n="saveSnippetBtn">Save</span>
+                        <span id="saveSnippetBtnText" data-i18n="createBtn">Create</span>
                     </button>
                 </div>
             </div>

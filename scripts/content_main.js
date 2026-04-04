@@ -169,7 +169,7 @@ function injectSettingsShortcut() {
             button.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                chrome.runtime.sendMessage({action: 'openSettings'});
+                chrome.runtime.sendMessage({ action: 'openSettings' });
             });
         }
 
@@ -223,7 +223,7 @@ function insertSnippet(snippet) {
 
     const targetEditor = snippetState.node.parentElement ? snippetState.node.parentElement.closest('.ql-editor') : null;
     if (targetEditor) {
-        targetEditor.dispatchEvent(new Event('input', {bubbles: true}));
+        targetEditor.dispatchEvent(new Event('input', { bubbles: true }));
     }
 
     closeSnippetMenu();
@@ -268,7 +268,6 @@ function renderSnippetMenu() {
 
         const keywordNode = document.createElement('span');
         keywordNode.className = 'bg-snippet-keyword';
-        // Clean the keyword just in case legacy data is present, then prepend active prefix
         const cleanKw = snippet.keyword.replace(/^[/*!#@]+/, '');
         keywordNode.textContent = extensionSettings.snippetPrefix + cleanKw;
 
@@ -302,7 +301,7 @@ function renderSnippetMenu() {
 
     const activeItem = menu.querySelector('.bg-snippet-menu-item.active');
     if (activeItem) {
-        activeItem.scrollIntoView({block: 'nearest'});
+        activeItem.scrollIntoView({ block: 'nearest' });
     }
 }
 
@@ -346,10 +345,8 @@ function checkSnippetTrigger() {
     const offset = range.startOffset;
     const textBeforeCursor = text.substring(0, offset);
 
-    // Escape regex characters just in case the prefix is special
     const safePrefix = extensionSettings.snippetPrefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-    // Group 1 captures the FULL trigger (e.g., "!react"). Group 2 captures the WORD ("react")
     const regex = new RegExp('(?:^|\\s)(' + safePrefix + '([\\w-]*))$');
     const match = textBeforeCursor.match(regex);
 
@@ -361,7 +358,7 @@ function checkSnippetTrigger() {
             const matches = extensionSettings.snippets.filter(s => {
                 const cleanKw = s.keyword.replace(/^[/*!#@]+/, '').toLowerCase();
                 return cleanKw.startsWith(searchWord);
-            });
+            }).slice(0, 5);
 
             if (matches.length > 0) {
                 const startOffset = offset - fullTypedText.length;
@@ -588,7 +585,7 @@ function injectUIFixes() {
                 display: none;
                 flex-direction: column;
                 padding: 8px 0;
-                font-family: "Google Sans", "Google Sans Text", "Google Sans Flex", sans-serif;
+                font-family: "Google Sans Flex", "Google Sans Text", "Google Sans", sans-serif;
             }
             #bg-snippet-menu.visible {
                 display: flex;
@@ -613,6 +610,7 @@ function injectUIFixes() {
                 text-align: left;
                 color: var(--bg-sys-color-on-surface, #e3e2e6);
                 transition: background 0.2s;
+                font-family: "Google Sans Flex", "Google Sans Text", "Google Sans", sans-serif;
             }
             .bg-snippet-menu-item.active {
                 background: var(--bg-sys-color-surface-variant, #44474e);

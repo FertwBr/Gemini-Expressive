@@ -56,6 +56,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const toastMessage = document.getElementById('toast-message');
     const versionText = document.getElementById('versionText');
 
+    const editorTitleIcon = document.getElementById('editorTitleIcon');
+    const editorTitleText = document.getElementById('editorTitleText');
+    const saveSnippetBtnText = document.getElementById('saveSnippetBtnText');
+
     const dropdownBtn = document.getElementById('langDropdownBtn');
     const dropdownMenu = document.getElementById('langDropdownMenu');
     const currentFlag = document.getElementById('currentFlag');
@@ -66,6 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentEditingId = null;
     let toastTimeout;
     let currentPrefix = '/';
+    let draggedItemIndex = null;
 
     if (versionText && chrome.runtime && chrome.runtime.getManifest) {
         versionText.textContent = 'v' + chrome.runtime.getManifest().version;
@@ -161,7 +166,6 @@ document.addEventListener('DOMContentLoaded', () => {
         chrome.storage.local.get(['geminiSnippets'], (result) => {
             let rawSnippets = result.geminiSnippets || [];
 
-            // MIGRATION: Remove any prefix saved historically in the keyword field
             let needsMigration = false;
             snippets = rawSnippets.map(s => {
                 if (s.keyword && s.keyword.match(/^[/*!#@]+/)) {
@@ -172,7 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (needsMigration) {
-                chrome.storage.local.set({geminiSnippets: snippets});
+                chrome.storage.local.set({ geminiSnippets: snippets });
             }
 
             renderList();
@@ -207,14 +211,79 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     function renderList() {
         snippetsListEl.innerHTML = '';
-        snippets.forEach(snippet => {
+        snippets.forEach((snippet, index) => {
             const item = document.createElement('div');
             item.className = `snippet-list-item ${currentEditingId === snippet.id ? 'active' : ''}`;
+            item.draggable = true;
+            item.dataset.index = index;
+
             item.innerHTML = `
-                <div class="snippet-item-keyword">${currentPrefix}${snippet.keyword}</div>
-                <div class="snippet-item-preview">${snippet.content}</div>
+                <div class="snippet-item-drag-handle">
+                    <span class="material-symbols-outlined">drag_indicator</span>
+                </div>
+                <div class="snippet-item-content">
+                    <div class="snippet-item-keyword">${currentPrefix}${snippet.keyword}</div>
+                    <div class="snippet-item-preview">${snippet.content}</div>
+                </div>
             `;
+
             item.onclick = () => selectSnippet(snippet.id);
+
+            item.addEventListener('dragstart', (e) => {
+                draggedItemIndex = index;
+                e.dataTransfer.effectAllowed = 'move';
+                setTimeout(() => item.classList.add('dragging'), 0);
+            });
+
+            item.addEventListener('dragend', () => {
+                item.classList.remove('dragging');
+                draggedItemIndex = null;
+            });
+
+            item.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'move';
+                const draggingElement = snippetsListEl.querySelector('.dragging');
+                if (draggingElement && draggingElement !== item) {
+                    const bounding = item.getBoundingClientRect();
+                    const offset = bounding.y + (bounding.height / 2);
+                    if (e.clientY - offset > 0) {
+                        item.style.borderBottom = '2px solid var(--md-sys-color-primary)';
+                        item.style.borderTop = '';
+                    } else {
+                        item.style.borderTop = '2px solid var(--md-sys-color-primary)';
+                        item.style.borderBottom = '';
+                    }
+                }
+            });
+
+            item.addEventListener('dragleave', () => {
+                item.style.borderBottom = '';
+                item.style.borderTop = '';
+            });
+
+            item.addEventListener('drop', (e) => {
+                e.preventDefault();
+                item.style.borderBottom = '';
+                item.style.borderTop = '';
+                if (draggedItemIndex === null || draggedItemIndex === index) return;
+
+                const bounding = item.getBoundingClientRect();
+                const offset = bounding.y + (bounding.height / 2);
+                let dropIndex = index;
+                if (e.clientY - offset > 0) {
+                    dropIndex = index + 1;
+                }
+
+                const draggedSnippet = snippets.splice(draggedItemIndex, 1)[0];
+                if (dropIndex > draggedItemIndex) dropIndex--;
+                snippets.splice(dropIndex, 0, draggedSnippet);
+
+                saveSnippets(() => {
+                    renderList();
+                });
+            });
+
             snippetsListEl.appendChild(item);
         });
     }
@@ -229,11 +298,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (snippet) {
             keywordInput.value = snippet.keyword;
             contentInput.value = snippet.content;
+
+            editorTitleIcon.textContent = 'edit';
+            editorTitleText.textContent = getBgString('editSnippetTitle');
+            saveSnippetBtnText.textContent = getBgString('saveChangesBtn');
+            editorCard.classList.remove('is-new');
+
             editorCard.style.display = 'flex';
             deleteBtn.style.display = 'inline-flex';
             renderList();
             if (window.innerWidth < 800) {
-                window.scrollTo({top: 0, behavior: 'smooth'});
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         }
     }
@@ -242,12 +317,18 @@ document.addEventListener('DOMContentLoaded', () => {
         currentEditingId = 'new_' + Date.now();
         keywordInput.value = '';
         contentInput.value = '';
+
+        editorTitleIcon.textContent = 'add_circle';
+        editorTitleText.textContent = getBgString('createSnippetTitle');
+        saveSnippetBtnText.textContent = getBgString('createBtn');
+        editorCard.classList.add('is-new');
+
         editorCard.style.display = 'flex';
         deleteBtn.style.display = 'none';
         keywordInput.focus();
         renderList();
         if (window.innerWidth < 800) {
-            window.scrollTo({top: 0, behavior: 'smooth'});
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     };
 
@@ -255,7 +336,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const rawKw = keywordInput.value.trim();
         const ct = contentInput.value.trim();
 
-        // Strip any prefix the user might have typed by habit
         const cleanKw = rawKw.replace(/^[/*!#@]+/, '');
 
         if (!cleanKw || !ct) {
@@ -282,6 +362,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         saveSnippets(() => {
             showToast(getBgString('statusSaved'));
+
+            editorTitleIcon.textContent = 'edit';
+            editorTitleText.textContent = getBgString('editSnippetTitle');
+            saveSnippetBtnText.textContent = getBgString('saveChangesBtn');
+            editorCard.classList.remove('is-new');
+            deleteBtn.style.display = 'inline-flex';
+
             renderList();
         });
     };

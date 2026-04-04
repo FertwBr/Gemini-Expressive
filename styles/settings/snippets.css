@@ -1,4 +1,4 @@
-/* styles/settings/snippets.css */
+styles/settings/snippets.css
 .snippets-layout {
     display: flex;
     flex-direction: column;
@@ -42,7 +42,7 @@
 }
 
 .snippet-list-item {
-    padding: 14px 16px;
+    padding: 12px;
     background: var(--md-sys-color-surface);
     border: 1px solid var(--md-sys-color-outline-variant);
     border-radius: 12px;
@@ -51,8 +51,26 @@
     text-align: left;
     color: var(--md-sys-color-on-surface);
     display: flex;
-    flex-direction: column;
-    gap: 6px;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+}
+
+.snippet-item-drag-handle {
+    color: var(--md-sys-color-outline-variant);
+    cursor: grab;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.snippet-item-drag-handle:hover {
+    color: var(--md-sys-color-on-surface);
+}
+
+.snippet-list-item.dragging {
+    opacity: 0.5;
+    background: var(--md-sys-color-surface-container-highest);
 }
 
 .snippet-list-item:hover {
@@ -64,6 +82,14 @@
 .snippet-list-item.active {
     border-color: var(--md-sys-color-primary);
     background: rgba(var(--md-sys-color-primary-rgb), 0.05);
+}
+
+.snippet-item-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    overflow: hidden;
+    flex: 1;
 }
 
 .snippet-item-keyword {
@@ -90,6 +116,27 @@
     gap: 20px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.02);
     order: 1;
+}
+
+.snippet-editor-card.is-new {
+    border: 2px dashed var(--md-sys-color-primary);
+    background: rgba(var(--md-sys-color-primary-rgb), 0.02);
+}
+
+.editor-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--md-sys-color-primary);
+    margin-bottom: 4px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.editor-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
 }
 
 @media (min-width: 800px) {
