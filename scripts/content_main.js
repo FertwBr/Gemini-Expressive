@@ -752,24 +752,6 @@ function injectUIFixes() {
                 overflow: hidden;
                 text-overflow: ellipsis;
             }
-            
-            :root {
-               --bg-svg-filter: none;
-            }
-            
-            @media (prefers-color-scheme: dark) {
-               :root {
-                  --bg-svg-filter: invert(1);
-               }
-            }
-            
-            body.bg-dynamic-theme-enabled .bg-collapse-svg-icon {
-               filter: invert(0); 
-            }
-            
-            body.bg-dynamic-theme-enabled.dark-theme .bg-collapse-svg-icon {
-               filter: invert(1);
-            }
 
             .bg-expressive-sidebar-icon {
                 width: var(--gem-sys-typography-icon-scale--icon-l-font-size, 20px);
