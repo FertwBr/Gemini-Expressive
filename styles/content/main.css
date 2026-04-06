@@ -407,6 +407,13 @@ body.bg-dynamic-theme-enabled .file-preview .cancel-button:hover .mat-icon {
     color: var(--bg-sys-color-on-surface) !important;
 }
 
+body.bg-hide-upgrade button:has(.dynamic-upsell-label),
+body.bg-hide-upgrade a:has(.dynamic-upsell-label),
+body.bg-hide-upgrade side-nav-action-button:has(.dynamic-upsell-label),
+body.bg-hide-upgrade div:has(> .dynamic-upsell-label) {
+    display: none !important;
+}
+
 .bg-expressive-sidebar-icon {
     width: var(--gem-sys-typography-icon-scale--icon-l-font-size, 20px);
     height: var(--gem-sys-typography-icon-scale--icon-l-font-size, 20px);

@@ -70,6 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const codeNavSwitch = document.getElementById('enableCodeNav');
     const headersSwitch = document.getElementById('enableHeaders');
     const dynamicColorSwitch = document.getElementById('enableDynamicColor');
+    const hideUpgradeSwitch = document.getElementById('hideUpgradeBtn');
     const colorPickerRow = document.getElementById('colorPickerRow');
     const colorPicker = document.getElementById('themeColorPicker');
     const colorSwatches = document.querySelectorAll('.color-swatch');
@@ -223,12 +224,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let selectedLang = 'auto';
 
-    chrome.storage.sync.get(['timelineEnabled', 'collapseEnabled', 'codeNavEnabled', 'headersEnabled', 'language', 'themeMode', 'themeColor', 'dynamicColorEnabled', 'snippetPrefix'], (items) => {
+    chrome.storage.sync.get(['timelineEnabled', 'collapseEnabled', 'codeNavEnabled', 'headersEnabled', 'language', 'themeMode', 'themeColor', 'dynamicColorEnabled', 'snippetPrefix', 'hideUpgradeEnabled'], (items) => {
         timelineSwitch.checked = items.timelineEnabled !== false;
         collapseSwitch.checked = items.collapseEnabled !== false;
         codeNavSwitch.checked = items.codeNavEnabled !== false;
         headersSwitch.checked = items.headersEnabled !== false;
         dynamicColorSwitch.checked = items.dynamicColorEnabled !== false;
+        hideUpgradeSwitch.checked = items.hideUpgradeEnabled === true;
 
         if (items.snippetPrefix) {
             selectedPrefix = items.snippetPrefix;
@@ -281,6 +283,7 @@ document.addEventListener('DOMContentLoaded', () => {
             themeColor: colorPicker.value,
             language: selectedLang,
             dynamicColorEnabled: dynamicColorSwitch.checked,
+            hideUpgradeEnabled: hideUpgradeSwitch.checked,
             snippetPrefix: selectedPrefix
         }, () => {
             currentLanguage = selectedLang === 'auto' ? navigator.language.split('-')[0] : selectedLang;
@@ -317,6 +320,7 @@ document.addEventListener('DOMContentLoaded', () => {
     codeNavSwitch.addEventListener('change', () => saveSettings(false));
     headersSwitch.addEventListener('change', () => saveSettings(false));
     dynamicColorSwitch.addEventListener('change', () => saveSettings(true));
+    hideUpgradeSwitch.addEventListener('change', () => saveSettings(false));
 
     prefixDropdownBtn.addEventListener('click', (e) => {
         e.stopPropagation();

@@ -19,7 +19,8 @@ let extensionSettings = {
     themeColor: '#0b57d0',
     snippets: [],
     snippetPrefix: '/',
-    dynamicColorEnabled: true
+    dynamicColorEnabled: true,
+    hideUpgradeEnabled: false
 };
 
 /**
@@ -33,6 +34,7 @@ function applyFeatureToggles() {
         document.body.classList.toggle('bg-headers-disabled', !extensionSettings.headersEnabled);
         document.body.classList.toggle('bg-code-nav-disabled', !extensionSettings.codeNavEnabled);
         document.body.classList.toggle('bg-dynamic-theme-enabled', extensionSettings.dynamicColorEnabled);
+        document.body.classList.toggle('bg-hide-upgrade', extensionSettings.hideUpgradeEnabled);
     }
 }
 
@@ -811,7 +813,7 @@ function initializeExtension() {
         extensionSettings.snippets = localItems.geminiSnippets || [];
     });
 
-    chrome.storage.sync.get(['timelineEnabled', 'collapseEnabled', 'codeNavEnabled', 'headersEnabled', 'themeMode', 'themeColor', 'snippetPrefix', 'dynamicColorEnabled'], (items) => {
+    chrome.storage.sync.get(['timelineEnabled', 'collapseEnabled', 'codeNavEnabled', 'headersEnabled', 'themeMode', 'themeColor', 'snippetPrefix', 'dynamicColorEnabled', 'hideUpgradeEnabled'], (items) => {
         if (items.timelineEnabled !== undefined) {
             extensionSettings.timelineEnabled = items.timelineEnabled;
         }
@@ -835,6 +837,9 @@ function initializeExtension() {
         }
         if (items.dynamicColorEnabled !== undefined) {
             extensionSettings.dynamicColorEnabled = items.dynamicColorEnabled;
+        }
+        if (items.hideUpgradeEnabled !== undefined) {
+            extensionSettings.hideUpgradeEnabled = items.hideUpgradeEnabled;
         }
 
         attemptThemeApplication();
@@ -897,6 +902,9 @@ function initializeExtension() {
             }
             if (changes.dynamicColorEnabled !== undefined) {
                 extensionSettings.dynamicColorEnabled = changes.dynamicColorEnabled.newValue;
+            }
+            if (changes.hideUpgradeEnabled !== undefined) {
+                extensionSettings.hideUpgradeEnabled = changes.hideUpgradeEnabled.newValue;
             }
 
             attemptThemeApplication();
