@@ -164,12 +164,10 @@ function injectSettingsShortcut() {
     nativeSettingsBtns.forEach(nativeBtn => {
         let wrapperToClone = nativeBtn;
 
-        // Ensure we grab the desktop wrapper component if applicable
         if (nativeBtn.tagName !== 'SIDE-NAV-ACTION-BUTTON' && nativeBtn.closest('side-nav-action-button')) {
             wrapperToClone = nativeBtn.closest('side-nav-action-button');
         }
 
-        // Prevent duplicating if already injected ABOVE the native setting
         if (wrapperToClone.previousElementSibling && wrapperToClone.previousElementSibling.classList.contains('bg-expressive-settings-shortcut')) {
             return;
         }
@@ -177,7 +175,6 @@ function injectSettingsShortcut() {
         let customWrapper;
         let isMobile = false;
 
-        // Desktop uses custom element, Mobile uses raw button
         if (wrapperToClone.tagName.includes('-')) {
             customWrapper = document.createElement('div');
             Array.from(wrapperToClone.attributes).forEach(attr => {
@@ -185,7 +182,9 @@ function injectSettingsShortcut() {
                     customWrapper.setAttribute(attr.name, attr.value);
                 }
             });
-            customWrapper.innerHTML = wrapperToClone.innerHTML;
+            Array.from(wrapperToClone.childNodes).forEach(child => {
+                customWrapper.appendChild(child.cloneNode(true));
+            });
         } else {
             isMobile = true;
             customWrapper = wrapperToClone.cloneNode(true);
@@ -194,14 +193,12 @@ function injectSettingsShortcut() {
 
         customWrapper.classList.add('bg-expressive-settings-shortcut');
 
-        // Remove ALL data-test-id from the clone and its children so Angular tests ignore it
         customWrapper.removeAttribute('data-test-id');
         customWrapper.querySelectorAll('[data-test-id]').forEach(el => el.removeAttribute('data-test-id'));
 
         const button = customWrapper.tagName === 'BUTTON' ? customWrapper : customWrapper.querySelector('button');
 
         if (button) {
-            // Strip out Angular's reactive UI classes
             button.classList.remove('mat-mdc-menu-trigger', 'mat-mdc-tooltip-trigger');
             button.removeAttribute('aria-controls');
             button.removeAttribute('aria-expanded');
@@ -213,7 +210,6 @@ function injectSettingsShortcut() {
             const labelText = getExpressiveLabel();
             button.setAttribute('aria-label', labelText);
 
-            // Global Body Tooltip logic to escape overflow: hidden (Desktop only)
             if (!isMobile) {
                 let tooltip = document.getElementById('bg-expressive-sidebar-tooltip');
                 if (!tooltip) {
@@ -227,7 +223,6 @@ function injectSettingsShortcut() {
                     tooltip.textContent = getExpressiveLabel();
                     const expandedSidebar = document.querySelector('.sidenav-with-history-container.expanded');
 
-                    // Show tooltip ONLY if sidebar is closed (collapsed)
                     if (!expandedSidebar) {
                         const rect = button.getBoundingClientRect();
                         tooltip.style.left = (rect.right + 8) + 'px';
@@ -250,7 +245,6 @@ function injectSettingsShortcut() {
             });
         }
 
-        // Replace Icon and Text based on layout (Desktop vs Mobile)
         if (isMobile) {
             const matIcon = customWrapper.querySelector('mat-icon');
             if (matIcon) {
@@ -269,7 +263,7 @@ function injectSettingsShortcut() {
         } else {
             const iconContainer = customWrapper.querySelector('.mat-mdc-list-item-icon, .icon-container');
             if (iconContainer) {
-                iconContainer.innerHTML = '';
+                iconContainer.textContent = '';
                 const customIcon = document.createElement('span');
                 customIcon.className = 'bg-expressive-sidebar-icon';
                 customIcon.style.setProperty('--bg-icon-url', `url(${chrome.runtime.getURL('assets/icons/expressive.svg')})`);
@@ -287,7 +281,6 @@ function injectSettingsShortcut() {
             }
         }
 
-        // Insert BEFORE the original settings button so it appears above it
         wrapperToClone.parentNode.insertBefore(customWrapper, wrapperToClone);
     });
 }
@@ -347,7 +340,7 @@ function renderSnippetMenu() {
         }
     }
 
-    menu.innerHTML = '';
+    menu.textContent = '';
 
     const header = document.createElement('div');
     header.className = 'bg-snippet-menu-header';
