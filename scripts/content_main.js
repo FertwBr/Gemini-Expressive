@@ -18,24 +18,13 @@ let extensionSettings = {
     themeMode: 'auto',
     themeColor: '#0b57d0',
     snippets: [],
-    snippetPrefix: '/'
+    snippetPrefix: '/',
+    dynamicColorEnabled: true
 };
 
 /**
- * Applies dynamic themes specifically via the bundled or exposed theme utilities.
- */
-function attemptThemeApplication() {
-    if (typeof applyMaterialTheme === 'function' && !isApplyingTheme) {
-        isApplyingTheme = true;
-        applyMaterialTheme(extensionSettings.themeColor, extensionSettings.themeMode);
-        setTimeout(() => {
-            isApplyingTheme = false;
-        }, 150);
-    }
-}
-
-/**
  * Applies CSS classes to the body to instantly hide/show features based on settings.
+ * This is our "source of truth" to protect against Angular overwriting the body classes.
  */
 function applyFeatureToggles() {
     if (document.body) {
@@ -43,6 +32,26 @@ function applyFeatureToggles() {
         document.body.classList.toggle('bg-collapse-disabled', !extensionSettings.collapseEnabled);
         document.body.classList.toggle('bg-headers-disabled', !extensionSettings.headersEnabled);
         document.body.classList.toggle('bg-code-nav-disabled', !extensionSettings.codeNavEnabled);
+        document.body.classList.toggle('bg-dynamic-theme-enabled', extensionSettings.dynamicColorEnabled);
+    }
+}
+
+/**
+ * Applies dynamic themes specifically via the bundled or exposed theme utilities.
+ */
+function attemptThemeApplication() {
+    applyFeatureToggles();
+
+    if (!extensionSettings.dynamicColorEnabled) {
+        return;
+    }
+
+    if (typeof applyMaterialTheme === 'function' && !isApplyingTheme) {
+        isApplyingTheme = true;
+        applyMaterialTheme(extensionSettings.themeColor, extensionSettings.themeMode);
+        setTimeout(() => {
+            isApplyingTheme = false;
+        }, 150);
     }
 }
 
@@ -525,12 +534,18 @@ const observer = new MutationObserver((mutations) => {
         }
     }
 
-    if (themeChanged && extensionSettings.themeMode === 'auto' && !isApplyingTheme) {
-        attemptThemeApplication();
+    if (themeChanged) {
+        applyFeatureToggles();
+
+        if (extensionSettings.themeMode === 'auto' && !isApplyingTheme && extensionSettings.dynamicColorEnabled) {
+            attemptThemeApplication();
+        }
     }
 
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(() => {
+        applyFeatureToggles();
+
         if (extensionSettings.collapseEnabled && typeof processCodeBlocks === 'function') {
             processCodeBlocks();
         }
@@ -814,7 +829,7 @@ function initializeExtension() {
         extensionSettings.snippets = localItems.geminiSnippets || [];
     });
 
-    chrome.storage.sync.get(['timelineEnabled', 'collapseEnabled', 'codeNavEnabled', 'headersEnabled', 'themeMode', 'themeColor', 'snippetPrefix'], (items) => {
+    chrome.storage.sync.get(['timelineEnabled', 'collapseEnabled', 'codeNavEnabled', 'headersEnabled', 'themeMode', 'themeColor', 'snippetPrefix', 'dynamicColorEnabled'], (items) => {
         if (items.timelineEnabled !== undefined) {
             extensionSettings.timelineEnabled = items.timelineEnabled;
         }
@@ -836,8 +851,10 @@ function initializeExtension() {
         if (items.snippetPrefix !== undefined) {
             extensionSettings.snippetPrefix = items.snippetPrefix;
         }
+        if (items.dynamicColorEnabled !== undefined) {
+            extensionSettings.dynamicColorEnabled = items.dynamicColorEnabled;
+        }
 
-        applyFeatureToggles();
         attemptThemeApplication();
 
         if (window.matchMedia) {
@@ -896,8 +913,10 @@ function initializeExtension() {
             if (changes.snippetPrefix) {
                 extensionSettings.snippetPrefix = changes.snippetPrefix.newValue;
             }
+            if (changes.dynamicColorEnabled !== undefined) {
+                extensionSettings.dynamicColorEnabled = changes.dynamicColorEnabled.newValue;
+            }
 
-            applyFeatureToggles();
             attemptThemeApplication();
 
             if (changes.timelineEnabled && changes.timelineEnabled.newValue && typeof updateTimeline === 'function') {
