@@ -176,18 +176,29 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (needsMigration) {
-                chrome.storage.local.set({ geminiSnippets: snippets });
+                chrome.storage.local.set({geminiSnippets: snippets});
             }
 
             renderList();
             if (snippets.length === 0) {
                 editorCard.style.display = 'none';
-                snippetsListEl.innerHTML = `
-                    <div class="empty-state-wrapper">
-                        <span class="material-symbols-outlined empty-state-icon">note_stack</span>
-                        <div class="empty-state-title" data-i18n="noSnippetsFound">${getBgString('noSnippetsFound')}</div>
-                    </div>
-                `;
+                snippetsListEl.textContent = '';
+
+                const emptyStateWrapper = document.createElement('div');
+                emptyStateWrapper.className = 'empty-state-wrapper';
+
+                const emptyStateIcon = document.createElement('span');
+                emptyStateIcon.className = 'material-symbols-outlined empty-state-icon';
+                emptyStateIcon.textContent = 'note_stack';
+
+                const emptyStateTitle = document.createElement('div');
+                emptyStateTitle.className = 'empty-state-title';
+                emptyStateTitle.setAttribute('data-i18n', 'noSnippetsFound');
+                emptyStateTitle.textContent = getBgString('noSnippetsFound');
+
+                emptyStateWrapper.appendChild(emptyStateIcon);
+                emptyStateWrapper.appendChild(emptyStateTitle);
+                snippetsListEl.appendChild(emptyStateWrapper);
             } else if (currentEditingId === null) {
                 selectSnippet(snippets[0].id);
             }
@@ -210,22 +221,37 @@ document.addEventListener('DOMContentLoaded', () => {
      * Renders the snippets list in the sidebar.
      */
     function renderList() {
-        snippetsListEl.innerHTML = '';
+        snippetsListEl.textContent = '';
         snippets.forEach((snippet, index) => {
             const item = document.createElement('div');
             item.className = `snippet-list-item ${currentEditingId === snippet.id ? 'active' : ''}`;
             item.draggable = true;
             item.dataset.index = index;
 
-            item.innerHTML = `
-                <div class="snippet-item-drag-handle">
-                    <span class="material-symbols-outlined">drag_indicator</span>
-                </div>
-                <div class="snippet-item-content">
-                    <div class="snippet-item-keyword">${currentPrefix}${snippet.keyword}</div>
-                    <div class="snippet-item-preview">${snippet.content}</div>
-                </div>
-            `;
+            const dragHandle = document.createElement('div');
+            dragHandle.className = 'snippet-item-drag-handle';
+
+            const dragIcon = document.createElement('span');
+            dragIcon.className = 'material-symbols-outlined';
+            dragIcon.textContent = 'drag_indicator';
+            dragHandle.appendChild(dragIcon);
+
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'snippet-item-content';
+
+            const keywordDiv = document.createElement('div');
+            keywordDiv.className = 'snippet-item-keyword';
+            keywordDiv.textContent = currentPrefix + snippet.keyword;
+
+            const previewDiv = document.createElement('div');
+            previewDiv.className = 'snippet-item-preview';
+            previewDiv.textContent = snippet.content;
+
+            contentDiv.appendChild(keywordDiv);
+            contentDiv.appendChild(previewDiv);
+
+            item.appendChild(dragHandle);
+            item.appendChild(contentDiv);
 
             item.onclick = () => selectSnippet(snippet.id);
 
@@ -308,7 +334,7 @@ document.addEventListener('DOMContentLoaded', () => {
             deleteBtn.style.display = 'inline-flex';
             renderList();
             if (window.innerWidth < 800) {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                window.scrollTo({top: 0, behavior: 'smooth'});
             }
         }
     }
@@ -328,7 +354,7 @@ document.addEventListener('DOMContentLoaded', () => {
         keywordInput.focus();
         renderList();
         if (window.innerWidth < 800) {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.scrollTo({top: 0, behavior: 'smooth'});
         }
     };
 
