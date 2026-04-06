@@ -88,7 +88,18 @@ const BG_LOCALES = {
         colorMauve: "Mauve",
         colorPinkPurple: "Pink Purple",
         colorPurple: "Purple",
-        colorCustom: "Custom Color"
+        colorCustom: "Custom Color",
+        helpSnippetPrefix: "The character you type in the chat box to open the snippet auto-complete menu.",
+        helpManageSnippets: "Create custom shortcuts for your most used, long prompts. Type your prefix + keyword in chat to expand them.",
+        helpTimeline: "A visual map of your chat history. Shapes indicate content: a circle for your prompts, a pill for Gemini's text responses, and a triangle for messages containing code blocks.",
+        helpCollapse: "Adds a button to hide long code blocks, making it easier to read the surrounding explanations.",
+        helpCodeNav: "Injects floating arrows when hovering over code, allowing you to instantly jump to the next or previous code block in the chat.",
+        helpHeaders: "Automatically detects the programming language, displays its official icon, and tries to extract the file name from the code context.",
+        helpHideUpgrade: "Removes the 'Upgrade to Gemini Advanced' button from the bottom left of the screen for a cleaner interface.",
+        helpThemeMode: "Forces the interface to be Light, Dark, or automatically follow your system's default preference.",
+        helpDynamicColor: "Overrides Google's default colors with a custom Material You palette generated from your chosen seed color.",
+        helpThemeColor: "Pick a base color. The extension will automatically calculate all the necessary shades for the interface.",
+        learnMore: "Learn more in the Help Center"
     },
     pt: {
         settingsTitle: "Gemini Expressive",
@@ -174,7 +185,18 @@ const BG_LOCALES = {
         colorMauve: "Mauve",
         colorPinkPurple: "Pink Purple",
         colorPurple: "Purple",
-        colorCustom: "Custom Color"
+        colorCustom: "Custom Color",
+        helpSnippetPrefix: "O caractere que você digita na caixa de chat para abrir o menu de atalhos automáticos.",
+        helpManageSnippets: "Crie atalhos para seus prompts longos mais usados. Digite seu prefixo + palavra-chave no chat para expandi-los.",
+        helpTimeline: "Um mapa visual do seu histórico. As formas indicam o conteúdo: um círculo para os seus prompts, uma pílula para as respostas de texto do Gemini e um triângulo para mensagens com código.",
+        helpCollapse: "Adiciona um botão para ocultar blocos de código longos, facilitando a leitura das explicações ao redor.",
+        helpCodeNav: "Injeta setas flutuantes ao passar o mouse sobre o código, permitindo pular instantaneamente para o bloco anterior ou seguinte.",
+        helpHeaders: "Detecta automaticamente a linguagem de programação, exibe seu ícone oficial e tenta extrair o nome do arquivo do contexto do código.",
+        helpHideUpgrade: "Remove o botão 'Fazer upgrade para o Gemini Advanced' do canto inferior esquerdo para uma interface mais limpa.",
+        helpThemeMode: "Força a interface a ser Clara, Escura ou seguir automaticamente a preferência do seu sistema.",
+        helpDynamicColor: "Substitui as cores padrão do Google por uma paleta Material You personalizada gerada a partir da cor escolhida.",
+        helpThemeColor: "Escolha uma cor base. A extensão calculará automaticamente todos os tons necessários para a interface.",
+        learnMore: "Saiba mais na Central de Ajuda"
     },
     es: {
         settingsTitle: "Gemini Expressive",
@@ -260,7 +282,18 @@ const BG_LOCALES = {
         colorMauve: "Mauve",
         colorPinkPurple: "Pink Purple",
         colorPurple: "Purple",
-        colorCustom: "Custom Color"
+        colorCustom: "Custom Color",
+        helpSnippetPrefix: "El carácter que escribes en el chat para abrir el menú de atajos.",
+        helpManageSnippets: "Crea atajos para tus prompts más usados. Escribe el prefijo + palabra clave para expandirlos.",
+        helpTimeline: "Un mapa visual del chat. Las formas indican el contenido: un círculo para tus prompts, una píldora para respuestas de texto y un triángulo para código.",
+        helpCollapse: "Añade un botón para ocultar bloques de código largos, facilitando la lectura del texto alrededor.",
+        helpCodeNav: "Muestra flechas flotantes al pasar el ratón sobre el código para saltar al siguiente o anterior.",
+        helpHeaders: "Detecta automáticamente el lenguaje de programación, muestra su icono e intenta extraer el nombre del archivo.",
+        helpHideUpgrade: "Oculta el botón 'Mejorar a Gemini Advanced' para una interfaz más limpia.",
+        helpThemeMode: "Fuerza la interfaz a Claro, Oscuro o sigue la preferencia del sistema.",
+        helpDynamicColor: "Reemplaza los colores de Google por una paleta Material You personalizada basada en el color elegido.",
+        helpThemeColor: "Elige un color base. La extensión calculará todos los tonos necesarios automáticamente.",
+        learnMore: "Más información en el Centro de Ayuda"
     },
     de: {
         settingsTitle: "Gemini Expressive",
@@ -346,7 +379,18 @@ const BG_LOCALES = {
         colorMauve: "Mauve",
         colorPinkPurple: "Pink Purple",
         colorPurple: "Purple",
-        colorCustom: "Custom Color"
+        colorCustom: "Custom Color",
+        helpSnippetPrefix: "Das Zeichen, das Sie eingeben, um das Schnipsel-Menü zu öffnen.",
+        helpManageSnippets: "Erstellen Sie Verknüpfungen für lange Prompts. Geben Sie Ihr Präfix + Schlüsselwort ein, um sie zu erweitern.",
+        helpTimeline: "Eine visuelle Karte Ihres Chats. Ein Kreis für Ihre Prompts, eine Pille für Textantworten und ein Dreieck für Code.",
+        helpCollapse: "Fügt eine Schaltfläche zum Ausblenden von Codeblöcken hinzu, um den Text besser lesen zu können.",
+        helpCodeNav: "Fügt Pfeile hinzu, um direkt zum nächsten oder vorherigen Codeblock zu springen.",
+        helpHeaders: "Erkennt die Programmiersprache, zeigt ihr Symbol an und extrahiert den Dateinamen.",
+        helpHideUpgrade: "Entfernt die Schaltfläche 'Upgrade' unten links für eine aufgeräumte Oberfläche.",
+        helpThemeMode: "Zwingt die Oberfläche in den hellen oder dunklen Modus oder folgt dem System.",
+        helpDynamicColor: "Ersetzt die Google-Farben durch eine benutzerdefinierte Material You-Palette.",
+        helpThemeColor: "Wählen Sie eine Grundfarbe. Die Erweiterung berechnet alle benötigten Farbtöne automatisch.",
+        learnMore: "Weitere Informationen im Hilfecenter"
     },
     hi: {
         settingsTitle: "Gemini Expressive",
@@ -432,7 +476,18 @@ const BG_LOCALES = {
         colorMauve: "Mauve",
         colorPinkPurple: "Pink Purple",
         colorPurple: "Purple",
-        colorCustom: "Custom Color"
+        colorCustom: "Custom Color",
+        helpSnippetPrefix: "वह वर्ण जिसे आप स्निपेट मेनू खोलने के लिए चैट बॉक्स में टाइप करते हैं।",
+        helpManageSnippets: "लंबे प्रॉम्प्ट के लिए कस्टम शॉर्टकट बनाएं। उन्हें विस्तृत करने के लिए चैट में अपना उपसर्ग + कीवर्ड टाइप करें।",
+        helpTimeline: "आपके चैट इतिहास का एक विज़ुअल मैप। एक घेरा आपके प्रॉम्प्ट के लिए, एक गोली पाठ प्रतिक्रियाओं के लिए, और एक त्रिकोण कोड के लिए।",
+        helpCollapse: "लंबे कोड ब्लॉक को छिपाने के लिए एक बटन जोड़ता है, जिससे पाठ पढ़ना आसान हो जाता है।",
+        helpCodeNav: "कोड पर होवर करने पर फ्लोटिंग तीर दिखाता है, जिससे आप अगले या पिछले कोड ब्लॉक पर जा सकते हैं।",
+        helpHeaders: "प्रोग्रामिंग भाषा का पता लगाता है, उसका आइकन दिखाता है और फ़ाइल नाम निकालता है।",
+        helpHideUpgrade: "एक साफ इंटरफ़ेस के लिए नीचे बाईं ओर से 'अपग्रेड' बटन हटाता है।",
+        helpThemeMode: "इंटरफ़ेस को हल्का, गहरा या सिस्टम प्राथमिकता का पालन करने के लिए बाध्य करता है।",
+        helpDynamicColor: "चुने गए रंग के आधार पर कस्टम Material You पैलेट के साथ Google के डिफ़ॉल्ट रंगों को बदलता है।",
+        helpThemeColor: "एक आधार रंग चुनें। एक्सटेंशन स्वचालित रूप से इंटरफ़ेस के लिए सभी आवश्यक रंगों की गणना करेगा।",
+        learnMore: "सहायता केंद्र में और जानें"
     },
     ja: {
         settingsTitle: "Gemini Expressive",
@@ -518,7 +573,18 @@ const BG_LOCALES = {
         colorMauve: "Mauve",
         colorPinkPurple: "Pink Purple",
         colorPurple: "Purple",
-        colorCustom: "Custom Color"
+        colorCustom: "Custom Color",
+        helpSnippetPrefix: "スニペットメニューを開くためにチャットボックスに入力する文字です。",
+        helpManageSnippets: "長いプロンプト用のカスタムショートカットを作成します。プレフィックスとキーワードを入力して展開します。",
+        helpTimeline: "チャット履歴の視覚的マップ。円はプロンプト、ピルはテキスト応答、三角形はコードを示します。",
+        helpCollapse: "長いコードブロックを非表示にするボタンを追加し、周囲のテキストを読みやすくします。",
+        helpCodeNav: "コードの上にマウスを置くとフローティング矢印が表示され、次または前のコードブロックにジャンプできます。",
+        helpHeaders: "プログラミング言語を検出し、アイコンを表示し、ファイル名を抽出します。",
+        helpHideUpgrade: "インターフェースをすっきりさせるために、「アップグレード」ボタンを非表示にします。",
+        helpThemeMode: "インターフェースをライト、ダーク、またはシステム設定に従わせます。",
+        helpDynamicColor: "Googleのデフォルトの色を、選択した色に基づくMaterial Youパレットに置き換えます。",
+        helpThemeColor: "ベースカラーを選択します。拡張機能は、必要なすべての色合いを自動的に計算します。",
+        learnMore: "ヘルプセンターで詳細を見る"
     }
 };
 
