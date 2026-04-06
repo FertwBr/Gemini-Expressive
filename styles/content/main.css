@@ -67,6 +67,14 @@ body.bg-dynamic-theme-enabled chat-app-banners {
     color: var(--bg-sys-color-on-surface) !important;
 }
 
+body.bg-dynamic-theme-enabled .disclaimer-container.information {
+    background-color: var(--bg-sys-color-surface-container-high) !important;
+}
+
+body.bg-dynamic-theme-enabled .disclaimer-container .content-container {
+    background: transparent !important;
+}
+
 body.bg-dynamic-theme-enabled .top-bar-actions .left-section,
 body.bg-dynamic-theme-enabled .top-bar-actions .center-section,
 body.bg-dynamic-theme-enabled .top-bar-actions .right-section,
@@ -303,6 +311,11 @@ body.bg-dynamic-theme-enabled .input-area-switch:hover,
 body.bg-dynamic-theme-enabled .toolbox-drawer-button:hover,
 body.bg-dynamic-theme-enabled .temp-chat-button:hover {
     background: var(--bg-sys-color-surface-variant) !important;
+}
+
+body.bg-dynamic-theme-enabled .mat-mdc-button-touch-target,
+body.bg-dynamic-theme-enabled .mat-mdc-button-ripple {
+    background: transparent !important;
 }
 
 body.bg-dynamic-theme-enabled .mat-mdc-menu-panel,

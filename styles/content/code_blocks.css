@@ -11,13 +11,18 @@
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
+    color: var(--gem-sys-color--on-surface-variant) !important;
+}
+
+.bg-collapse-icon-btn:hover {
+    color: var(--gem-sys-color--on-surface) !important;
 }
 
 .bg-collapse-svg-icon {
     width: 20px !important;
     height: 20px !important;
     display: inline-block;
-    background-color: currentColor;
+    background-color: currentColor !important;
     -webkit-mask-image: var(--bg-icon-url);
     mask-image: var(--bg-icon-url);
     -webkit-mask-size: contain;
@@ -48,7 +53,7 @@
     pointer-events: none;
     transition: all 0.15s cubic-bezier(0.2, 0, 0, 1);
     z-index: 1000;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 button:hover > .bg-custom-tooltip {
