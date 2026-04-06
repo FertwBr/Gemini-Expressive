@@ -17,8 +17,7 @@ let isManualScrolling = false;
 let scrollTimeout = null;
 
 /**
- * Retrieves the main message blocks from the DOM, ensuring no nested duplicates are included.
- * @returns {Array<Element>} Array of root chat block elements.
+ * @returns {Array<Element>}
  */
 function getMessageBlocks() {
     const selectors = 'user-query, model-response, message-row, chunked-message, [data-message-author], [data-test-id*="message"]';
@@ -27,9 +26,8 @@ function getMessageBlocks() {
 }
 
 /**
- * Extracts a meaningful preview string from the message block.
- * @param {Element} block The message block element.
- * @returns {Object} An object containing the preview text and an optional icon.
+ * @param {Element} block
+ * @returns {Object}
  */
 function getPreviewData(block) {
     let p = block.querySelector('p');
@@ -68,12 +66,16 @@ function getPreviewData(block) {
 }
 
 /**
- * Creates and injects the timeline container into the DOM.
- * @returns {HTMLElement} The timeline container element.
+ * @returns {HTMLElement}
  */
 function createTimelineContainer() {
     const container = document.createElement('div');
     container.id = 'better-gemini-timeline';
+
+    const topCounter = document.createElement('div');
+    topCounter.id = 'bg-timeline-counter-top';
+    topCounter.className = 'bg-timeline-counter';
+    container.appendChild(topCounter);
 
     const itemsContainer = document.createElement('div');
     itemsContainer.id = 'bg-timeline-items';
@@ -84,7 +86,61 @@ function createTimelineContainer() {
 
     container.appendChild(itemsContainer);
 
+    const bottomCounter = document.createElement('div');
+    bottomCounter.id = 'bg-timeline-counter-bottom';
+    bottomCounter.className = 'bg-timeline-counter';
+    container.appendChild(bottomCounter);
+
     document.body.appendChild(container);
+
+    let localScrollTimer = null;
+    let lastScrollTop = 0;
+
+    container.addEventListener('scroll', () => {
+        const st = container.scrollTop;
+        const direction = st > lastScrollTop ? 'down' : 'up';
+        lastScrollTop = st <= 0 ? 0 : st;
+
+        const items = container.querySelectorAll('.timeline-item');
+        const total = items.length;
+        if (total === 0) {
+            return;
+        }
+
+        let hiddenAbove = 0;
+        let hiddenBelow = 0;
+        const containerRect = container.getBoundingClientRect();
+        const topBoundary = containerRect.top + 24;
+        const bottomBoundary = containerRect.bottom - 24;
+
+        items.forEach(item => {
+            const rect = item.getBoundingClientRect();
+            if (rect.bottom < topBoundary) {
+                hiddenAbove++;
+            } else if (rect.top > bottomBoundary) {
+                hiddenBelow++;
+            }
+        });
+
+        if (direction === 'up' && hiddenAbove > 0) {
+            topCounter.textContent = `↑ +${hiddenAbove}`;
+            topCounter.classList.add('visible');
+            bottomCounter.classList.remove('visible');
+        } else if (direction === 'down' && hiddenBelow > 0) {
+            bottomCounter.textContent = `↓ +${hiddenBelow}`;
+            bottomCounter.classList.add('visible');
+            topCounter.classList.remove('visible');
+        } else {
+            topCounter.classList.remove('visible');
+            bottomCounter.classList.remove('visible');
+        }
+
+        clearTimeout(localScrollTimer);
+        localScrollTimer = setTimeout(() => {
+            topCounter.classList.remove('visible');
+            bottomCounter.classList.remove('visible');
+        }, 800);
+    }, {passive: true});
 
     window.addEventListener('scroll', () => {
         const tooltip = document.getElementById('bg-global-tooltip');
