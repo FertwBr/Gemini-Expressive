@@ -53,7 +53,7 @@ export class Localization {
     static apply() {
         document.querySelectorAll('[data-i18n]').forEach(el => {
             const key = el.getAttribute('data-i18n');
-            const translated = window.getBgString(key);
+            const translated = LocaleManager.getString(key);
             if (el.tagName === 'INPUT' && el.type === 'button') {
                 el.value = translated;
             } else {
@@ -63,7 +63,7 @@ export class Localization {
 
         document.querySelectorAll('[data-i18n-title]').forEach(el => {
             const key = el.getAttribute('data-i18n-title');
-            el.setAttribute('title', window.getBgString(key));
+            el.setAttribute('title', LocaleManager.getString(key));
         });
     }
 }
