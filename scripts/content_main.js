@@ -1,7 +1,8 @@
 /**
- * Timeout reference for debouncing the mutation observer.
- * @type {number|null}
+ * @fileoverview Main orchestrator script.
+ * @copyright (c) 2026 Fertwbr
  */
+
 let debounceTimer = null;
 
 let isApplyingTheme = false;
@@ -48,9 +49,9 @@ function attemptThemeApplication() {
         return;
     }
 
-    if (typeof applyMaterialTheme === 'function' && !isApplyingTheme) {
+    if (ThemeUtils && !isApplyingTheme) {
         isApplyingTheme = true;
-        applyMaterialTheme(extensionSettings.themeColor, extensionSettings.themeMode);
+        ThemeUtils.applyMaterialTheme(extensionSettings.themeColor, extensionSettings.themeMode);
         setTimeout(() => {
             isApplyingTheme = false;
         }, 150);
@@ -122,10 +123,6 @@ function executeThemeClick(themeButton, targetMode) {
     }, 150);
 }
 
-/**
- * Attempts to synchronize the extension's theme with Gemini's native theme setting.
- * @param {string} targetMode The theme mode to sync.
- */
 function syncNativeTheme(targetMode) {
     try {
         const themeButton = document.querySelector('[data-test-id="desktop-theme-menu-button"]');
@@ -160,7 +157,7 @@ function syncNativeTheme(targetMode) {
  * @returns {string} The text label for the Settings Menu
  */
 function getExpressiveLabel() {
-    return (typeof getBgString === 'function') ? getBgString('expressiveSettings') : 'Expressive Settings';
+    return (typeof LocaleManager !== 'undefined') ? LocaleManager.getString('expressiveSettings') : 'Expressive Settings';
 }
 
 /**
@@ -361,7 +358,7 @@ function renderSnippetMenu() {
     headerIcon.textContent = 'bolt';
 
     const headerText = document.createElement('span');
-    headerText.textContent = getBgString('snippetsTitle');
+    headerText.textContent = LocaleManager.getString('snippetsTitle');
 
     header.appendChild(headerIcon);
     header.appendChild(headerText);
@@ -373,7 +370,7 @@ function renderSnippetMenu() {
 
         const emptyText = document.createElement('span');
         emptyText.className = 'bg-snippet-empty-text';
-        emptyText.textContent = getBgString('snippetDropdownEmpty');
+        emptyText.textContent = LocaleManager.getString('snippetDropdownEmpty');
 
         const addBtn = document.createElement('button');
         addBtn.className = 'bg-snippet-add-btn';
@@ -387,7 +384,7 @@ function renderSnippetMenu() {
         addIcon.style.fontSize = '18px';
 
         const addText = document.createElement('span');
-        addText.textContent = getBgString('snippetDropdownAdd');
+        addText.textContent = LocaleManager.getString('snippetDropdownAdd');
 
         addBtn.appendChild(addIcon);
         addBtn.appendChild(addText);
@@ -605,14 +602,14 @@ const observer = new MutationObserver((mutations) => {
     debounceTimer = setTimeout(() => {
         applyFeatureToggles();
 
-        if (extensionSettings.collapseEnabled && typeof processCodeBlocks === 'function') {
-            processCodeBlocks();
+        if (extensionSettings.collapseEnabled && typeof CodeCollapser !== 'undefined') {
+            CodeCollapser.process();
         }
-        if (extensionSettings.headersEnabled && typeof enhanceCodeHeaders === 'function') {
-            enhanceCodeHeaders();
+        if (extensionSettings.headersEnabled && typeof CodeHeaderEnhancer !== 'undefined') {
+            CodeHeaderEnhancer.enhance();
         }
-        if (extensionSettings.timelineEnabled && typeof updateTimeline === 'function') {
-            updateTimeline();
+        if (extensionSettings.timelineEnabled && typeof TimelineBuilder !== 'undefined') {
+            TimelineBuilder.update();
         }
 
         injectSettingsShortcut();
