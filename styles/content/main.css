@@ -335,7 +335,9 @@ body.bg-dynamic-theme-enabled .mdc-button:not(.mat-mdc-unelevated-button):not(.m
     background: transparent !important;
 }
 
-body.bg-dynamic-theme-enabled .mdc-button:not(.mat-mdc-unelevated-button):not(.mat-mdc-raised-button):not(.mat-mdc-outlined-button) .mdc-button__label {
+body.bg-dynamic-theme-enabled .mdc-button:not(.mat-mdc-unelevated-button):not(.mat-mdc-raised-button):not(.mat-mdc-outlined-button) .mdc-button__label,
+body.bg-dynamic-theme-enabled .mdc-button:not(.mat-mdc-unelevated-button):not(.mat-mdc-raised-button):not(.mat-mdc-outlined-button) .mat-icon,
+body.bg-dynamic-theme-enabled .mdc-button:not(.mat-mdc-unelevated-button):not(.mat-mdc-raised-button):not(.mat-mdc-outlined-button) .google-symbols {
     color: var(--bg-sys-color-primary) !important;
 }
 
@@ -346,7 +348,11 @@ body.bg-dynamic-theme-enabled .mat-mdc-raised-button {
 }
 
 body.bg-dynamic-theme-enabled .mat-mdc-unelevated-button .mdc-button__label,
-body.bg-dynamic-theme-enabled .mat-mdc-raised-button .mdc-button__label {
+body.bg-dynamic-theme-enabled .mat-mdc-raised-button .mdc-button__label,
+body.bg-dynamic-theme-enabled .mat-mdc-unelevated-button .mat-icon,
+body.bg-dynamic-theme-enabled .mat-mdc-raised-button .mat-icon,
+body.bg-dynamic-theme-enabled .mat-mdc-unelevated-button .google-symbols,
+body.bg-dynamic-theme-enabled .mat-mdc-raised-button .google-symbols {
     color: var(--bg-sys-color-on-primary) !important;
 }
 
@@ -356,7 +362,9 @@ body.bg-dynamic-theme-enabled .mat-mdc-outlined-button {
     color: var(--bg-sys-color-primary) !important;
 }
 
-body.bg-dynamic-theme-enabled .mat-mdc-outlined-button .mdc-button__label {
+body.bg-dynamic-theme-enabled .mat-mdc-outlined-button .mdc-button__label,
+body.bg-dynamic-theme-enabled .mat-mdc-outlined-button .mat-icon,
+body.bg-dynamic-theme-enabled .mat-mdc-outlined-button .google-symbols {
     color: var(--bg-sys-color-primary) !important;
 }
 
