@@ -33,12 +33,32 @@
     max-height: 350px;
     overflow-y: auto;
     overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: var(--md-sys-color-outline-variant) transparent;
 }
 
 @media (min-width: 800px) {
     .snippets-list-container {
         max-height: 600px;
     }
+}
+
+.snippets-list-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.snippets-list-container::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 8px 0;
+}
+
+.snippets-list-container::-webkit-scrollbar-thumb {
+    background: var(--md-sys-color-outline-variant);
+    border-radius: 8px;
+}
+
+.snippets-list-container::-webkit-scrollbar-thumb:hover {
+    background: var(--md-sys-color-outline);
 }
 
 .snippet-list-item {
@@ -239,12 +259,34 @@
 }
 
 .custom-textarea {
-    resize: vertical;
+    resize: none;
     min-height: 250px;
     max-height: 60vh;
     line-height: 1.5;
     padding: 16px;
     white-space: pre-wrap;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--md-sys-color-outline-variant) transparent;
+}
+
+.custom-textarea::-webkit-scrollbar {
+    width: 8px;
+}
+
+.custom-textarea::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 12px 0;
+}
+
+.custom-textarea::-webkit-scrollbar-thumb {
+    background: var(--md-sys-color-outline-variant);
+    border-radius: 8px;
+    border: 2px solid var(--md-sys-color-surface-container-high);
+}
+
+.custom-textarea::-webkit-scrollbar-thumb:hover {
+    background: var(--md-sys-color-outline);
 }
 
 .empty-state-wrapper {
@@ -318,7 +360,6 @@
     margin-top: 8px;
 }
 
-/* Tabs & Preview Styling */
 .editor-content-header {
     display: flex;
     justify-content: space-between;
@@ -368,9 +409,29 @@
     color: var(--md-sys-color-on-surface);
     box-sizing: border-box;
     width: 100%;
+    scrollbar-width: thin;
+    scrollbar-color: var(--md-sys-color-outline-variant) transparent;
 }
 
-/* Markdown Formats */
+.preview-panel::-webkit-scrollbar {
+    width: 8px;
+}
+
+.preview-panel::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 12px 0;
+}
+
+.preview-panel::-webkit-scrollbar-thumb {
+    background: var(--md-sys-color-outline-variant);
+    border-radius: 8px;
+    border: 2px solid var(--md-sys-color-surface-container-lowest);
+}
+
+.preview-panel::-webkit-scrollbar-thumb:hover {
+    background: var(--md-sys-color-outline);
+}
+
 .preview-panel h1, .preview-panel h2, .preview-panel h3,
 .preview-panel h4, .preview-panel h5, .preview-panel h6 {
     margin-top: 20px;
@@ -442,6 +503,22 @@
     margin: 0;
     padding: 12px;
     overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #555 #1e1e1e;
+}
+
+.preview-code-wrapper pre::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+}
+
+.preview-code-wrapper pre::-webkit-scrollbar-track {
+    background: #1e1e1e;
+}
+
+.preview-code-wrapper pre::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 4px;
 }
 
 .preview-code-wrapper code {
