@@ -39,6 +39,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     let snippets = [];
     let currentEditingId = null;
+    let snippetToDelete = null;
     let currentPrefix = '/';
 
     if (versionText && chrome.runtime && chrome.runtime.getManifest) {
@@ -198,6 +199,52 @@ document.addEventListener('DOMContentLoaded', async () => {
             item.appendChild(dragHandle);
             item.appendChild(contentDiv);
 
+            const actionsDiv = document.createElement('div');
+            actionsDiv.className = 'snippet-item-actions';
+
+            if (index > 0) {
+                const upBtn = document.createElement('button');
+                upBtn.className = 'icon-btn-small';
+                upBtn.innerHTML = '<span class="material-symbols-outlined">arrow_upward</span>';
+                upBtn.title = LocaleManager.getString('moveUp');
+                upBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    const temp = snippets[index];
+                    snippets[index] = snippets[index - 1];
+                    snippets[index - 1] = temp;
+                    saveSnippets(() => renderList());
+                };
+                actionsDiv.appendChild(upBtn);
+            }
+
+            if (index < snippets.length - 1) {
+                const downBtn = document.createElement('button');
+                downBtn.className = 'icon-btn-small';
+                downBtn.innerHTML = '<span class="material-symbols-outlined">arrow_downward</span>';
+                downBtn.title = LocaleManager.getString('moveDown');
+                downBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    const temp = snippets[index];
+                    snippets[index] = snippets[index + 1];
+                    snippets[index + 1] = temp;
+                    saveSnippets(() => renderList());
+                };
+                actionsDiv.appendChild(downBtn);
+            }
+
+            const delItemBtn = document.createElement('button');
+            delItemBtn.className = 'icon-btn-small danger';
+            delItemBtn.innerHTML = '<span class="material-symbols-outlined">delete</span>';
+            delItemBtn.title = LocaleManager.getString('deleteSnippetBtn');
+            delItemBtn.onclick = (e) => {
+                e.stopPropagation();
+                snippetToDelete = snippet.id;
+                deleteConfirmDialog.showModal();
+            };
+            actionsDiv.appendChild(delItemBtn);
+
+            item.appendChild(actionsDiv);
+
             item.onclick = () => selectSnippet(snippet.id);
 
             snippetsListEl.appendChild(item);
@@ -290,13 +337,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     deleteBtn.onclick = (e) => {
         e.preventDefault();
+        snippetToDelete = currentEditingId;
         deleteConfirmDialog.showModal();
     };
 
     confirmDeleteBtn.onclick = () => {
-        if (currentEditingId) {
-            snippets = snippets.filter(s => s.id !== currentEditingId);
-            currentEditingId = null;
+        if (snippetToDelete) {
+            snippets = snippets.filter(s => s.id !== snippetToDelete);
+            if (currentEditingId === snippetToDelete) {
+                currentEditingId = null;
+            }
+            snippetToDelete = null;
             deleteConfirmDialog.close();
             saveSnippets(() => {
                 loadSnippets();
@@ -305,6 +356,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     cancelDeleteBtn.onclick = () => {
+        snippetToDelete = null;
         deleteConfirmDialog.close();
     };
 

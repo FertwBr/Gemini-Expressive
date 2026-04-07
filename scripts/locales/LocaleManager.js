@@ -113,7 +113,9 @@ class LocaleManager {
             snippetDropdownAdd: "Create new snippet",
             dialogDeleteTitle: "Delete Snippet",
             dialogCancelBtn: "Cancel",
-            errorEmptySnippet: "Keyword and content cannot be empty."
+            errorEmptySnippet: "Keyword and content cannot be empty.",
+            moveUp: "Move up",
+            moveDown: "Move down"
         },
         pt: {
             settingsTitle: "Gemini Expressive",
@@ -215,7 +217,9 @@ class LocaleManager {
             snippetDropdownAdd: "Criar novo atalho",
             dialogDeleteTitle: "Excluir Atalho",
             dialogCancelBtn: "Cancelar",
-            errorEmptySnippet: "A palavra-chave e o conteúdo não podem estar vazios."
+            errorEmptySnippet: "A palavra-chave e o conteúdo não podem estar vazios.",
+            moveUp: "Mover para cima",
+            moveDown: "Mover para baixo"
         },
         es: {
             settingsTitle: "Gemini Expressive",
@@ -317,7 +321,9 @@ class LocaleManager {
             snippetDropdownAdd: "Crear nuevo atajo",
             dialogDeleteTitle: "Eliminar Atajo",
             dialogCancelBtn: "Cancelar",
-            errorEmptySnippet: "La palabra clave y el contenido no pueden estar vacíos."
+            errorEmptySnippet: "La palabra clave y el contenido no pueden estar vacíos.",
+            moveUp: "Mover hacia arriba",
+            moveDown: "Mover hacia abajo"
         },
         de: {
             settingsTitle: "Gemini Expressive",
@@ -419,7 +425,9 @@ class LocaleManager {
             snippetDropdownAdd: "Neuen Schnipsel erstellen",
             dialogDeleteTitle: "Schnipsel löschen",
             dialogCancelBtn: "Abbrechen",
-            errorEmptySnippet: "Schlüsselwort und Inhalt dürfen nicht leer sein."
+            errorEmptySnippet: "Schlüsselwort und Inhalt dürfen nicht leer sein.",
+            moveUp: "Nach oben bewegen",
+            moveDown: "Nach unten bewegen"
         },
         hi: {
             settingsTitle: "Gemini Expressive",
@@ -450,7 +458,7 @@ class LocaleManager {
             timelineLabel: "टाइमलाइन नेविगेशन सक्षम करें",
             timelineDesc: "लंबी बातचीत के माध्यम से आसानी से नेविगेट करने के लिए दाईं ओर एक फ्लोटिंग टाइमलाइन जोड़ता है।",
             collapseLabel: "कोड कोलैप्सर सक्षम करें",
-            collapseDesc: "स्क्रीन स्पेस बचाने के लिए आपको लंबे कोड ব্লক को संक्षिप्त और विस्तारित करने की अनुमति देता है।",
+            collapseDesc: "स्क्रीन स्पेस बचाने के लिए आपको लंबे कोड ब्लॉक को संक्षिप्त और विस्तारित करने की अनुमति देता है।",
             headersLabel: "उन्नत कोड हेडर सक्षम करें",
             headersDesc: "प्रोग्रामिंग भाषा आइकन प्रदर्शित करता है और कोड ब्लॉक के लिए फ़ाइल नाम निकालता है।",
             codeNavLabel: "कोड नेविगेशन सक्षम करें",
@@ -521,7 +529,9 @@ class LocaleManager {
             snippetDropdownAdd: "नया स्निपेट बनाएं",
             dialogDeleteTitle: "स्निपेट हटाएं",
             dialogCancelBtn: "रद्द करें",
-            errorEmptySnippet: "कीवर्ड और सामग्री खाली नहीं हो सकते।"
+            errorEmptySnippet: "कीवर्ड और सामग्री खाली नहीं हो सकते।",
+            moveUp: "ऊपर ले जाएँ",
+            moveDown: "नीचे ले जाएँ"
         },
         ja: {
             settingsTitle: "Gemini Expressive",
@@ -623,7 +633,9 @@ class LocaleManager {
             snippetDropdownAdd: "新しいスニペットを作成",
             dialogDeleteTitle: "スニペットを削除",
             dialogCancelBtn: "キャンセル",
-            errorEmptySnippet: "キーワードとコンテンツを空にすることはできません。"
+            errorEmptySnippet: "キーワードとコンテンツを空にすることはできません。",
+            moveUp: "上に移動",
+            moveDown: "下に移動"
         }
     };
 
