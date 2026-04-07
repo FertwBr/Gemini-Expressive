@@ -18,6 +18,7 @@
     --bg-sys-color-on-secondary-container: #001d35;
     --bg-sys-color-outline-variant: #c4c7c5;
     --bg-sys-color-on-surface-variant: #444746;
+
     --bg-svg-filter: none;
 }
 
@@ -35,6 +36,7 @@
         --bg-sys-color-on-secondary-container: #c2e7ff;
         --bg-sys-color-outline-variant: #44474e;
         --bg-sys-color-on-surface-variant: #c4c7c5;
+
         --bg-svg-filter: invert(1);
     }
 }
@@ -175,23 +177,30 @@ body.bg-dynamic-theme-enabled {
     --gem-sys-color--primary: var(--bg-sys-color-primary) !important;
     --md-sys-color-primary: var(--bg-sys-color-primary) !important;
     --sys-color--primary: var(--bg-sys-color-primary) !important;
+
     --gem-sys-color--on-primary: var(--bg-sys-color-on-primary) !important;
     --md-sys-color-on-primary: var(--bg-sys-color-on-primary) !important;
     --sys-color--on-primary: var(--bg-sys-color-on-primary) !important;
+
     --gem-sys-color--primary-container: var(--bg-sys-color-secondary-container) !important;
     --md-sys-color-primary-container: var(--bg-sys-color-secondary-container) !important;
     --sys-color--primary-container: var(--bg-sys-color-secondary-container) !important;
+
     --gem-sys-color--on-primary-container: var(--bg-sys-color-on-secondary-container) !important;
     --md-sys-color-on-primary-container: var(--bg-sys-color-on-secondary-container) !important;
     --sys-color--on-primary-container: var(--bg-sys-color-on-secondary-container) !important;
+
     --gm3-sys-color-primary: var(--bg-sys-color-primary) !important;
     --gm3-sys-color-on-primary: var(--bg-sys-color-on-primary) !important;
     --gm3-sys-color-secondary-fixed: var(--bg-sys-color-primary) !important;
     --gm3-sys-color-on-secondary-fixed: var(--bg-sys-color-on-primary) !important;
+
     --bard-color-get-app-banner-background: var(--bg-sys-color-secondary-container) !important;
+
     --mdc-outlined-text-field-focus-outline-color: var(--bg-sys-color-primary) !important;
     --mdc-outlined-text-field-hover-outline-color: var(--bg-sys-color-primary) !important;
     --mdc-outlined-text-field-caret-color: var(--bg-sys-color-primary) !important;
+
     --mdc-linear-progress-active-indicator-color: var(--bg-sys-color-primary) !important;
     --mdc-linear-progress-track-color: var(--bg-sys-color-surface-variant) !important;
     --mdc-circular-progress-active-indicator-color: var(--bg-sys-color-primary) !important;
@@ -234,6 +243,29 @@ body.bg-dynamic-theme-enabled .get-app-banner-button .mdc-button__label {
 
 body.bg-dynamic-theme-enabled .get-app-banner .banner-close-button .mat-icon {
     color: var(--bg-sys-color-on-secondary-container) !important;
+}
+
+body.bg-dynamic-theme-enabled .mdc-text-field__input {
+    color: var(--bg-sys-color-on-surface) !important;
+}
+
+body.bg-dynamic-theme-enabled .mdc-text-field__input::placeholder {
+    color: var(--bg-sys-color-on-surface-variant) !important;
+    opacity: 0.7;
+}
+
+body.bg-dynamic-theme-enabled .mdc-floating-label {
+    color: var(--bg-sys-color-on-surface-variant) !important;
+}
+
+body.bg-dynamic-theme-enabled .mat-focused .mdc-floating-label {
+    color: var(--bg-sys-color-primary) !important;
+}
+
+body.bg-dynamic-theme-enabled .mdc-notched-outline__leading,
+body.bg-dynamic-theme-enabled .mdc-notched-outline__notch,
+body.bg-dynamic-theme-enabled .mdc-notched-outline__trailing {
+    border-color: var(--bg-sys-color-outline-variant) !important;
 }
 
 body.bg-dynamic-theme-enabled .mat-focused .mdc-notched-outline__leading,
@@ -283,10 +315,34 @@ body.bg-dynamic-theme-enabled [data-placeholder]::before {
 }
 
 body.bg-dynamic-theme-enabled .mdc-icon-button,
-body.bg-dynamic-theme-enabled .mdc-button,
+body.bg-dynamic-theme-enabled .mdc-button:not(.mat-primary):not(.mat-accent):not(.mat-warn),
 body.bg-dynamic-theme-enabled .mat-icon,
 body.bg-dynamic-theme-enabled .toolbox-drawer-button-label-icon-text {
     color: var(--bg-sys-color-on-surface-variant) !important;
+}
+
+body.bg-dynamic-theme-enabled .mat-mdc-dialog-surface {
+    background-color: var(--bg-sys-color-surface-container-high) !important;
+    color: var(--bg-sys-color-on-surface) !important;
+}
+
+body.bg-dynamic-theme-enabled .mdc-button.mat-primary {
+    color: var(--bg-sys-color-primary) !important;
+}
+
+body.bg-dynamic-theme-enabled .mdc-button.mat-primary .mdc-button__label {
+    color: var(--bg-sys-color-primary) !important;
+}
+
+body.bg-dynamic-theme-enabled .mdc-button.mat-mdc-unelevated-button.mat-primary,
+body.bg-dynamic-theme-enabled .mdc-button.mat-mdc-raised-button.mat-primary {
+    background-color: var(--bg-sys-color-primary) !important;
+    color: var(--bg-sys-color-on-primary) !important;
+}
+
+body.bg-dynamic-theme-enabled .mdc-button.mat-mdc-unelevated-button.mat-primary .mdc-button__label,
+body.bg-dynamic-theme-enabled .mdc-button.mat-mdc-raised-button.mat-primary .mdc-button__label {
+    color: var(--bg-sys-color-on-primary) !important;
 }
 
 body.bg-dynamic-theme-enabled .send-button:not([disabled]) .mat-icon,
@@ -400,19 +456,6 @@ body.bg-dynamic-theme-enabled .file-preview .cancel-button .mat-icon {
 
 body.bg-dynamic-theme-enabled .file-preview .cancel-button:hover .mat-icon {
     color: var(--bg-sys-color-on-surface) !important;
-}
-
-body.bg-dynamic-theme-enabled generated-music .mat-icon,
-body.bg-dynamic-theme-enabled generated-music button,
-body.bg-dynamic-theme-enabled generated-music .mdc-icon-button,
-body.bg-dynamic-theme-enabled video-player .mat-icon,
-body.bg-dynamic-theme-enabled video-player button,
-body.bg-dynamic-theme-enabled video-player .mdc-icon-button {
-    color: #f2f2f2 !important;
-}
-
-body.bg-dynamic-theme-enabled video-player span {
-    color: inherit !important;
 }
 
 body.bg-hide-upgrade button:has(.dynamic-upsell-label),
@@ -599,4 +642,18 @@ body.bg-hide-upgrade div:has(> .dynamic-upsell-label) {
 .bg-snippet-add-btn.active {
     background: var(--bg-sys-color-primary, #0b57d0);
     color: var(--bg-sys-color-on-primary, #ffffff);
+}
+
+body.bg-dynamic-theme-enabled generated-music .mat-icon,
+body.bg-dynamic-theme-enabled generated-music button,
+body.bg-dynamic-theme-enabled generated-music .mdc-icon-button,
+body.bg-dynamic-theme-enabled video-player .mat-icon,
+body.bg-dynamic-theme-enabled video-player button,
+body.bg-dynamic-theme-enabled video-player .mdc-icon-button {
+    color: var(--bg-sys-color-on-surface-variant) !important;
+}
+
+body.bg-dynamic-theme-enabled generated-music button:hover .mat-icon,
+body.bg-dynamic-theme-enabled video-player button:hover .mat-icon {
+    color: var(--bg-sys-color-on-surface) !important;
 }
