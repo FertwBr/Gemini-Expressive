@@ -49,13 +49,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         async (item) => {
             const selectedLang = item.getAttribute('data-lang');
             await StorageManager.saveSettings({language: selectedLang});
-            window.currentLanguage = selectedLang === 'auto' ? navigator.language.split('-')[0] : selectedLang;
-            if (!window.BG_LOCALES || !window.BG_LOCALES[window.currentLanguage]) {
-                window.currentLanguage = 'en';
+
+            LocaleManager.currentLanguage = selectedLang === 'auto' ? navigator.language.split('-')[0] : selectedLang;
+            if (!LocaleManager.BG_LOCALES || !LocaleManager.BG_LOCALES[LocaleManager.currentLanguage]) {
+                LocaleManager.currentLanguage = 'en';
             }
+
             Localization.apply();
             updateLangVisuals(selectedLang);
-            toast.show(window.getBgString('statusSaved'));
+            toast.show(LocaleManager.getString('statusSaved'));
         }
     );
 
@@ -87,7 +89,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 autoIcon.style.fontSize = '16px';
                 dropdownBtn.insertBefore(autoIcon, currentLangLabel);
             }
-            currentLangLabel.textContent = window.getBgString('lang_auto');
+            currentLangLabel.textContent = LocaleManager.getString('lang_auto');
         } else {
             let autoIcon = dropdownBtn.querySelector('.auto-icon-temp');
             if (autoIcon) {
@@ -95,7 +97,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
             currentFlag.style.display = 'block';
             currentFlag.src = `https://flagcdn.com/w40/${Localization.getFlagCode(lang)}.png`;
-            currentLangLabel.textContent = window.getBgString(`lang_${lang}`);
+            currentLangLabel.textContent = LocaleManager.getString(`lang_${lang}`);
         }
     }
 
@@ -134,7 +136,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const emptyStateTitle = document.createElement('div');
             emptyStateTitle.className = 'empty-state-title';
             emptyStateTitle.setAttribute('data-i18n', 'noSnippetsFound');
-            emptyStateTitle.textContent = window.getBgString('noSnippetsFound');
+            emptyStateTitle.textContent = LocaleManager.getString('noSnippetsFound');
 
             emptyStateWrapper.appendChild(emptyStateIcon);
             emptyStateWrapper.appendChild(emptyStateTitle);
@@ -207,8 +209,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             contentInput.value = snippet.content;
 
             editorTitleIcon.textContent = 'edit';
-            editorTitleText.textContent = window.getBgString('editSnippetTitle');
-            saveSnippetBtnText.textContent = window.getBgString('saveChangesBtn');
+            editorTitleText.textContent = LocaleManager.getString('editSnippetTitle');
+            saveSnippetBtnText.textContent = LocaleManager.getString('saveChangesBtn');
             editorCard.classList.remove('is-new');
 
             editorCard.style.display = 'flex';
@@ -226,8 +228,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         contentInput.value = '';
 
         editorTitleIcon.textContent = 'add_circle';
-        editorTitleText.textContent = window.getBgString('createSnippetTitle');
-        saveSnippetBtnText.textContent = window.getBgString('createBtn');
+        editorTitleText.textContent = LocaleManager.getString('createSnippetTitle');
+        saveSnippetBtnText.textContent = LocaleManager.getString('createBtn');
         editorCard.classList.add('is-new');
 
         editorCard.style.display = 'flex';
@@ -268,11 +270,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         saveSnippets(() => {
-            toast.show(window.getBgString('statusSaved'));
+            toast.show(LocaleManager.getString('statusSaved'));
 
             editorTitleIcon.textContent = 'edit';
-            editorTitleText.textContent = window.getBgString('editSnippetTitle');
-            saveSnippetBtnText.textContent = window.getBgString('saveChangesBtn');
+            editorTitleText.textContent = LocaleManager.getString('editSnippetTitle');
+            saveSnippetBtnText.textContent = LocaleManager.getString('saveChangesBtn');
             editorCard.classList.remove('is-new');
             deleteBtn.style.display = 'inline-flex';
 
@@ -281,7 +283,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     deleteBtn.onclick = () => {
-        if (confirm(window.getBgString('confirmDelete'))) {
+        if (confirm(LocaleManager.getString('confirmDelete'))) {
             snippets = snippets.filter(s => s.id !== currentEditingId);
             currentEditingId = null;
             saveSnippets(() => {
@@ -293,9 +295,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const initialSettings = await StorageManager.getSettings();
     currentPrefix = initialSettings.snippetPrefix;
 
-    if (initialSettings.dynamicColorEnabled !== false && typeof window.applyMaterialTheme === 'function') {
+    if (initialSettings.dynamicColorEnabled !== false && typeof ThemeUtils !== 'undefined') {
         const colorToApply = initialSettings.themeColor || '#0b57d0';
-        window.applyMaterialTheme(colorToApply, initialSettings.themeMode || 'auto');
+        ThemeUtils.applyMaterialTheme(colorToApply, initialSettings.themeMode || 'auto');
     }
 
     updateLangVisuals(initialSettings.language);

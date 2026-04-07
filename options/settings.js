@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 autoIcon.style.fontSize = '16px';
                 dropdownBtn.insertBefore(autoIcon, currentLangLabel);
             }
-            currentLangLabel.textContent = window.getBgString('lang_auto');
+            currentLangLabel.textContent = LocaleManager.getString('lang_auto');
         } else {
             let autoIcon = dropdownBtn.querySelector('.auto-icon-temp');
             if (autoIcon) {
@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
             currentFlag.style.display = 'block';
             currentFlag.src = `https://flagcdn.com/w40/${Localization.getFlagCode(lang)}.png`;
-            currentLangLabel.textContent = window.getBgString(`lang_${lang}`);
+            currentLangLabel.textContent = LocaleManager.getString(`lang_${lang}`);
         }
     }
 
@@ -174,8 +174,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     } else {
         colorPickerRow.style.opacity = '1';
         colorPickerRow.style.pointerEvents = 'auto';
-        if (typeof window.applyMaterialTheme === 'function') {
-            window.applyMaterialTheme(selectedColor, selectedThemeMode);
+        if (typeof ThemeUtils !== 'undefined') {
+            ThemeUtils.applyMaterialTheme(selectedColor, selectedThemeMode);
         }
     }
 
@@ -197,9 +197,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             snippetPrefix: selectedPrefix
         });
 
-        window.currentLanguage = selectedLang === 'auto' ? navigator.language.split('-')[0] : selectedLang;
-        if (!window.BG_LOCALES || !window.BG_LOCALES[window.currentLanguage]) {
-            window.currentLanguage = 'en';
+        LocaleManager.currentLanguage = selectedLang === 'auto' ? navigator.language.split('-')[0] : selectedLang;
+        if (!LocaleManager.BG_LOCALES || !LocaleManager.BG_LOCALES[LocaleManager.currentLanguage]) {
+            LocaleManager.currentLanguage = 'en';
         }
 
         Localization.apply();
@@ -210,8 +210,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (dynamicColorSwitch.checked) {
             colorPickerRow.style.opacity = '1';
             colorPickerRow.style.pointerEvents = 'auto';
-            if (typeof window.applyMaterialTheme === 'function') {
-                window.applyMaterialTheme(selectedColor, selectedThemeMode);
+            if (typeof ThemeUtils !== 'undefined') {
+                ThemeUtils.applyMaterialTheme(selectedColor, selectedThemeMode);
             }
         } else {
             colorPickerRow.style.opacity = '0.5';
@@ -219,9 +219,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         if (isThemeToggle) {
-            toast.show(window.getBgString('statusSavedRefresh'), true);
+            toast.show(LocaleManager.getString('statusSavedRefresh'), true);
         } else {
-            toast.show(window.getBgString('statusSaved'));
+            toast.show(LocaleManager.getString('statusSaved'));
         }
     }
 
