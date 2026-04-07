@@ -18,6 +18,8 @@
     --bg-sys-color-on-secondary-container: #001d35;
     --bg-sys-color-outline-variant: #c4c7c5;
     --bg-sys-color-on-surface-variant: #444746;
+
+    --bg-svg-filter: none;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -34,6 +36,8 @@
         --bg-sys-color-on-secondary-container: #c2e7ff;
         --bg-sys-color-outline-variant: #44474e;
         --bg-sys-color-on-surface-variant: #c4c7c5;
+
+        --bg-svg-filter: invert(1);
     }
 }
 

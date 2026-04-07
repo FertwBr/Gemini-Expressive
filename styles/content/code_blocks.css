@@ -11,11 +11,11 @@
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    color: var(--gem-sys-color--on-surface-variant) !important;
+    color: var(--gem-sys-color--on-surface-variant, inherit) !important;
 }
 
 .bg-collapse-icon-btn:hover {
-    color: var(--gem-sys-color--on-surface) !important;
+    color: var(--gem-sys-color--on-surface, inherit) !important;
 }
 
 .bg-collapse-svg-icon {
@@ -34,6 +34,7 @@
     pointer-events: none;
     position: relative;
     z-index: 2;
+    filter: none !important;
 }
 
 .bg-custom-tooltip {
