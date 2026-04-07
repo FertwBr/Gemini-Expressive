@@ -64,6 +64,8 @@
         "scripts/features/CodeHeaderEnhancer.js",
         "scripts/features/TimelineBuilder.js",
         "scripts/features/CodeCollapser.js",
+        "scripts/features/SettingsShortcut.js",
+        "scripts/features/SnippetInjector.js",
         "scripts/content_main.js"
       ]
     }
