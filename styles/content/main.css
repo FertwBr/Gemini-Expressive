@@ -249,9 +249,14 @@ body.bg-dynamic-theme-enabled .mdc-text-field__input {
     color: var(--bg-sys-color-on-surface) !important;
 }
 
-body.bg-dynamic-theme-enabled .mdc-text-field__input::placeholder {
+body.bg-dynamic-theme-enabled .mat-mdc-form-field:not(.mat-focused) .mdc-text-field__input::placeholder {
+    color: transparent !important;
+    opacity: 0 !important;
+}
+
+body.bg-dynamic-theme-enabled .mat-focused .mdc-text-field__input::placeholder {
     color: var(--bg-sys-color-on-surface-variant) !important;
-    opacity: 0.7;
+    opacity: 0.7 !important;
 }
 
 body.bg-dynamic-theme-enabled .mdc-floating-label {
@@ -314,35 +319,45 @@ body.bg-dynamic-theme-enabled [data-placeholder]::before {
     color: var(--bg-sys-color-on-surface-variant) !important;
 }
 
-body.bg-dynamic-theme-enabled .mdc-icon-button,
-body.bg-dynamic-theme-enabled .mdc-button:not(.mat-primary):not(.mat-accent):not(.mat-warn),
-body.bg-dynamic-theme-enabled .mat-icon,
-body.bg-dynamic-theme-enabled .toolbox-drawer-button-label-icon-text {
-    color: var(--bg-sys-color-on-surface-variant) !important;
-}
-
 body.bg-dynamic-theme-enabled .mat-mdc-dialog-surface {
     background-color: var(--bg-sys-color-surface-container-high) !important;
     color: var(--bg-sys-color-on-surface) !important;
 }
 
-body.bg-dynamic-theme-enabled .mdc-button.mat-primary {
+body.bg-dynamic-theme-enabled .mdc-icon-button,
+body.bg-dynamic-theme-enabled .mat-icon,
+body.bg-dynamic-theme-enabled .toolbox-drawer-button-label-icon-text {
+    color: var(--bg-sys-color-on-surface-variant) !important;
+}
+
+body.bg-dynamic-theme-enabled .mdc-button:not(.mat-mdc-unelevated-button):not(.mat-mdc-raised-button):not(.mat-mdc-outlined-button) {
+    color: var(--bg-sys-color-primary) !important;
+    background: transparent !important;
+}
+
+body.bg-dynamic-theme-enabled .mdc-button:not(.mat-mdc-unelevated-button):not(.mat-mdc-raised-button):not(.mat-mdc-outlined-button) .mdc-button__label {
     color: var(--bg-sys-color-primary) !important;
 }
 
-body.bg-dynamic-theme-enabled .mdc-button.mat-primary .mdc-button__label {
-    color: var(--bg-sys-color-primary) !important;
-}
-
-body.bg-dynamic-theme-enabled .mdc-button.mat-mdc-unelevated-button.mat-primary,
-body.bg-dynamic-theme-enabled .mdc-button.mat-mdc-raised-button.mat-primary {
+body.bg-dynamic-theme-enabled .mat-mdc-unelevated-button,
+body.bg-dynamic-theme-enabled .mat-mdc-raised-button {
     background-color: var(--bg-sys-color-primary) !important;
     color: var(--bg-sys-color-on-primary) !important;
 }
 
-body.bg-dynamic-theme-enabled .mdc-button.mat-mdc-unelevated-button.mat-primary .mdc-button__label,
-body.bg-dynamic-theme-enabled .mdc-button.mat-mdc-raised-button.mat-primary .mdc-button__label {
+body.bg-dynamic-theme-enabled .mat-mdc-unelevated-button .mdc-button__label,
+body.bg-dynamic-theme-enabled .mat-mdc-raised-button .mdc-button__label {
     color: var(--bg-sys-color-on-primary) !important;
+}
+
+body.bg-dynamic-theme-enabled .mat-mdc-outlined-button {
+    background-color: transparent !important;
+    border-color: var(--bg-sys-color-outline-variant) !important;
+    color: var(--bg-sys-color-primary) !important;
+}
+
+body.bg-dynamic-theme-enabled .mat-mdc-outlined-button .mdc-button__label {
+    color: var(--bg-sys-color-primary) !important;
 }
 
 body.bg-dynamic-theme-enabled .send-button:not([disabled]) .mat-icon,
