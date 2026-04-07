@@ -103,6 +103,35 @@ document.addEventListener('DOMContentLoaded', () => {
     let toastTimeout;
 
     /**
+     * Intelligent Tooltip Positioning
+     * Dynamically calculates bounds and prevents help tooltips from overflowing the viewport.
+     */
+    document.querySelectorAll('.help-tooltip-container').forEach(container => {
+        container.addEventListener('mouseenter', () => {
+            const card = container.querySelector('.help-tooltip-card');
+            if (!card) return;
+
+            card.classList.remove('pos-bottom', 'pos-left', 'pos-right');
+
+            const rect = card.getBoundingClientRect();
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+
+            if (rect.top < 0) {
+                card.classList.add('pos-bottom');
+            }
+
+            const updatedRect = card.getBoundingClientRect();
+
+            if (updatedRect.left < 0) {
+                card.classList.add('pos-right');
+            } else if (updatedRect.right > viewportWidth) {
+                card.classList.add('pos-left');
+            }
+        });
+    });
+
+    /**
      * Shows a brief success toast notification.
      * @param {string} msg The message to show.
      * @param {boolean} [isLong=false] Whether the toast should stay on screen longer.

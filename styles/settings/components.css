@@ -158,6 +158,67 @@
     border-color: var(--md-sys-color-surface-container-highest, #36343b) transparent transparent transparent;
 }
 
+.help-tooltip-card.pos-bottom {
+    bottom: auto;
+    top: calc(100% + 8px);
+    transform: translateX(-50%) translateY(-5px);
+}
+
+.help-tooltip-container:hover .help-tooltip-card.pos-bottom {
+    transform: translateX(-50%) translateY(0);
+}
+
+.help-tooltip-card.pos-bottom::after {
+    top: auto;
+    bottom: 100%;
+    border-color: transparent transparent var(--md-sys-color-surface-container-highest, #36343b) transparent;
+}
+
+.help-tooltip-card.pos-left {
+    left: auto;
+    right: -24px;
+    transform: translateY(5px);
+}
+
+.help-tooltip-container:hover .help-tooltip-card.pos-left {
+    transform: translateY(0);
+}
+
+.help-tooltip-card.pos-left::after {
+    left: auto;
+    right: 27px;/
+}
+
+.help-tooltip-card.pos-bottom.pos-left {
+    transform: translateY(-5px);
+}
+
+.help-tooltip-container:hover .help-tooltip-card.pos-bottom.pos-left {
+    transform: translateY(0);
+}
+
+.help-tooltip-card.pos-right {
+    left: -24px;
+    right: auto;
+    transform: translateY(5px);
+}
+
+.help-tooltip-container:hover .help-tooltip-card.pos-right {
+    transform: translateY(0);
+}
+
+.help-tooltip-card.pos-right::after {
+    left: 33px;
+}
+
+.help-tooltip-card.pos-bottom.pos-right {
+    transform: translateY(-5px);
+}
+
+.help-tooltip-container:hover .help-tooltip-card.pos-bottom.pos-right {
+    transform: translateY(0);
+}
+
 .help-learn-more {
     display: inline-flex;
     align-items: center;
