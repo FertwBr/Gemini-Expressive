@@ -368,6 +368,22 @@ body.bg-dynamic-theme-enabled .mat-mdc-outlined-button .google-symbols {
     color: var(--bg-sys-color-primary) !important;
 }
 
+body.bg-dynamic-theme-enabled .mdc-button:not(.mdc-icon-button) {
+    height: auto !important;
+    min-height: 36px !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    max-width: 100% !important;
+}
+
+body.bg-dynamic-theme-enabled .mdc-button:not(.mdc-icon-button) .mdc-button__label {
+    white-space: normal !important;
+    overflow-wrap: break-word !important;
+    line-height: 1.4 !important;
+    text-align: center !important;
+    display: inline-block !important;
+}
+
 body.bg-dynamic-theme-enabled .send-button:not([disabled]) .mat-icon,
 body.bg-dynamic-theme-enabled .send-button[aria-disabled="false"] .mat-icon {
     color: var(--bg-sys-color-primary) !important;
