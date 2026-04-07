@@ -18,7 +18,6 @@
     --bg-sys-color-on-secondary-container: #001d35;
     --bg-sys-color-outline-variant: #c4c7c5;
     --bg-sys-color-on-surface-variant: #444746;
-
     --bg-svg-filter: none;
 }
 
@@ -36,7 +35,6 @@
         --bg-sys-color-on-secondary-container: #c2e7ff;
         --bg-sys-color-outline-variant: #44474e;
         --bg-sys-color-on-surface-variant: #c4c7c5;
-
         --bg-svg-filter: invert(1);
     }
 }
@@ -177,30 +175,23 @@ body.bg-dynamic-theme-enabled {
     --gem-sys-color--primary: var(--bg-sys-color-primary) !important;
     --md-sys-color-primary: var(--bg-sys-color-primary) !important;
     --sys-color--primary: var(--bg-sys-color-primary) !important;
-
     --gem-sys-color--on-primary: var(--bg-sys-color-on-primary) !important;
     --md-sys-color-on-primary: var(--bg-sys-color-on-primary) !important;
     --sys-color--on-primary: var(--bg-sys-color-on-primary) !important;
-
     --gem-sys-color--primary-container: var(--bg-sys-color-secondary-container) !important;
     --md-sys-color-primary-container: var(--bg-sys-color-secondary-container) !important;
     --sys-color--primary-container: var(--bg-sys-color-secondary-container) !important;
-
     --gem-sys-color--on-primary-container: var(--bg-sys-color-on-secondary-container) !important;
     --md-sys-color-on-primary-container: var(--bg-sys-color-on-secondary-container) !important;
     --sys-color--on-primary-container: var(--bg-sys-color-on-secondary-container) !important;
-
     --gm3-sys-color-primary: var(--bg-sys-color-primary) !important;
     --gm3-sys-color-on-primary: var(--bg-sys-color-on-primary) !important;
     --gm3-sys-color-secondary-fixed: var(--bg-sys-color-primary) !important;
     --gm3-sys-color-on-secondary-fixed: var(--bg-sys-color-on-primary) !important;
-
     --bard-color-get-app-banner-background: var(--bg-sys-color-secondary-container) !important;
-
     --mdc-outlined-text-field-focus-outline-color: var(--bg-sys-color-primary) !important;
     --mdc-outlined-text-field-hover-outline-color: var(--bg-sys-color-primary) !important;
     --mdc-outlined-text-field-caret-color: var(--bg-sys-color-primary) !important;
-
     --mdc-linear-progress-active-indicator-color: var(--bg-sys-color-primary) !important;
     --mdc-linear-progress-track-color: var(--bg-sys-color-surface-variant) !important;
     --mdc-circular-progress-active-indicator-color: var(--bg-sys-color-primary) !important;
@@ -409,6 +400,19 @@ body.bg-dynamic-theme-enabled .file-preview .cancel-button .mat-icon {
 
 body.bg-dynamic-theme-enabled .file-preview .cancel-button:hover .mat-icon {
     color: var(--bg-sys-color-on-surface) !important;
+}
+
+body.bg-dynamic-theme-enabled generated-music .mat-icon,
+body.bg-dynamic-theme-enabled generated-music button,
+body.bg-dynamic-theme-enabled generated-music .mdc-icon-button,
+body.bg-dynamic-theme-enabled video-player .mat-icon,
+body.bg-dynamic-theme-enabled video-player button,
+body.bg-dynamic-theme-enabled video-player .mdc-icon-button {
+    color: #f2f2f2 !important;
+}
+
+body.bg-dynamic-theme-enabled video-player span {
+    color: inherit !important;
 }
 
 body.bg-hide-upgrade button:has(.dynamic-upsell-label),
