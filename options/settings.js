@@ -1,7 +1,14 @@
 /**
- * Maps a language code to the appropriate flag country code using timezone heuristics.
- * @param {string} languageCode The broad language code.
- * @returns {string} The specific flag country code.
+ * @fileoverview Main entry point for the settings page.
+ * @copyright (c) 2026 Fertwbr
+ */
+
+import {StorageManager} from './core/StorageManager.js';
+import {ToastNotification} from './components/ToastNotification.js';
+
+/**
+ * @param {string} languageCode
+ * @returns {string}
  */
 function getFlagCode(languageCode) {
     let tz = '';
@@ -43,12 +50,12 @@ function getFlagCode(languageCode) {
 }
 
 /**
- * Initializes and applies localizations to the settings UI.
+ * @returns {void}
  */
 function applyLocalizations() {
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
-        const translated = getBgString(key);
+        const translated = window.getBgString(key);
         if (el.tagName === 'INPUT' && el.type === 'button') {
             el.value = translated;
         } else {
@@ -58,11 +65,11 @@ function applyLocalizations() {
 
     document.querySelectorAll('[data-i18n-title]').forEach(el => {
         const key = el.getAttribute('data-i18n-title');
-        el.setAttribute('title', getBgString(key));
+        el.setAttribute('title', window.getBgString(key));
     });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     applyLocalizations();
 
     const timelineSwitch = document.getElementById('enableTimeline');
@@ -75,18 +82,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const colorPicker = document.getElementById('themeColorPicker');
     const colorSwatches = document.querySelectorAll('.color-swatch');
     const versionText = document.getElementById('versionText');
-    const toast = document.getElementById('toast-notification');
-    const toastMessage = document.getElementById('toast-message');
+    const toastElement = document.getElementById('toast-notification');
+    const toastMessageElement = document.getElementById('toast-message');
 
     const prefixDropdownBtn = document.getElementById('prefixDropdownBtn');
     const prefixDropdownMenu = document.getElementById('prefixDropdownMenu');
     const currentPrefixLabel = document.getElementById('currentPrefixLabel');
     const prefixMenuItems = prefixDropdownMenu.querySelectorAll('.setting-menu-item');
-    let selectedPrefix = '/';
-
-    if (chrome.runtime && chrome.runtime.getManifest) {
-        versionText.textContent = 'v' + chrome.runtime.getManifest().version;
-    }
 
     const dropdownBtn = document.getElementById('langDropdownBtn');
     const dropdownMenu = document.getElementById('langDropdownMenu');
@@ -98,14 +100,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const themeDropdownMenu = document.getElementById('themeDropdownMenu');
     const currentThemeLabel = document.getElementById('currentThemeLabel');
     const themeMenuItems = themeDropdownMenu.querySelectorAll('.setting-menu-item');
+
+    const toast = new ToastNotification(toastElement, toastMessageElement);
+
+    let selectedPrefix = '/';
     let selectedThemeMode = 'auto';
+    let selectedLang = 'auto';
 
-    let toastTimeout;
+    if (window.chrome && chrome.runtime && chrome.runtime.getManifest) {
+        versionText.textContent = 'v' + chrome.runtime.getManifest().version;
+    }
 
-    /**
-     * Intelligent Tooltip Positioning
-     * Dynamically calculates bounds and prevents help tooltips from overflowing the viewport.
-     */
     document.querySelectorAll('.help-tooltip-container').forEach(container => {
         container.addEventListener('mouseenter', () => {
             const card = container.querySelector('.help-tooltip-card');
@@ -115,7 +120,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const rect = card.getBoundingClientRect();
             const viewportWidth = window.innerWidth;
-            const viewportHeight = window.innerHeight;
 
             if (rect.top < 0) {
                 card.classList.add('pos-bottom');
@@ -132,22 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     /**
-     * Shows a brief success toast notification.
-     * @param {string} msg The message to show.
-     * @param {boolean} [isLong=false] Whether the toast should stay on screen longer.
-     */
-    function showToast(msg, isLong = false) {
-        toastMessage.textContent = msg;
-        toast.classList.add('show');
-        clearTimeout(toastTimeout);
-        toastTimeout = setTimeout(() => {
-            toast.classList.remove('show');
-        }, isLong ? 5000 : 2500);
-    }
-
-    /**
-     * Updates the language dropdown button visuals.
-     * @param {string} lang The selected language code.
+     * @param {string} lang
      */
     const updateDropdownVisuals = (lang) => {
         menuItems.forEach(item => {
@@ -168,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 autoIcon.style.fontSize = '16px';
                 dropdownBtn.insertBefore(autoIcon, currentLangLabel);
             }
-            currentLangLabel.textContent = getBgString('lang_auto');
+            currentLangLabel.textContent = window.getBgString('lang_auto');
         } else {
             let autoIcon = dropdownBtn.querySelector('.auto-icon-temp');
             if (autoIcon) {
@@ -176,10 +165,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             currentFlag.style.display = 'block';
             currentFlag.src = `https://flagcdn.com/w40/${getFlagCode(lang)}.png`;
-            currentLangLabel.textContent = getBgString(`lang_${lang}`);
+            currentLangLabel.textContent = window.getBgString(`lang_${lang}`);
         }
     };
 
+    /**
+     * @param {string} theme
+     */
     const updateThemeDropdownVisuals = (theme) => {
         themeMenuItems.forEach(item => {
             if (item.getAttribute('data-theme') === theme) {
@@ -194,6 +186,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
+    /**
+     * @param {string} prefix
+     */
     const updatePrefixDropdownVisuals = (prefix) => {
         prefixMenuItems.forEach(item => {
             if (item.getAttribute('data-prefix') === prefix) {
@@ -209,8 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     /**
-     * Updates the dynamic split layout preview for the custom color picker.
-     * @param {string} color The hex color to use.
+     * @param {string} color
      */
     const updateCustomPreview = (color) => {
         const preview = document.getElementById('customColorPreview');
@@ -222,8 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     /**
-     * Updates the active state of color swatches.
-     * @param {string} color The hex color to match.
+     * @param {string} color
      */
     const updateSwatchSelection = (color) => {
         let matched = false;
@@ -251,59 +244,45 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    let selectedLang = 'auto';
+    const initialSettings = await StorageManager.getSettings();
 
-    chrome.storage.sync.get(['timelineEnabled', 'collapseEnabled', 'codeNavEnabled', 'headersEnabled', 'language', 'themeMode', 'themeColor', 'dynamicColorEnabled', 'snippetPrefix', 'hideUpgradeEnabled'], (items) => {
-        timelineSwitch.checked = items.timelineEnabled !== false;
-        collapseSwitch.checked = items.collapseEnabled !== false;
-        codeNavSwitch.checked = items.codeNavEnabled !== false;
-        headersSwitch.checked = items.headersEnabled !== false;
-        dynamicColorSwitch.checked = items.dynamicColorEnabled !== false;
-        hideUpgradeSwitch.checked = items.hideUpgradeEnabled === true;
+    timelineSwitch.checked = initialSettings.timelineEnabled;
+    collapseSwitch.checked = initialSettings.collapseEnabled;
+    codeNavSwitch.checked = initialSettings.codeNavEnabled;
+    headersSwitch.checked = initialSettings.headersEnabled;
+    dynamicColorSwitch.checked = initialSettings.dynamicColorEnabled;
+    hideUpgradeSwitch.checked = initialSettings.hideUpgradeEnabled;
 
-        if (items.snippetPrefix) {
-            selectedPrefix = items.snippetPrefix;
-        } else {
-            selectedPrefix = '/';
-        }
-        updatePrefixDropdownVisuals(selectedPrefix);
+    selectedPrefix = initialSettings.snippetPrefix;
+    updatePrefixDropdownVisuals(selectedPrefix);
 
-        if (!dynamicColorSwitch.checked) {
-            colorPickerRow.style.opacity = '0.5';
-            colorPickerRow.style.pointerEvents = 'none';
-        } else {
-            colorPickerRow.style.opacity = '1';
-            colorPickerRow.style.pointerEvents = 'auto';
-        }
+    if (!dynamicColorSwitch.checked) {
+        colorPickerRow.style.opacity = '0.5';
+        colorPickerRow.style.pointerEvents = 'none';
+    } else {
+        colorPickerRow.style.opacity = '1';
+        colorPickerRow.style.pointerEvents = 'auto';
+    }
 
-        if (items.themeMode) {
-            selectedThemeMode = items.themeMode;
-        }
-        updateThemeDropdownVisuals(selectedThemeMode);
+    selectedThemeMode = initialSettings.themeMode;
+    updateThemeDropdownVisuals(selectedThemeMode);
 
-        if (items.themeColor) {
-            colorPicker.value = items.themeColor;
-            updateSwatchSelection(items.themeColor);
-        } else {
-            updateSwatchSelection('#6750A4');
-        }
+    colorPicker.value = initialSettings.themeColor;
+    updateSwatchSelection(initialSettings.themeColor);
 
-        if (items.language) {
-            selectedLang = items.language;
-        }
-        updateDropdownVisuals(selectedLang);
+    selectedLang = initialSettings.language;
+    updateDropdownVisuals(selectedLang);
 
-        if (typeof applyMaterialTheme === 'function' && dynamicColorSwitch.checked) {
-            applyMaterialTheme(colorPicker.value, selectedThemeMode);
-        }
-    });
+    if (typeof window.applyMaterialTheme === 'function' && dynamicColorSwitch.checked) {
+        window.applyMaterialTheme(colorPicker.value, selectedThemeMode);
+    }
 
     /**
-     * Saves settings automatically to Chrome storage.
-     * @param {boolean} [isThemeToggle=false] Whether the action was toggling the Dynamic Color switch.
+     * @param {boolean} [isThemeToggle=false]
+     * @returns {Promise<void>}
      */
-    function saveSettings(isThemeToggle = false) {
-        chrome.storage.sync.set({
+    async function saveSettings(isThemeToggle = false) {
+        await StorageManager.saveSettings({
             timelineEnabled: timelineSwitch.checked,
             collapseEnabled: collapseSwitch.checked,
             codeNavEnabled: codeNavSwitch.checked,
@@ -314,34 +293,34 @@ document.addEventListener('DOMContentLoaded', () => {
             dynamicColorEnabled: dynamicColorSwitch.checked,
             hideUpgradeEnabled: hideUpgradeSwitch.checked,
             snippetPrefix: selectedPrefix
-        }, () => {
-            currentLanguage = selectedLang === 'auto' ? navigator.language.split('-')[0] : selectedLang;
-            if (!BG_LOCALES[currentLanguage]) {
-                currentLanguage = 'en';
-            }
-
-            applyLocalizations();
-            updateDropdownVisuals(selectedLang);
-            updateThemeDropdownVisuals(selectedThemeMode);
-            updatePrefixDropdownVisuals(selectedPrefix);
-
-            if (dynamicColorSwitch.checked) {
-                colorPickerRow.style.opacity = '1';
-                colorPickerRow.style.pointerEvents = 'auto';
-                if (typeof applyMaterialTheme === 'function') {
-                    applyMaterialTheme(colorPicker.value, selectedThemeMode);
-                }
-            } else {
-                colorPickerRow.style.opacity = '0.5';
-                colorPickerRow.style.pointerEvents = 'none';
-            }
-
-            if (isThemeToggle) {
-                showToast(getBgString('statusSavedRefresh'), true);
-            } else {
-                showToast(getBgString('statusSaved'));
-            }
         });
+
+        window.currentLanguage = selectedLang === 'auto' ? navigator.language.split('-')[0] : selectedLang;
+        if (!window.BG_LOCALES || !window.BG_LOCALES[window.currentLanguage]) {
+            window.currentLanguage = 'en';
+        }
+
+        applyLocalizations();
+        updateDropdownVisuals(selectedLang);
+        updateThemeDropdownVisuals(selectedThemeMode);
+        updatePrefixDropdownVisuals(selectedPrefix);
+
+        if (dynamicColorSwitch.checked) {
+            colorPickerRow.style.opacity = '1';
+            colorPickerRow.style.pointerEvents = 'auto';
+            if (typeof window.applyMaterialTheme === 'function') {
+                window.applyMaterialTheme(colorPicker.value, selectedThemeMode);
+            }
+        } else {
+            colorPickerRow.style.opacity = '0.5';
+            colorPickerRow.style.pointerEvents = 'none';
+        }
+
+        if (isThemeToggle) {
+            toast.show(window.getBgString('statusSavedRefresh'), true);
+        } else {
+            toast.show(window.getBgString('statusSaved'));
+        }
     }
 
     timelineSwitch.addEventListener('change', () => saveSettings(false));
