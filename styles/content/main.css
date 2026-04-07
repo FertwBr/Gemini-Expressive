@@ -466,10 +466,10 @@ body.bg-hide-upgrade div:has(> .dynamic-upsell-label) {
     position: absolute;
     bottom: calc(100% + 8px);
     left: 24px;
-    background: var(--bg-sys-color-surface-container-highest, #36343b);
-    border: 1px solid var(--bg-sys-color-outline-variant, #44474e);
+    background: var(--bg-sys-color-surface-container-high, #e1e2e8);
+    border: 1px solid var(--bg-sys-color-outline-variant, #c4c7c5);
     border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
     min-width: 280px;
     max-width: 400px;
     max-height: 320px;
@@ -488,7 +488,7 @@ body.bg-hide-upgrade div:has(> .dynamic-upsell-label) {
 
 .bg-snippet-menu-header {
     font-size: 0.85rem;
-    color: var(--bg-sys-color-primary, #a8c7fa);
+    color: var(--bg-sys-color-primary, #0b57d0);
     padding: 8px 8px 12px 8px;
     font-weight: 600;
     display: flex;
@@ -506,7 +506,7 @@ body.bg-hide-upgrade div:has(> .dynamic-upsell-label) {
     cursor: pointer;
     width: 100%;
     text-align: left;
-    color: var(--bg-sys-color-on-surface, #e3e2e6);
+    color: var(--bg-sys-color-on-surface, #1a1c1e);
     transition: background 0.2s;
     border-radius: 8px;
     margin-bottom: 2px;
@@ -514,14 +514,19 @@ body.bg-hide-upgrade div:has(> .dynamic-upsell-label) {
 
 .bg-snippet-menu-item.active,
 .bg-snippet-menu-item:hover {
-    background: var(--bg-sys-color-surface-variant, #44474e);
+    background: var(--bg-sys-color-secondary-container, #c2e7ff);
 }
 
 .bg-snippet-icon-container {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--bg-sys-color-primary, #a8c7fa);
+    color: var(--bg-sys-color-primary, #0b57d0);
+}
+
+.bg-snippet-menu-item.active .bg-snippet-icon-container,
+.bg-snippet-menu-item:hover .bg-snippet-icon-container {
+    color: var(--bg-sys-color-on-secondary-container, #001d35);
 }
 
 .bg-snippet-text-container {
@@ -534,15 +539,26 @@ body.bg-hide-upgrade div:has(> .dynamic-upsell-label) {
 .bg-snippet-keyword {
     font-weight: 600;
     font-size: 0.9rem;
-    color: var(--bg-sys-color-on-surface, #e3e2e6);
+    color: var(--bg-sys-color-on-surface, #1a1c1e);
+}
+
+.bg-snippet-menu-item.active .bg-snippet-keyword,
+.bg-snippet-menu-item:hover .bg-snippet-keyword {
+    color: var(--bg-sys-color-on-secondary-container, #001d35);
 }
 
 .bg-snippet-preview {
     font-size: 0.8rem;
-    color: var(--bg-sys-color-on-surface-variant, #c4c7c5);
+    color: var(--bg-sys-color-on-surface-variant, #444746);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.bg-snippet-menu-item.active .bg-snippet-preview,
+.bg-snippet-menu-item:hover .bg-snippet-preview {
+    color: var(--bg-sys-color-on-secondary-container, #001d35);
+    opacity: 0.8;
 }
 
 .bg-snippet-empty {
@@ -557,7 +573,7 @@ body.bg-hide-upgrade div:has(> .dynamic-upsell-label) {
 
 .bg-snippet-empty-text {
     font-size: 0.85rem;
-    color: var(--bg-sys-color-on-surface-variant, #c4c7c5);
+    color: var(--bg-sys-color-on-surface-variant, #444746);
 }
 
 .bg-snippet-add-btn {
@@ -565,8 +581,8 @@ body.bg-hide-upgrade div:has(> .dynamic-upsell-label) {
     align-items: center;
     gap: 6px;
     background: transparent;
-    color: var(--bg-sys-color-primary, #a8c7fa);
-    border: 1px solid var(--bg-sys-color-primary, #a8c7fa);
+    color: var(--bg-sys-color-primary, #0b57d0);
+    border: 1px solid var(--bg-sys-color-primary, #0b57d0);
     padding: 6px 16px;
     border-radius: 100px;
     font-size: 0.85rem;
@@ -577,6 +593,6 @@ body.bg-hide-upgrade div:has(> .dynamic-upsell-label) {
 
 .bg-snippet-add-btn:hover,
 .bg-snippet-add-btn.active {
-    background: var(--bg-sys-color-primary, #a8c7fa);
-    color: var(--bg-sys-color-on-primary, #062e6f);
+    background: var(--bg-sys-color-primary, #0b57d0);
+    color: var(--bg-sys-color-on-primary, #ffffff);
 }
