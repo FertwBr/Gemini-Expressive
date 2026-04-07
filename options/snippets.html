@@ -55,10 +55,19 @@
                            data-i18n-placeholder="snippetKeywordPlaceholder">
                 </div>
                 <div>
-                    <label class="input-label" data-i18n="snippetContentLabel">Prompt Content</label>
+                    <div class="editor-content-header">
+                        <label class="input-label" data-i18n="snippetContentLabel">Prompt Content</label>
+                        <div class="editor-tabs-container">
+                            <button id="tabWrite" class="editor-tab active" data-i18n="tabWrite">Write</button>
+                            <button id="tabPreview" class="editor-tab" data-i18n="tabPreview">Preview</button>
+                        </div>
+                    </div>
+
                     <textarea id="snippetContent" class="custom-input custom-textarea"
-                              placeholder="Write your detailed prompt here..."
+                              placeholder="Write your detailed prompt here... (Markdown supported)"
                               data-i18n-placeholder="snippetContentPlaceholder"></textarea>
+
+                    <div id="snippetPreview" class="preview-panel" style="display: none;"></div>
                 </div>
                 <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 8px; flex-wrap: wrap;">
                     <button id="deleteSnippetBtn" class="action-btn-outline"

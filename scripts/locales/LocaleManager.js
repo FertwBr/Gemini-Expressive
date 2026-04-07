@@ -33,7 +33,7 @@ class LocaleManager {
             backToSettings: "Back to Settings",
             noSnippetsFound: "No snippets saved yet. Create one to get started!",
             snippetKeywordPlaceholder: "e.g., react",
-            snippetContentPlaceholder: "Write your detailed prompt here...",
+            snippetContentPlaceholder: "Write your detailed prompt here... (Markdown supported)",
             confirmDelete: "Are you sure you want to delete this snippet?",
             createSnippetTitle: "Create New Snippet",
             editSnippetTitle: "Edit Snippet",
@@ -115,7 +115,10 @@ class LocaleManager {
             dialogCancelBtn: "Cancel",
             errorEmptySnippet: "Keyword and content cannot be empty.",
             moveUp: "Move up",
-            moveDown: "Move down"
+            moveDown: "Move down",
+            tabWrite: "Write",
+            tabPreview: "Preview",
+            previewEmpty: "Nothing to preview yet..."
         },
         pt: {
             settingsTitle: "Gemini Expressive",
@@ -137,7 +140,7 @@ class LocaleManager {
             backToSettings: "Voltar para Configurações",
             noSnippetsFound: "Nenhum atalho salvo ainda.",
             snippetKeywordPlaceholder: "ex: react",
-            snippetContentPlaceholder: "Escreva seu prompt detalhado aqui...",
+            snippetContentPlaceholder: "Escreva seu prompt detalhado aqui... (Suporta Markdown)",
             confirmDelete: "Tem certeza que deseja excluir este atalho?",
             createSnippetTitle: "Criar Novo Atalho",
             editSnippetTitle: "Editar Atalho",
@@ -219,7 +222,10 @@ class LocaleManager {
             dialogCancelBtn: "Cancelar",
             errorEmptySnippet: "A palavra-chave e o conteúdo não podem estar vazios.",
             moveUp: "Mover para cima",
-            moveDown: "Mover para baixo"
+            moveDown: "Mover para baixo",
+            tabWrite: "Escrever",
+            tabPreview: "Visualizar",
+            previewEmpty: "Nada para visualizar ainda..."
         },
         es: {
             settingsTitle: "Gemini Expressive",
@@ -241,7 +247,7 @@ class LocaleManager {
             backToSettings: "Volver a Configuración",
             noSnippetsFound: "No hay atajos guardados todavía.",
             snippetKeywordPlaceholder: "ej: react",
-            snippetContentPlaceholder: "Escribe tu prompt detallado aquí...",
+            snippetContentPlaceholder: "Escribe tu prompt detallado aquí... (Soporta Markdown)",
             confirmDelete: "¿Estás seguro de que quieres eliminar este atajo?",
             createSnippetTitle: "Crear Nuevo Atajo",
             editSnippetTitle: "Editar Atajo",
@@ -323,7 +329,10 @@ class LocaleManager {
             dialogCancelBtn: "Cancelar",
             errorEmptySnippet: "La palabra clave y el contenido no pueden estar vacíos.",
             moveUp: "Mover hacia arriba",
-            moveDown: "Mover hacia abajo"
+            moveDown: "Mover hacia abajo",
+            tabWrite: "Escribir",
+            tabPreview: "Vista Previa",
+            previewEmpty: "Nada que previsualizar aún..."
         },
         de: {
             settingsTitle: "Gemini Expressive",
@@ -345,7 +354,7 @@ class LocaleManager {
             backToSettings: "Zurück zu den Einstellungen",
             noSnippetsFound: "Noch keine Schnipsel gespeichert.",
             snippetKeywordPlaceholder: "z.B. react",
-            snippetContentPlaceholder: "Schreiben Sie hier Ihren detaillierten Prompt...",
+            snippetContentPlaceholder: "Schreiben Sie hier Ihren detaillierten Prompt... (Markdown unterstützt)",
             confirmDelete: "Sind Sie sicher, dass Sie diesen Schnipsel löschen möchten?",
             createSnippetTitle: "Neuen Schnipsel erstellen",
             editSnippetTitle: "Schnipsel bearbeiten",
@@ -427,7 +436,10 @@ class LocaleManager {
             dialogCancelBtn: "Abbrechen",
             errorEmptySnippet: "Schlüsselwort und Inhalt dürfen nicht leer sein.",
             moveUp: "Nach oben bewegen",
-            moveDown: "Nach unten bewegen"
+            moveDown: "Nach unten bewegen",
+            tabWrite: "Schreiben",
+            tabPreview: "Vorschau",
+            previewEmpty: "Noch nichts zur Vorschau..."
         },
         hi: {
             settingsTitle: "Gemini Expressive",
@@ -449,7 +461,7 @@ class LocaleManager {
             backToSettings: "सेटिंग्स पर वापस जाएं",
             noSnippetsFound: "अभी तक कोई स्निपेट सहेजा नहीं गया है।",
             snippetKeywordPlaceholder: "उदा., react",
-            snippetContentPlaceholder: "अपना विस्तृत प्रॉम्प्ट यहां लिखें...",
+            snippetContentPlaceholder: "अपना विस्तृत प्रॉम्प्ट यहां लिखें... (Markdown समर्थित)",
             confirmDelete: "क्या आप वाकई इस स्निपेट को हटाना चाहते हैं?",
             createSnippetTitle: "नया स्निपेट बनाएं",
             editSnippetTitle: "स्निपेट संपादित करें",
@@ -531,7 +543,10 @@ class LocaleManager {
             dialogCancelBtn: "रद्द करें",
             errorEmptySnippet: "कीवर्ड और सामग्री खाली नहीं हो सकते।",
             moveUp: "ऊपर ले जाएँ",
-            moveDown: "नीचे ले जाएँ"
+            moveDown: "नीचे ले जाएँ",
+            tabWrite: "लिखें",
+            tabPreview: "पूर्वावलोकन",
+            previewEmpty: "पूर्वावलोकन के लिए अभी कुछ नहीं..."
         },
         ja: {
             settingsTitle: "Gemini Expressive",
@@ -553,7 +568,7 @@ class LocaleManager {
             backToSettings: "設定に戻る",
             noSnippetsFound: "スニペットはまだ保存されていません。",
             snippetKeywordPlaceholder: "例: react",
-            snippetContentPlaceholder: "ここに詳細なプロンプトを記述します...",
+            snippetContentPlaceholder: "ここに詳細なプロンプトを記述します... (Markdownサポート)",
             confirmDelete: "このスニペットを削除してもよろしいですか？",
             createSnippetTitle: "新しいスニペットを作成",
             editSnippetTitle: "スニペットを編集",
@@ -635,7 +650,10 @@ class LocaleManager {
             dialogCancelBtn: "キャンセル",
             errorEmptySnippet: "キーワードとコンテンツを空にすることはできません。",
             moveUp: "上に移動",
-            moveDown: "下に移動"
+            moveDown: "下に移動",
+            tabWrite: "書く",
+            tabPreview: "プレビュー",
+            previewEmpty: "プレビューするものがまだありません..."
         }
     };
 

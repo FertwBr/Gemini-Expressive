@@ -17,6 +17,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const addNewBtn = document.getElementById('addNewBtn');
     const keywordInput = document.getElementById('snippetKeyword');
     const contentInput = document.getElementById('snippetContent');
+    const previewPanel = document.getElementById('snippetPreview');
+    const tabWrite = document.getElementById('tabWrite');
+    const tabPreview = document.getElementById('tabPreview');
     const saveBtn = document.getElementById('saveSnippetBtn');
     const deleteBtn = document.getElementById('deleteSnippetBtn');
     const toastElement = document.getElementById('toast-notification');
@@ -107,6 +110,77 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     /**
+     * Parses Markdown to Safe HTML
+     * @param {string} text
+     * @returns {string} Safe HTML string
+     */
+    function parseMarkdownToHTML(text) {
+        if (!text || !text.trim()) return `<div class="preview-empty">${LocaleManager.getString('previewEmpty')}</div>`;
+
+        let html = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+        const codeBlocks = [];
+        html = html.replace(/```(\w*)\n([\s\S]*?)```/g, (match, lang, code) => {
+            const langLabel = lang ? `<div class="preview-code-lang">${lang}</div>` : '';
+            codeBlocks.push(`<div class="preview-code-wrapper">${langLabel}<pre><code>${code}</code></pre></div>`);
+            return `%%%CODE_BLOCK_${codeBlocks.length - 1}%%%`;
+        });
+
+        html = html.replace(/^###### (.*$)/gim, '<h6>$1</h6>');
+        html = html.replace(/^##### (.*$)/gim, '<h5>$1</h5>');
+        html = html.replace(/^#### (.*$)/gim, '<h4>$1</h4>');
+        html = html.replace(/^### (.*$)/gim, '<h3>$1</h3>');
+        html = html.replace(/^## (.*$)/gim, '<h2>$1</h2>');
+        html = html.replace(/^# (.*$)/gim, '<h1>$1</h1>');
+
+        html = html.replace(/^\> (.*$)/gim, '<blockquote>$1</blockquote>');
+
+        html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+        html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+        html = html.replace(/__([^_]+)__/g, '<strong>$1</strong>');
+        html = html.replace(/_([^_]+)_/g, '<em>$1</em>');
+
+        html = html.replace(/`([^`\n]+)`/g, '<code class="preview-inline-code">$1</code>');
+
+        html = html.replace(/^\s*[\-\*] (.*$)/gim, '<ul><li>$1</li></ul>');
+        html = html.replace(/<\/ul>\n<ul>/g, '\n');
+
+        let lines = html.split('\n');
+        let result = '';
+
+        for (let line of lines) {
+            if (line.match(/^(<h|<ul|<blockquote|%%%CODE_BLOCK)/)) {
+                result += line + '\n';
+            } else if (line.trim() !== '') {
+                result += `<p>${line}</p>\n`;
+            }
+        }
+
+        result = result.replace(/%%%CODE_BLOCK_(\d+)%%%/g, (match, index) => {
+            return codeBlocks[index];
+        });
+
+        return result;
+    }
+
+    function switchToWriteTab() {
+        tabWrite.classList.add('active');
+        tabPreview.classList.remove('active');
+        contentInput.style.display = 'block';
+        previewPanel.style.display = 'none';
+    }
+
+    tabWrite.onclick = switchToWriteTab;
+
+    tabPreview.onclick = () => {
+        tabPreview.classList.add('active');
+        tabWrite.classList.remove('active');
+        contentInput.style.display = 'none';
+        previewPanel.style.display = 'block';
+        previewPanel.innerHTML = parseMarkdownToHTML(contentInput.value);
+    };
+
+    /**
      * @returns {Promise<void>}
      */
     async function loadSnippets() {
@@ -191,7 +265,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             const previewDiv = document.createElement('div');
             previewDiv.className = 'snippet-item-preview';
-            previewDiv.textContent = snippet.content;
+            previewDiv.textContent = snippet.content.replace(/\n/g, ' ');
 
             contentDiv.appendChild(keywordDiv);
             contentDiv.appendChild(previewDiv);
@@ -258,6 +332,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         currentEditingId = id;
         const snippet = snippets.find(s => s.id === id);
         if (snippet) {
+            switchToWriteTab();
             keywordInput.value = snippet.keyword;
             contentInput.value = snippet.content;
 
@@ -277,6 +352,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     addNewBtn.onclick = () => {
         currentEditingId = null;
+        switchToWriteTab();
         keywordInput.value = '';
         contentInput.value = '';
 
