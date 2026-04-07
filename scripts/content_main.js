@@ -355,60 +355,113 @@ function renderSnippetMenu() {
 
     const header = document.createElement('div');
     header.className = 'bg-snippet-menu-header';
-    header.textContent = 'Snippets';
+
+    const headerIcon = document.createElement('span');
+    headerIcon.className = 'google-symbols';
+    headerIcon.textContent = 'bolt';
+
+    const headerText = document.createElement('span');
+    headerText.textContent = getBgString('snippetsTitle');
+
+    header.appendChild(headerIcon);
+    header.appendChild(headerText);
     menu.appendChild(header);
 
-    snippetState.matches.forEach((snippet, index) => {
-        const item = document.createElement('button');
-        item.className = 'bg-snippet-menu-item';
-        if (index === snippetState.activeIndex) {
-            item.classList.add('active');
+    if (snippetState.matches.length === 0) {
+        const emptyContainer = document.createElement('div');
+        emptyContainer.className = 'bg-snippet-empty';
+
+        const emptyText = document.createElement('span');
+        emptyText.className = 'bg-snippet-empty-text';
+        emptyText.textContent = getBgString('snippetDropdownEmpty');
+
+        const addBtn = document.createElement('button');
+        addBtn.className = 'bg-snippet-add-btn';
+        if (snippetState.activeIndex === 0) {
+            addBtn.classList.add('active');
         }
 
-        const iconContainer = document.createElement('div');
-        iconContainer.className = 'bg-snippet-icon-container';
-        const icon = document.createElement('span');
-        icon.className = 'google-symbols';
-        icon.textContent = 'edit_note';
-        iconContainer.appendChild(icon);
+        const addIcon = document.createElement('span');
+        addIcon.className = 'google-symbols';
+        addIcon.textContent = 'add';
+        addIcon.style.fontSize = '18px';
 
-        const textContainer = document.createElement('div');
-        textContainer.className = 'bg-snippet-text-container';
+        const addText = document.createElement('span');
+        addText.textContent = getBgString('snippetDropdownAdd');
 
-        const keywordNode = document.createElement('span');
-        keywordNode.className = 'bg-snippet-keyword';
-        const cleanKw = snippet.keyword.replace(/^[/*!#@]+/, '');
-        keywordNode.textContent = extensionSettings.snippetPrefix + cleanKw;
+        addBtn.appendChild(addIcon);
+        addBtn.appendChild(addText);
 
-        const previewNode = document.createElement('span');
-        previewNode.className = 'bg-snippet-preview';
-        previewNode.textContent = snippet.content;
-
-        textContainer.appendChild(keywordNode);
-        textContainer.appendChild(previewNode);
-
-        item.appendChild(iconContainer);
-        item.appendChild(textContainer);
-
-        item.addEventListener('mousedown', (e) => {
+        addBtn.addEventListener('mousedown', (e) => {
             e.preventDefault();
             e.stopPropagation();
-            insertSnippet(snippet);
+            closeSnippetMenu();
+            window.open(chrome.runtime.getURL('options/snippets.html'), '_blank');
         });
 
-        item.addEventListener('mouseenter', () => {
-            snippetState.activeIndex = index;
-            const allItems = menu.querySelectorAll('.bg-snippet-menu-item');
+        addBtn.addEventListener('mouseenter', () => {
+            snippetState.activeIndex = 0;
+            const allItems = menu.querySelectorAll('.bg-snippet-add-btn');
             allItems.forEach(i => i.classList.remove('active'));
-            item.classList.add('active');
+            addBtn.classList.add('active');
         });
 
-        menu.appendChild(item);
-    });
+        emptyContainer.appendChild(emptyText);
+        emptyContainer.appendChild(addBtn);
+        menu.appendChild(emptyContainer);
+    } else {
+        snippetState.matches.forEach((snippet, index) => {
+            const item = document.createElement('button');
+            item.className = 'bg-snippet-menu-item';
+            if (index === snippetState.activeIndex) {
+                item.classList.add('active');
+            }
+
+            const iconContainer = document.createElement('div');
+            iconContainer.className = 'bg-snippet-icon-container';
+            const icon = document.createElement('span');
+            icon.className = 'google-symbols';
+            icon.textContent = 'edit_note';
+            iconContainer.appendChild(icon);
+
+            const textContainer = document.createElement('div');
+            textContainer.className = 'bg-snippet-text-container';
+
+            const keywordNode = document.createElement('span');
+            keywordNode.className = 'bg-snippet-keyword';
+            const cleanKw = snippet.keyword.replace(/^[/*!#@]+/, '');
+            keywordNode.textContent = extensionSettings.snippetPrefix + cleanKw;
+
+            const previewNode = document.createElement('span');
+            previewNode.className = 'bg-snippet-preview';
+            previewNode.textContent = snippet.content;
+
+            textContainer.appendChild(keywordNode);
+            textContainer.appendChild(previewNode);
+
+            item.appendChild(iconContainer);
+            item.appendChild(textContainer);
+
+            item.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                insertSnippet(snippet);
+            });
+
+            item.addEventListener('mouseenter', () => {
+                snippetState.activeIndex = index;
+                const allItems = menu.querySelectorAll('.bg-snippet-menu-item');
+                allItems.forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+            });
+
+            menu.appendChild(item);
+        });
+    }
 
     menu.classList.add('visible');
 
-    const activeItem = menu.querySelector('.bg-snippet-menu-item.active');
+    const activeItem = menu.querySelector('.bg-snippet-menu-item.active, .bg-snippet-add-btn.active');
     if (activeItem) {
         activeItem.scrollIntoView({block: 'nearest'});
     }
@@ -463,19 +516,16 @@ function checkSnippetTrigger() {
         const fullTypedText = match[1];
         const searchWord = match[2].toLowerCase();
 
+        let matches = [];
         if (extensionSettings.snippets && Array.isArray(extensionSettings.snippets)) {
-            const matches = extensionSettings.snippets.filter(s => {
+            matches = extensionSettings.snippets.filter(s => {
                 const cleanKw = s.keyword.replace(/^[/*!#@]+/, '').toLowerCase();
                 return cleanKw.startsWith(searchWord);
             }).slice(0, 5);
-
-            if (matches.length > 0) {
-                const startOffset = offset - fullTypedText.length;
-                openSnippetMenu(fullTypedText, matches, node, startOffset, offset);
-            } else {
-                closeSnippetMenu();
-            }
         }
+
+        const startOffset = offset - fullTypedText.length;
+        openSnippetMenu(fullTypedText, matches, node, startOffset, offset);
     } else {
         closeSnippetMenu();
     }
@@ -486,20 +536,27 @@ function handleSnippetKeydown(event) {
         return;
     }
 
+    const maxIndex = snippetState.matches.length > 0 ? snippetState.matches.length : 1;
+
     if (event.key === 'ArrowDown') {
         event.preventDefault();
         event.stopPropagation();
-        snippetState.activeIndex = (snippetState.activeIndex + 1) % snippetState.matches.length;
+        snippetState.activeIndex = (snippetState.activeIndex + 1) % maxIndex;
         renderSnippetMenu();
     } else if (event.key === 'ArrowUp') {
         event.preventDefault();
         event.stopPropagation();
-        snippetState.activeIndex = (snippetState.activeIndex - 1 + snippetState.matches.length) % snippetState.matches.length;
+        snippetState.activeIndex = (snippetState.activeIndex - 1 + maxIndex) % maxIndex;
         renderSnippetMenu();
     } else if (event.key === 'Enter' || event.key === 'Tab') {
         event.preventDefault();
         event.stopPropagation();
-        insertSnippet(snippetState.matches[snippetState.activeIndex]);
+        if (snippetState.matches.length === 0) {
+            closeSnippetMenu();
+            window.open(chrome.runtime.getURL('options/snippets.html'), '_blank');
+        } else {
+            insertSnippet(snippetState.matches[snippetState.activeIndex]);
+        }
     } else if (event.key === 'Escape') {
         event.preventDefault();
         event.stopPropagation();
@@ -683,120 +740,24 @@ function injectUIFixes() {
                 margin: 0 !important;
                 display: block !important;
             }
-
-            #bg-snippet-menu {
-                position: absolute;
-                bottom: calc(100% + 8px);
-                left: 24px;
-                background: var(--bg-sys-color-surface-container-highest, #36343b);
-                border: 1px solid var(--bg-sys-color-outline-variant, #44474e);
-                border-radius: 16px;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-                min-width: 250px;
-                max-width: 400px;
-                max-height: 300px;
-                overflow-y: auto;
-                z-index: 2147483647 !important;
-                display: none;
-                flex-direction: column;
-                padding: 8px 0;
-                font-family: "Google Sans Flex", "Google Sans Text", "Google Sans", sans-serif;
-            }
-            #bg-snippet-menu.visible {
-                display: flex;
-            }
-            .bg-snippet-menu-header {
-                font-size: 0.75rem;
-                color: var(--bg-sys-color-on-surface-variant, #c4c7c5);
-                padding: 4px 16px 8px 16px;
-                font-weight: 600;
-                text-transform: uppercase;
-                letter-spacing: 0.5px;
-            }
-            .bg-snippet-menu-item {
-                background: transparent;
-                border: none;
-                padding: 10px 16px;
-                display: flex;
-                align-items: center;
-                gap: 12px;
-                cursor: pointer;
-                width: 100%;
-                text-align: left;
-                color: var(--bg-sys-color-on-surface, #e3e2e6);
-                transition: background 0.2s;
-                font-family: "Google Sans Flex", "Google Sans Text", "Google Sans", sans-serif;
-            }
-            .bg-snippet-menu-item.active {
-                background: var(--bg-sys-color-surface-variant, #44474e);
-            }
-            .bg-snippet-icon-container {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: var(--bg-sys-color-primary, #a8c7fa);
-            }
-            .bg-snippet-text-container {
-                display: flex;
-                flex-direction: column;
-                overflow: hidden;
-                flex: 1;
-            }
-            .bg-snippet-keyword {
-                font-weight: 600;
-                font-size: 0.9rem;
-                color: var(--bg-sys-color-on-surface, #e3e2e6);
-            }
-            .bg-snippet-preview {
-                font-size: 0.8rem;
-                color: var(--bg-sys-color-on-surface-variant, #c4c7c5);
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-
-            .bg-expressive-sidebar-icon {
-                width: var(--gem-sys-typography-icon-scale--icon-l-font-size, 20px);
-                height: var(--gem-sys-typography-icon-scale--icon-l-font-size, 20px);
-                display: inline-block;
-                background-color: currentColor;
-                -webkit-mask-image: var(--bg-icon-url);
-                mask-image: var(--bg-icon-url);
-                -webkit-mask-size: contain;
-                mask-size: contain;
-                -webkit-mask-repeat: no-repeat;
-                mask-repeat: no-repeat;
-                -webkit-mask-position: center;
-                mask-position: center;
-                margin-right: 12px !important;
-            }
-
-            .bg-expressive-settings-shortcut button {
-                overflow: visible !important;
-            }
-
-            .bg-sidebar-tooltip {
-                position: fixed;
-                background-color: var(--gem-sys-color--inverse-surface, #303030);
-                color: var(--gem-sys-color--inverse-on-surface, #f2f2f2);
-                padding: 6px 10px;
-                border-radius: 4px;
-                font-size: 12px;
-                font-family: "Google Sans Flex", "Google Sans Text", "Google Sans", sans-serif;
-                white-space: nowrap;
-                opacity: 0;
-                visibility: hidden;
-                pointer-events: none;
-                transition: all 0.15s cubic-bezier(0.2, 0, 0, 1);
-                z-index: 2147483647;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-                transform: translateY(-50%) scale(0.9);
+            
+            /* RESTORED FROM ORIGINAL CODE TO FIX COLLAPSE ICON COLOR */
+            :root {
+               --bg-svg-filter: none;
             }
             
-            .bg-sidebar-tooltip.visible {
-                opacity: 1;
-                visibility: visible;
-                transform: translateY(-50%) scale(1);
+            @media (prefers-color-scheme: dark) {
+               :root {
+                  --bg-svg-filter: invert(1);
+               }
+            }
+            
+            body.bg-dynamic-theme-enabled .bg-collapse-svg-icon {
+               filter: invert(0); 
+            }
+            
+            body.bg-dynamic-theme-enabled.dark-theme .bg-collapse-svg-icon {
+               filter: invert(1);
             }
         `;
         document.head.appendChild(style);
