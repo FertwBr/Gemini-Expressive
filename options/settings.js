@@ -4,73 +4,15 @@
  */
 
 import {StorageManager} from './core/StorageManager.js';
+import {Localization} from './core/Localization.js';
 import {ToastNotification} from './components/ToastNotification.js';
-
-/**
- * @param {string} languageCode
- * @returns {string}
- */
-function getFlagCode(languageCode) {
-    let tz = '';
-    try {
-        tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
-    } catch (e) {
-        tz = '';
-    }
-
-    if (languageCode === 'pt') {
-        if (tz.includes('Europe/') || tz.includes('Africa/')) return 'pt';
-        return 'br';
-    }
-    if (languageCode === 'es') {
-        if (tz.includes('Madrid') || tz.includes('Canary')) return 'es';
-        if (tz.includes('Argentina')) return 'ar';
-        if (tz.includes('Bogota')) return 'co';
-        if (tz.includes('Lima') || tz.includes('Rio_Branco')) return 'pe';
-        if (tz.includes('Santiago')) return 'cl';
-        if (tz.includes('Caracas')) return 've';
-        if (tz.includes('America/')) return 'mx';
-        return 'es';
-    }
-    if (languageCode === 'en') {
-        if (tz.includes('London')) return 'gb';
-        if (tz.includes('Australia')) return 'au';
-        if (tz.includes('Toronto') || tz.includes('Vancouver')) return 'ca';
-        return 'us';
-    }
-    if (languageCode === 'de') {
-        if (tz.includes('Vienna')) return 'at';
-        if (tz.includes('Zurich')) return 'ch';
-        return 'de';
-    }
-    if (languageCode === 'ja') return 'jp';
-    if (languageCode === 'hi') return 'in';
-
-    return languageCode;
-}
-
-/**
- * @returns {void}
- */
-function applyLocalizations() {
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        const translated = window.getBgString(key);
-        if (el.tagName === 'INPUT' && el.type === 'button') {
-            el.value = translated;
-        } else {
-            el.textContent = translated;
-        }
-    });
-
-    document.querySelectorAll('[data-i18n-title]').forEach(el => {
-        const key = el.getAttribute('data-i18n-title');
-        el.setAttribute('title', window.getBgString(key));
-    });
-}
+import {TooltipManager} from './components/TooltipManager.js';
+import {DropdownMenu} from './components/DropdownMenu.js';
+import {ColorPicker} from './components/ColorPicker.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
-    applyLocalizations();
+    Localization.apply();
+    TooltipManager.init();
 
     const timelineSwitch = document.getElementById('enableTimeline');
     const collapseSwitch = document.getElementById('enableCollapse');
@@ -79,73 +21,108 @@ document.addEventListener('DOMContentLoaded', async () => {
     const dynamicColorSwitch = document.getElementById('enableDynamicColor');
     const hideUpgradeSwitch = document.getElementById('hideUpgradeBtn');
     const colorPickerRow = document.getElementById('colorPickerRow');
-    const colorPicker = document.getElementById('themeColorPicker');
-    const colorSwatches = document.querySelectorAll('.color-swatch');
     const versionText = document.getElementById('versionText');
     const toastElement = document.getElementById('toast-notification');
     const toastMessageElement = document.getElementById('toast-message');
-
-    const prefixDropdownBtn = document.getElementById('prefixDropdownBtn');
-    const prefixDropdownMenu = document.getElementById('prefixDropdownMenu');
-    const currentPrefixLabel = document.getElementById('currentPrefixLabel');
-    const prefixMenuItems = prefixDropdownMenu.querySelectorAll('.setting-menu-item');
-
-    const dropdownBtn = document.getElementById('langDropdownBtn');
-    const dropdownMenu = document.getElementById('langDropdownMenu');
-    const currentFlag = document.getElementById('currentFlag');
-    const currentLangLabel = document.getElementById('currentLangLabel');
-    const menuItems = dropdownMenu.querySelectorAll('.footer-menu-item');
-
-    const themeDropdownBtn = document.getElementById('themeDropdownBtn');
-    const themeDropdownMenu = document.getElementById('themeDropdownMenu');
-    const currentThemeLabel = document.getElementById('currentThemeLabel');
-    const themeMenuItems = themeDropdownMenu.querySelectorAll('.setting-menu-item');
 
     const toast = new ToastNotification(toastElement, toastMessageElement);
 
     let selectedPrefix = '/';
     let selectedThemeMode = 'auto';
     let selectedLang = 'auto';
+    let selectedColor = '#1A73E8';
 
     if (window.chrome && chrome.runtime && chrome.runtime.getManifest) {
         versionText.textContent = 'v' + chrome.runtime.getManifest().version;
     }
 
-    document.querySelectorAll('.help-tooltip-container').forEach(container => {
-        container.addEventListener('mouseenter', () => {
-            const card = container.querySelector('.help-tooltip-card');
-            if (!card) return;
+    const currentPrefixLabel = document.getElementById('currentPrefixLabel');
+    const prefixDropdown = new DropdownMenu(
+        document.getElementById('prefixDropdownBtn'),
+        document.getElementById('prefixDropdownMenu'),
+        '.setting-menu-item',
+        'active',
+        (item) => {
+            selectedPrefix = item.getAttribute('data-prefix');
+            updatePrefixVisuals(selectedPrefix);
+            saveSettings(false);
+        }
+    );
 
-            card.classList.remove('pos-bottom', 'pos-left', 'pos-right');
+    const currentThemeLabel = document.getElementById('currentThemeLabel');
+    const themeDropdown = new DropdownMenu(
+        document.getElementById('themeDropdownBtn'),
+        document.getElementById('themeDropdownMenu'),
+        '.setting-menu-item',
+        'active',
+        (item) => {
+            selectedThemeMode = item.getAttribute('data-theme');
+            updateThemeVisuals(selectedThemeMode);
+            saveSettings(false);
+        }
+    );
 
-            const rect = card.getBoundingClientRect();
-            const viewportWidth = window.innerWidth;
+    const dropdownBtn = document.getElementById('langDropdownBtn');
+    const currentFlag = document.getElementById('currentFlag');
+    const currentLangLabel = document.getElementById('currentLangLabel');
+    const langDropdown = new DropdownMenu(
+        dropdownBtn,
+        document.getElementById('langDropdownMenu'),
+        '.footer-menu-item',
+        'active',
+        (item) => {
+            selectedLang = item.getAttribute('data-lang');
+            updateLangVisuals(selectedLang);
+            saveSettings(false);
+        }
+    );
 
-            if (rect.top < 0) {
-                card.classList.add('pos-bottom');
-            }
+    const colorPicker = new ColorPicker(
+        document.querySelectorAll('.color-swatch'),
+        document.getElementById('themeColorPicker'),
+        document.querySelector('.custom-color-wrapper'),
+        document.getElementById('customColorPreview'),
+        (color) => {
+            selectedColor = color;
+            saveSettings(false);
+        }
+    );
 
-            const updatedRect = card.getBoundingClientRect();
-
-            if (updatedRect.left < 0) {
-                card.classList.add('pos-right');
-            } else if (updatedRect.right > viewportWidth) {
-                card.classList.add('pos-left');
+    /**
+     * @param {string} prefix
+     */
+    function updatePrefixVisuals(prefix) {
+        prefixDropdown.setActiveByAttribute('data-prefix', prefix);
+        prefixDropdown.items.forEach(item => {
+            if (item.getAttribute('data-prefix') === prefix) {
+                const spans = item.getElementsByTagName('span');
+                if (spans.length > 1) {
+                    currentPrefixLabel.textContent = prefix + ' (' + spans[1].textContent + ')';
+                }
             }
         });
-    });
+    }
+
+    /**
+     * @param {string} theme
+     */
+    function updateThemeVisuals(theme) {
+        themeDropdown.setActiveByAttribute('data-theme', theme);
+        themeDropdown.items.forEach(item => {
+            if (item.getAttribute('data-theme') === theme) {
+                const spanEl = item.querySelector('span[data-i18n]');
+                if (spanEl) {
+                    currentThemeLabel.textContent = spanEl.textContent;
+                }
+            }
+        });
+    }
 
     /**
      * @param {string} lang
      */
-    const updateDropdownVisuals = (lang) => {
-        menuItems.forEach(item => {
-            if (item.getAttribute('data-lang') === lang) {
-                item.classList.add('active');
-            } else {
-                item.classList.remove('active');
-            }
-        });
+    function updateLangVisuals(lang) {
+        langDropdown.setActiveByAttribute('data-lang', lang);
 
         if (lang === 'auto') {
             currentFlag.style.display = 'none';
@@ -164,85 +141,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 autoIcon.remove();
             }
             currentFlag.style.display = 'block';
-            currentFlag.src = `https://flagcdn.com/w40/${getFlagCode(lang)}.png`;
+            currentFlag.src = `https://flagcdn.com/w40/${Localization.getFlagCode(lang)}.png`;
             currentLangLabel.textContent = window.getBgString(`lang_${lang}`);
         }
-    };
-
-    /**
-     * @param {string} theme
-     */
-    const updateThemeDropdownVisuals = (theme) => {
-        themeMenuItems.forEach(item => {
-            if (item.getAttribute('data-theme') === theme) {
-                item.classList.add('active');
-                const spanEl = item.querySelector('span[data-i18n]');
-                if (spanEl) {
-                    currentThemeLabel.textContent = spanEl.textContent;
-                }
-            } else {
-                item.classList.remove('active');
-            }
-        });
-    };
-
-    /**
-     * @param {string} prefix
-     */
-    const updatePrefixDropdownVisuals = (prefix) => {
-        prefixMenuItems.forEach(item => {
-            if (item.getAttribute('data-prefix') === prefix) {
-                item.classList.add('active');
-                const spans = item.getElementsByTagName('span');
-                if (spans.length > 1) {
-                    currentPrefixLabel.textContent = prefix + ' (' + spans[1].textContent + ')';
-                }
-            } else {
-                item.classList.remove('active');
-            }
-        });
-    };
-
-    /**
-     * @param {string} color
-     */
-    const updateCustomPreview = (color) => {
-        const preview = document.getElementById('customColorPreview');
-        if (preview) {
-            preview.style.setProperty('--swatch-p', color);
-            preview.style.setProperty('--swatch-s', `color-mix(in srgb, ${color} 70%, gray)`);
-            preview.style.setProperty('--swatch-t', `color-mix(in srgb, ${color} 70%, #a49386)`);
-        }
-    };
-
-    /**
-     * @param {string} color
-     */
-    const updateSwatchSelection = (color) => {
-        let matched = false;
-        colorSwatches.forEach(swatch => {
-            if (swatch.getAttribute('data-color').toLowerCase() === color.toLowerCase()) {
-                swatch.classList.add('active');
-                matched = true;
-            } else {
-                swatch.classList.remove('active');
-            }
-        });
-
-        const wrapper = document.querySelector('.custom-color-wrapper');
-        if (!matched) {
-            if (wrapper) {
-                wrapper.classList.add('active');
-            }
-            colorPicker.value = color;
-            updateCustomPreview(color);
-        } else {
-            if (wrapper) {
-                wrapper.classList.remove('active');
-            }
-            updateCustomPreview(colorPicker.value);
-        }
-    };
+    }
 
     const initialSettings = await StorageManager.getSettings();
 
@@ -254,7 +156,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     hideUpgradeSwitch.checked = initialSettings.hideUpgradeEnabled;
 
     selectedPrefix = initialSettings.snippetPrefix;
-    updatePrefixDropdownVisuals(selectedPrefix);
+    updatePrefixVisuals(selectedPrefix);
+
+    selectedThemeMode = initialSettings.themeMode;
+    updateThemeVisuals(selectedThemeMode);
+
+    selectedColor = initialSettings.themeColor;
+    colorPicker.customInput.value = selectedColor;
+    colorPicker.updateSelection(selectedColor);
+
+    selectedLang = initialSettings.language;
+    updateLangVisuals(selectedLang);
 
     if (!dynamicColorSwitch.checked) {
         colorPickerRow.style.opacity = '0.5';
@@ -262,19 +174,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     } else {
         colorPickerRow.style.opacity = '1';
         colorPickerRow.style.pointerEvents = 'auto';
-    }
-
-    selectedThemeMode = initialSettings.themeMode;
-    updateThemeDropdownVisuals(selectedThemeMode);
-
-    colorPicker.value = initialSettings.themeColor;
-    updateSwatchSelection(initialSettings.themeColor);
-
-    selectedLang = initialSettings.language;
-    updateDropdownVisuals(selectedLang);
-
-    if (typeof window.applyMaterialTheme === 'function' && dynamicColorSwitch.checked) {
-        window.applyMaterialTheme(colorPicker.value, selectedThemeMode);
+        if (typeof window.applyMaterialTheme === 'function') {
+            window.applyMaterialTheme(selectedColor, selectedThemeMode);
+        }
     }
 
     /**
@@ -288,7 +190,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             codeNavEnabled: codeNavSwitch.checked,
             headersEnabled: headersSwitch.checked,
             themeMode: selectedThemeMode,
-            themeColor: colorPicker.value,
+            themeColor: selectedColor,
             language: selectedLang,
             dynamicColorEnabled: dynamicColorSwitch.checked,
             hideUpgradeEnabled: hideUpgradeSwitch.checked,
@@ -300,16 +202,16 @@ document.addEventListener('DOMContentLoaded', async () => {
             window.currentLanguage = 'en';
         }
 
-        applyLocalizations();
-        updateDropdownVisuals(selectedLang);
-        updateThemeDropdownVisuals(selectedThemeMode);
-        updatePrefixDropdownVisuals(selectedPrefix);
+        Localization.apply();
+        updateLangVisuals(selectedLang);
+        updateThemeVisuals(selectedThemeMode);
+        updatePrefixVisuals(selectedPrefix);
 
         if (dynamicColorSwitch.checked) {
             colorPickerRow.style.opacity = '1';
             colorPickerRow.style.pointerEvents = 'auto';
             if (typeof window.applyMaterialTheme === 'function') {
-                window.applyMaterialTheme(colorPicker.value, selectedThemeMode);
+                window.applyMaterialTheme(selectedColor, selectedThemeMode);
             }
         } else {
             colorPickerRow.style.opacity = '0.5';
@@ -329,82 +231,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     headersSwitch.addEventListener('change', () => saveSettings(false));
     dynamicColorSwitch.addEventListener('change', () => saveSettings(true));
     hideUpgradeSwitch.addEventListener('change', () => saveSettings(false));
-
-    prefixDropdownBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        prefixDropdownBtn.classList.toggle('open');
-        prefixDropdownMenu.classList.toggle('open');
-    });
-
-    prefixMenuItems.forEach(item => {
-        item.addEventListener('click', () => {
-            selectedPrefix = item.getAttribute('data-prefix');
-            updatePrefixDropdownVisuals(selectedPrefix);
-            prefixDropdownBtn.classList.remove('open');
-            prefixDropdownMenu.classList.remove('open');
-            saveSettings(false);
-        });
-    });
-
-    themeDropdownBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        themeDropdownBtn.classList.toggle('open');
-        themeDropdownMenu.classList.toggle('open');
-    });
-
-    themeMenuItems.forEach(item => {
-        item.addEventListener('click', () => {
-            selectedThemeMode = item.getAttribute('data-theme');
-            updateThemeDropdownVisuals(selectedThemeMode);
-            themeDropdownBtn.classList.remove('open');
-            themeDropdownMenu.classList.remove('open');
-            saveSettings(false);
-        });
-    });
-
-    colorSwatches.forEach(swatch => {
-        swatch.addEventListener('click', () => {
-            const color = swatch.getAttribute('data-color');
-            colorPicker.value = color;
-            updateSwatchSelection(color);
-            saveSettings(false);
-        });
-    });
-
-    colorPicker.addEventListener('change', () => {
-        updateSwatchSelection(colorPicker.value);
-        saveSettings(false);
-    });
-
-    dropdownBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        dropdownBtn.classList.toggle('open');
-        dropdownMenu.classList.toggle('open');
-    });
-
-    document.addEventListener('click', (e) => {
-        if (!dropdownBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
-            dropdownBtn.classList.remove('open');
-            dropdownMenu.classList.remove('open');
-        }
-        if (!themeDropdownBtn.contains(e.target) && !themeDropdownMenu.contains(e.target)) {
-            themeDropdownBtn.classList.remove('open');
-            themeDropdownMenu.classList.remove('open');
-        }
-        if (!prefixDropdownBtn.contains(e.target) && !prefixDropdownMenu.contains(e.target)) {
-            prefixDropdownBtn.classList.remove('open');
-            prefixDropdownMenu.classList.remove('open');
-        }
-    });
-
-    menuItems.forEach(item => {
-        item.addEventListener('click', () => {
-            selectedLang = item.getAttribute('data-lang');
-            dropdownBtn.classList.remove('open');
-            dropdownMenu.classList.remove('open');
-            saveSettings(false);
-        });
-    });
 
     const manageSnippetsBtn = document.querySelector('a[href="snippets.html"]');
     if (manageSnippetsBtn) {
