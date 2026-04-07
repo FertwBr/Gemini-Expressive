@@ -31,6 +31,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     const currentFlag = document.getElementById('currentFlag');
     const currentLangLabel = document.getElementById('currentLangLabel');
 
+    const deleteConfirmDialog = document.getElementById('deleteConfirmDialog');
+    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+    const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+
     const toast = new ToastNotification(toastElement, toastMessageElement);
 
     let snippets = [];
@@ -141,8 +145,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             emptyStateWrapper.appendChild(emptyStateIcon);
             emptyStateWrapper.appendChild(emptyStateTitle);
             snippetsListEl.appendChild(emptyStateWrapper);
+
+            addNewBtn.click();
         } else if (currentEditingId === null) {
-            selectSnippet(snippets[0].id);
+            addNewBtn.click();
         }
     }
 
@@ -223,7 +229,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     addNewBtn.onclick = () => {
-        currentEditingId = 'new_' + Date.now();
+        currentEditingId = null;
         keywordInput.value = '';
         contentInput.value = '';
 
@@ -248,11 +254,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         const cleanKw = rawKw.replace(/^[/*!#@]+/, '');
 
         if (!cleanKw || !ct) {
+            toast.show(LocaleManager.getString('errorEmptySnippet'));
             return;
         }
 
-        const isNew = currentEditingId && currentEditingId.startsWith('new_');
-        if (isNew) {
+        if (!currentEditingId) {
             const newSnippet = {
                 id: 'snip_' + Date.now(),
                 keyword: cleanKw,
@@ -282,14 +288,24 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     };
 
-    deleteBtn.onclick = () => {
-        if (confirm(LocaleManager.getString('confirmDelete'))) {
+    deleteBtn.onclick = (e) => {
+        e.preventDefault();
+        deleteConfirmDialog.showModal();
+    };
+
+    confirmDeleteBtn.onclick = () => {
+        if (currentEditingId) {
             snippets = snippets.filter(s => s.id !== currentEditingId);
             currentEditingId = null;
+            deleteConfirmDialog.close();
             saveSnippets(() => {
                 loadSnippets();
             });
         }
+    };
+
+    cancelDeleteBtn.onclick = () => {
+        deleteConfirmDialog.close();
     };
 
     const initialSettings = await StorageManager.getSettings();

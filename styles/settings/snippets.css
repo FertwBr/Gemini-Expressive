@@ -198,3 +198,47 @@
     font-weight: 500;
     line-height: 1.4;
 }
+
+.custom-dialog {
+    border: none;
+    border-radius: 24px;
+    background: var(--md-sys-color-surface-container-high);
+    color: var(--md-sys-color-on-surface);
+    padding: 0;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 90%;
+}
+
+.custom-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
+}
+
+.dialog-content {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.dialog-title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--md-sys-color-on-surface);
+}
+
+.dialog-message {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--md-sys-color-on-surface-variant);
+}
+
+.dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 8px;
+}

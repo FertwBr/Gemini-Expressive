@@ -182,8 +182,21 @@
     </footer>
 </div>
 
+<dialog id="deleteConfirmDialog" class="custom-dialog">
+    <div class="dialog-content">
+        <h3 class="dialog-title" data-i18n="dialogDeleteTitle">Delete Snippet</h3>
+        <p class="dialog-message" data-i18n="confirmDelete">Are you sure you want to delete this snippet?</p>
+        <div class="dialog-actions">
+            <button id="cancelDeleteBtn" class="action-btn-outline" data-i18n="dialogCancelBtn">Cancel</button>
+            <button id="confirmDeleteBtn" class="action-btn-primary" style="background: #d32f2f; color: white;"
+                    data-i18n="deleteSnippetBtn">Delete
+            </button>
+        </div>
+    </div>
+</dialog>
+
 <div id="toast-notification" class="toast-notification">
-    <span class="material-symbols-outlined" style="font-size: 18px;">check_circle</span>
+    <span class="material-symbols-outlined" style="font-size: 18px;">info</span>
     <span id="toast-message"></span>
 </div>
 

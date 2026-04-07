@@ -3,9 +3,6 @@
  * @copyright (c) 2026 Fertwbr
  */
 
-/**
- * Handles the distribution of shared strings across the extension.
- */
 class LocaleManager {
     /**
      * @type {string}
@@ -113,7 +110,10 @@ class LocaleManager {
             helpThemeColor: "Pick a base color. The extension will automatically calculate all the necessary shades for the interface.",
             learnMore: "Learn more in the Help Center",
             snippetDropdownEmpty: "No snippets found.",
-            snippetDropdownAdd: "Create new snippet"
+            snippetDropdownAdd: "Create new snippet",
+            dialogDeleteTitle: "Delete Snippet",
+            dialogCancelBtn: "Cancel",
+            errorEmptySnippet: "Keyword and content cannot be empty."
         },
         pt: {
             settingsTitle: "Gemini Expressive",
@@ -212,7 +212,10 @@ class LocaleManager {
             helpThemeColor: "Escolha uma cor base. A extensão calculará automaticamente todos os tons necessários para a interface.",
             learnMore: "Saiba mais na Central de Ajuda",
             snippetDropdownEmpty: "Nenhum atalho encontrado.",
-            snippetDropdownAdd: "Criar novo atalho"
+            snippetDropdownAdd: "Criar novo atalho",
+            dialogDeleteTitle: "Excluir Atalho",
+            dialogCancelBtn: "Cancelar",
+            errorEmptySnippet: "A palavra-chave e o conteúdo não podem estar vazios."
         },
         es: {
             settingsTitle: "Gemini Expressive",
@@ -311,7 +314,10 @@ class LocaleManager {
             helpThemeColor: "Elige un color base. La extensión calculará todos los tonos necesarios automáticamente.",
             learnMore: "Más información en el Centro de Ayuda",
             snippetDropdownEmpty: "No se encontraron atajos.",
-            snippetDropdownAdd: "Crear nuevo atajo"
+            snippetDropdownAdd: "Crear nuevo atajo",
+            dialogDeleteTitle: "Eliminar Atajo",
+            dialogCancelBtn: "Cancelar",
+            errorEmptySnippet: "La palabra clave y el contenido no pueden estar vacíos."
         },
         de: {
             settingsTitle: "Gemini Expressive",
@@ -410,7 +416,10 @@ class LocaleManager {
             helpThemeColor: "Wählen Sie eine Grundfarbe. Die Erweiterung berechnet alle benötigten Farbtöne automatisch.",
             learnMore: "Weitere Informationen im Hilfecenter",
             snippetDropdownEmpty: "Keine Schnipsel gefunden.",
-            snippetDropdownAdd: "Neuen Schnipsel erstellen"
+            snippetDropdownAdd: "Neuen Schnipsel erstellen",
+            dialogDeleteTitle: "Schnipsel löschen",
+            dialogCancelBtn: "Abbrechen",
+            errorEmptySnippet: "Schlüsselwort und Inhalt dürfen nicht leer sein."
         },
         hi: {
             settingsTitle: "Gemini Expressive",
@@ -441,7 +450,7 @@ class LocaleManager {
             timelineLabel: "टाइमलाइन नेविगेशन सक्षम करें",
             timelineDesc: "लंबी बातचीत के माध्यम से आसानी से नेविगेट करने के लिए दाईं ओर एक फ्लोटिंग टाइमलाइन जोड़ता है।",
             collapseLabel: "कोड कोलैप्सर सक्षम करें",
-            collapseDesc: "स्क्रीन स्पेस बचाने के लिए आपको लंबे कोड ब्लॉक को संक्षिप्त और विस्तारित करने की अनुमति देता है।",
+            collapseDesc: "स्क्रीन स्पेस बचाने के लिए आपको लंबे कोड ব্লক को संक्षिप्त और विस्तारित करने की अनुमति देता है।",
             headersLabel: "उन्नत कोड हेडर सक्षम करें",
             headersDesc: "प्रोग्रामिंग भाषा आइकन प्रदर्शित करता है और कोड ब्लॉक के लिए फ़ाइल नाम निकालता है।",
             codeNavLabel: "कोड नेविगेशन सक्षम करें",
@@ -509,7 +518,10 @@ class LocaleManager {
             helpThemeColor: "एक आधार रंग चुनें। एक्सटेंशन स्वचालित रूप से इंटरफ़ेस के लिए सभी आवश्यक रंगों की गणना करेगा।",
             learnMore: "सहायता केंद्र में और जानें",
             snippetDropdownEmpty: "कोई स्निपेट नहीं मिला।",
-            snippetDropdownAdd: "नया स्निपेट बनाएं"
+            snippetDropdownAdd: "नया स्निपेट बनाएं",
+            dialogDeleteTitle: "स्निपेट हटाएं",
+            dialogCancelBtn: "रद्द करें",
+            errorEmptySnippet: "कीवर्ड और सामग्री खाली नहीं हो सकते।"
         },
         ja: {
             settingsTitle: "Gemini Expressive",
@@ -608,7 +620,10 @@ class LocaleManager {
             helpThemeColor: "ベースカラーを選択します。拡張機能は、必要なすべての色合いを自動的に計算します。",
             learnMore: "ヘルプセンターで詳細を見る",
             snippetDropdownEmpty: "スニペットが見つかりません。",
-            snippetDropdownAdd: "新しいスニペットを作成"
+            snippetDropdownAdd: "新しいスニペットを作成",
+            dialogDeleteTitle: "スニペットを削除",
+            dialogCancelBtn: "キャンセル",
+            errorEmptySnippet: "キーワードとコンテンツを空にすることはできません。"
         }
     };
 
