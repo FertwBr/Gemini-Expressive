@@ -61,16 +61,35 @@
     margin-top: 0;
 }
 
+.setting-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-bottom: 24px;
+}
+
 .setting-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 16px;
-    background: var(--md-sys-color-surface);
-    padding: 14px 16px;
-    border-radius: 16px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-    border: 1px solid var(--md-sys-color-outline-variant);
+    margin-bottom: 0;
+    background: var(--md-sys-color-surface-container);
+    padding: 16px 20px;
+    border-radius: 4px;
+    border: none;
+    transition: background-color 0.2s ease;
+}
+
+.setting-group .setting-row:first-child {
+    border-radius: 24px 24px 4px 4px;
+}
+
+.setting-group .setting-row:last-child {
+    border-radius: 4px 4px 24px 24px;
+}
+
+.setting-group .setting-row:only-child {
+    border-radius: 24px;
 }
 
 .setting-info {
@@ -108,14 +127,14 @@
 }
 
 .help-icon-btn {
-    color: var(--md-sys-color-outline, #79747e);
+    color: var(--md-sys-color-outline);
     font-size: 18px !important;
     cursor: help;
     transition: color 0.2s ease;
 }
 
 .help-icon-btn:hover {
-    color: var(--md-sys-color-primary, #0b57d0);
+    color: var(--md-sys-color-primary);
 }
 
 .help-tooltip-card {
@@ -124,9 +143,9 @@
     left: 50%;
     transform: translateX(-50%) translateY(5px);
     width: 260px;
-    background: var(--md-sys-color-surface-container-highest, #36343b);
-    color: var(--md-sys-color-on-surface, #e3e2e6);
-    border: 1px solid var(--md-sys-color-outline-variant, #44474e);
+    background: var(--md-sys-color-surface-container-highest);
+    color: var(--md-sys-color-on-surface);
+    border: 1px solid var(--md-sys-color-outline-variant);
     padding: 12px 14px;
     border-radius: 8px;
     font-size: 0.8rem;
@@ -155,7 +174,7 @@
     margin-left: -6px;
     border-width: 6px;
     border-style: solid;
-    border-color: var(--md-sys-color-surface-container-highest, #36343b) transparent transparent transparent;
+    border-color: var(--md-sys-color-surface-container-highest) transparent transparent transparent;
 }
 
 .help-tooltip-card.pos-bottom {
@@ -171,7 +190,7 @@
 .help-tooltip-card.pos-bottom::after {
     top: auto;
     bottom: 100%;
-    border-color: transparent transparent var(--md-sys-color-surface-container-highest, #36343b) transparent;
+    border-color: transparent transparent var(--md-sys-color-surface-container-highest) transparent;
 }
 
 .help-tooltip-card.pos-left {
@@ -186,7 +205,7 @@
 
 .help-tooltip-card.pos-left::after {
     left: auto;
-    right: 27px;/
+    right: 27px;
 }
 
 .help-tooltip-card.pos-bottom.pos-left {
@@ -223,7 +242,7 @@
     display: inline-flex;
     align-items: center;
     margin-top: 10px;
-    color: var(--md-sys-color-primary, #a8c7fa);
+    color: var(--md-sys-color-primary);
     text-decoration: none;
     font-weight: 500;
 }

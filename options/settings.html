@@ -30,366 +30,382 @@
                 <div class="settings-section">
                     <h2 class="settings-section-header" data-i18n="headerProductivity">Productivity</h2>
 
-                    <div class="setting-row">
-                        <div class="setting-info">
-                            <div class="setting-header-group">
-                                <label class="input-label" data-i18n="snippetPrefixLabel">Snippet Prefix</label>
-                                <div class="help-tooltip-container">
-                                    <span class="material-symbols-outlined help-icon-btn">help</span>
-                                    <div class="help-tooltip-card">
-                                        <span data-i18n="helpSnippetPrefix">The character you type in the chat box to open the snippet auto-complete menu.</span>
-                                        <a href="https://tools.fertwbr.com/geminiexpressive/help#snippets"
-                                           target="_blank" class="help-learn-more">
-                                            <span data-i18n="learnMore">Learn more in the Help Center</span>
-                                            <span class="material-symbols-outlined"
-                                                  style="font-size: 14px; margin-left: 4px;">open_in_new</span>
-                                        </a>
+                    <div class="setting-group">
+                        <div class="setting-row">
+                            <div class="setting-info">
+                                <div class="setting-header-group">
+                                    <label class="input-label" data-i18n="snippetPrefixLabel">Snippet Prefix</label>
+                                    <div class="help-tooltip-container">
+                                        <span class="material-symbols-outlined help-icon-btn">help</span>
+                                        <div class="help-tooltip-card">
+                                            <span data-i18n="helpSnippetPrefix">The character you type in the chat box to open the snippet auto-complete menu.</span>
+                                            <a href="https://tools.fertwbr.com/geminiexpressive/help#snippets"
+                                               target="_blank" class="help-learn-more">
+                                                <span data-i18n="learnMore">Learn more in the Help Center</span>
+                                                <span class="material-symbols-outlined"
+                                                      style="font-size: 14px; margin-left: 4px;">open_in_new</span>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
+                                <span class="setting-description" data-i18n="snippetPrefixDesc">Choose the symbol to trigger your snippets.</span>
                             </div>
-                            <span class="setting-description" data-i18n="snippetPrefixDesc">Choose the symbol to trigger your snippets.</span>
-                        </div>
-                        <div class="setting-dropdown-wrapper">
-                            <button id="prefixDropdownBtn" class="setting-dropdown-btn">
-                                <span id="currentPrefixLabel">/ (Slash)</span>
-                                <span class="material-symbols-outlined setting-dropdown-icon">expand_more</span>
-                            </button>
-                            <div id="prefixDropdownMenu" class="setting-dropdown-menu">
-                                <button class="setting-menu-item" data-prefix="/">
-                                    <div class="setting-menu-item-leading"><span
-                                            style="font-family: monospace; font-size: 16px; font-weight: bold;">/</span>
-                                    </div>
-                                    <span>Slash</span>
+                            <div class="setting-dropdown-wrapper">
+                                <button id="prefixDropdownBtn" class="setting-dropdown-btn">
+                                    <span id="currentPrefixLabel">/ (Slash)</span>
+                                    <span class="material-symbols-outlined setting-dropdown-icon">expand_more</span>
                                 </button>
-                                <button class="setting-menu-item" data-prefix="!">
-                                    <div class="setting-menu-item-leading"><span
-                                            style="font-family: monospace; font-size: 16px; font-weight: bold;">!</span>
-                                    </div>
-                                    <span>Exclamation</span>
-                                </button>
-                                <button class="setting-menu-item" data-prefix="#">
-                                    <div class="setting-menu-item-leading"><span
-                                            style="font-family: monospace; font-size: 16px; font-weight: bold;">#</span>
-                                    </div>
-                                    <span>Hash</span>
-                                </button>
+                                <div id="prefixDropdownMenu" class="setting-dropdown-menu">
+                                    <button class="setting-menu-item" data-prefix="/">
+                                        <div class="setting-menu-item-leading"><span
+                                                style="font-family: monospace; font-size: 16px; font-weight: bold;">/</span>
+                                        </div>
+                                        <span>Slash</span>
+                                    </button>
+                                    <button class="setting-menu-item" data-prefix="!">
+                                        <div class="setting-menu-item-leading"><span
+                                                style="font-family: monospace; font-size: 16px; font-weight: bold;">!</span>
+                                        </div>
+                                        <span>Exclamation</span>
+                                    </button>
+                                    <button class="setting-menu-item" data-prefix="#">
+                                        <div class="setting-menu-item-leading"><span
+                                                style="font-family: monospace; font-size: 16px; font-weight: bold;">#</span>
+                                        </div>
+                                        <span>Hash</span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="setting-row">
-                        <div class="setting-info">
-                            <div class="setting-header-group">
-                                <label class="input-label" data-i18n="manageSnippetsLabel">Prompt Snippets</label>
-                                <div class="help-tooltip-container">
-                                    <span class="material-symbols-outlined help-icon-btn">help</span>
-                                    <div class="help-tooltip-card">
-                                        <span data-i18n="helpManageSnippets">Create custom shortcuts for your most used, long prompts. Type your prefix + keyword in chat to expand them.</span>
-                                        <a href="https://tools.fertwbr.com/geminiexpressive/help#snippets"
-                                           target="_blank" class="help-learn-more">
-                                            <span data-i18n="learnMore">Learn more in the Help Center</span>
-                                            <span class="material-symbols-outlined"
-                                                  style="font-size: 14px; margin-left: 4px;">open_in_new</span>
-                                        </a>
+                        <div class="setting-row">
+                            <div class="setting-info">
+                                <div class="setting-header-group">
+                                    <label class="input-label" data-i18n="manageSnippetsLabel">Prompt Snippets</label>
+                                    <div class="help-tooltip-container">
+                                        <span class="material-symbols-outlined help-icon-btn">help</span>
+                                        <div class="help-tooltip-card">
+                                            <span data-i18n="helpManageSnippets">Create custom shortcuts for your most used, long prompts. Type your prefix + keyword in chat to expand them.</span>
+                                            <a href="https://tools.fertwbr.com/geminiexpressive/help#snippets"
+                                               target="_blank" class="help-learn-more">
+                                                <span data-i18n="learnMore">Learn more in the Help Center</span>
+                                                <span class="material-symbols-outlined"
+                                                      style="font-size: 14px; margin-left: 4px;">open_in_new</span>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
+                                <span class="setting-description" data-i18n="manageSnippetsDesc">Create shortcuts to auto-complete long prompts.</span>
                             </div>
-                            <span class="setting-description" data-i18n="manageSnippetsDesc">Create shortcuts to auto-complete long prompts.</span>
+                            <a href="snippets.html" class="action-btn-outline"
+                               style="width: auto; padding: 8px 16px; font-size: 0.85rem; border-radius: 12px;">
+                                <span class="material-symbols-outlined" style="font-size: 18px;">edit_note</span>
+                                <span data-i18n="manageSnippetsBtn">Manage</span>
+                            </a>
                         </div>
-                        <a href="snippets.html" class="action-btn-outline"
-                           style="width: auto; padding: 8px 16px; font-size: 0.85rem; border-radius: 12px;">
-                            <span class="material-symbols-outlined" style="font-size: 18px;">edit_note</span>
-                            <span data-i18n="manageSnippetsBtn">Manage</span>
-                        </a>
                     </div>
                 </div>
 
                 <div class="settings-section">
                     <h2 class="settings-section-header" data-i18n="headerGeneral">General</h2>
 
-                    <div class="setting-row">
-                        <div class="setting-info">
-                            <div class="setting-header-group">
-                                <label for="enableTimeline" class="input-label" data-i18n="timelineLabel">Enable
-                                    Timeline Navigation</label>
-                                <div class="help-tooltip-container">
-                                    <span class="material-symbols-outlined help-icon-btn">help</span>
-                                    <div class="help-tooltip-card help-tooltip-timeline">
-                                        <span data-i18n="helpTimeline">A visual map of your chat history. Shapes indicate content:</span>
-                                        <ul class="help-timeline-legend">
-                                            <li>
-                                                <div class="help-shape cookie"></div>
-                                                Your Prompts
-                                            </li>
-                                            <li>
-                                                <div class="help-shape pill"></div>
-                                                Gemini Text Responses
-                                            </li>
-                                            <li>
-                                                <div class="help-shape triangle"></div>
-                                                Messages with Code
-                                            </li>
-                                        </ul>
-                                        <a href="https://tools.fertwbr.com/geminiexpressive/help#timeline"
-                                           target="_blank" class="help-learn-more">
-                                            <span data-i18n="learnMore">Learn more in the Help Center</span>
-                                            <span class="material-symbols-outlined"
-                                                  style="font-size: 14px; margin-left: 4px;">open_in_new</span>
-                                        </a>
+                    <div class="setting-group">
+                        <div class="setting-row">
+                            <div class="setting-info">
+                                <div class="setting-header-group">
+                                    <label for="enableTimeline" class="input-label" data-i18n="timelineLabel">Enable
+                                        Timeline Navigation</label>
+                                    <div class="help-tooltip-container">
+                                        <span class="material-symbols-outlined help-icon-btn">help</span>
+                                        <div class="help-tooltip-card help-tooltip-timeline">
+                                            <span data-i18n="helpTimeline">A visual map of your chat history. Shapes indicate content:</span>
+                                            <ul class="help-timeline-legend">
+                                                <li>
+                                                    <div class="help-shape cookie"></div>
+                                                    Your Prompts
+                                                </li>
+                                                <li>
+                                                    <div class="help-shape pill"></div>
+                                                    Gemini Text Responses
+                                                </li>
+                                                <li>
+                                                    <div class="help-shape triangle"></div>
+                                                    Messages with Code
+                                                </li>
+                                            </ul>
+                                            <a href="https://tools.fertwbr.com/geminiexpressive/help#timeline"
+                                               target="_blank" class="help-learn-more">
+                                                <span data-i18n="learnMore">Learn more in the Help Center</span>
+                                                <span class="material-symbols-outlined"
+                                                      style="font-size: 14px; margin-left: 4px;">open_in_new</span>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
+                                <span class="setting-description" data-i18n="timelineDesc">Adds a floating timeline to easily navigate conversations.</span>
                             </div>
-                            <span class="setting-description" data-i18n="timelineDesc">Adds a floating timeline to easily navigate conversations.</span>
+                            <label class="md-switch">
+                                <input type="checkbox" id="enableTimeline" checked>
+                                <span class="md-slider"></span>
+                            </label>
                         </div>
-                        <label class="md-switch">
-                            <input type="checkbox" id="enableTimeline" checked>
-                            <span class="md-slider"></span>
-                        </label>
                     </div>
 
-                    <div class="setting-row">
-                        <div class="setting-info">
-                            <div class="setting-header-group">
-                                <label for="enableCollapse" class="input-label" data-i18n="collapseLabel">Enable Code
-                                    Collapser</label>
-                                <div class="help-tooltip-container">
-                                    <span class="material-symbols-outlined help-icon-btn">help</span>
-                                    <div class="help-tooltip-card">
-                                        <span data-i18n="helpCollapse">Adds a button to hide long code blocks, making it easier to read the surrounding explanations.</span>
-                                        <a href="https://tools.fertwbr.com/geminiexpressive/help#code_blocks"
-                                           target="_blank" class="help-learn-more">
-                                            <span data-i18n="learnMore">Learn more in the Help Center</span>
-                                            <span class="material-symbols-outlined"
-                                                  style="font-size: 14px; margin-left: 4px;">open_in_new</span>
-                                        </a>
+                    <div class="setting-group">
+                        <div class="setting-row">
+                            <div class="setting-info">
+                                <div class="setting-header-group">
+                                    <label for="enableCollapse" class="input-label" data-i18n="collapseLabel">Enable
+                                        Code
+                                        Collapser</label>
+                                    <div class="help-tooltip-container">
+                                        <span class="material-symbols-outlined help-icon-btn">help</span>
+                                        <div class="help-tooltip-card">
+                                            <span data-i18n="helpCollapse">Adds a button to hide long code blocks, making it easier to read the surrounding explanations.</span>
+                                            <a href="https://tools.fertwbr.com/geminiexpressive/help#code_blocks"
+                                               target="_blank" class="help-learn-more">
+                                                <span data-i18n="learnMore">Learn more in the Help Center</span>
+                                                <span class="material-symbols-outlined"
+                                                      style="font-size: 14px; margin-left: 4px;">open_in_new</span>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
+                                <span class="setting-description" data-i18n="collapseDesc">Allows collapsing and expanding long code blocks.</span>
                             </div>
-                            <span class="setting-description" data-i18n="collapseDesc">Allows collapsing and expanding long code blocks.</span>
+                            <label class="md-switch">
+                                <input type="checkbox" id="enableCollapse" checked>
+                                <span class="md-slider"></span>
+                            </label>
                         </div>
-                        <label class="md-switch">
-                            <input type="checkbox" id="enableCollapse" checked>
-                            <span class="md-slider"></span>
-                        </label>
-                    </div>
 
-                    <div class="setting-row">
-                        <div class="setting-info">
-                            <div class="setting-header-group">
-                                <label for="enableCodeNav" class="input-label" data-i18n="codeNavLabel">Enable Code
-                                    Block Navigation</label>
-                                <div class="help-tooltip-container">
-                                    <span class="material-symbols-outlined help-icon-btn">help</span>
-                                    <div class="help-tooltip-card">
-                                        <span data-i18n="helpCodeNav">Injects floating arrows when hovering over code, allowing you to instantly jump to the next or previous code block in the chat.</span>
-                                        <a href="https://tools.fertwbr.com/geminiexpressive/help#code_blocks"
-                                           target="_blank" class="help-learn-more">
-                                            <span data-i18n="learnMore">Learn more in the Help Center</span>
-                                            <span class="material-symbols-outlined"
-                                                  style="font-size: 14px; margin-left: 4px;">open_in_new</span>
-                                        </a>
+                        <div class="setting-row">
+                            <div class="setting-info">
+                                <div class="setting-header-group">
+                                    <label for="enableCodeNav" class="input-label" data-i18n="codeNavLabel">Enable Code
+                                        Block Navigation</label>
+                                    <div class="help-tooltip-container">
+                                        <span class="material-symbols-outlined help-icon-btn">help</span>
+                                        <div class="help-tooltip-card">
+                                            <span data-i18n="helpCodeNav">Injects floating arrows when hovering over code, allowing you to instantly jump to the next or previous code block in the chat.</span>
+                                            <a href="https://tools.fertwbr.com/geminiexpressive/help#code_blocks"
+                                               target="_blank" class="help-learn-more">
+                                                <span data-i18n="learnMore">Learn more in the Help Center</span>
+                                                <span class="material-symbols-outlined"
+                                                      style="font-size: 14px; margin-left: 4px;">open_in_new</span>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
+                                <span class="setting-description" data-i18n="codeNavDesc">Shows floating arrows to jump between code blocks.</span>
                             </div>
-                            <span class="setting-description" data-i18n="codeNavDesc">Shows floating arrows to jump between code blocks.</span>
+                            <label class="md-switch">
+                                <input type="checkbox" id="enableCodeNav" checked>
+                                <span class="md-slider"></span>
+                            </label>
                         </div>
-                        <label class="md-switch">
-                            <input type="checkbox" id="enableCodeNav" checked>
-                            <span class="md-slider"></span>
-                        </label>
-                    </div>
 
-                    <div class="setting-row">
-                        <div class="setting-info">
-                            <div class="setting-header-group">
-                                <label for="enableHeaders" class="input-label" data-i18n="headersLabel">Enable Enhanced
-                                    Code Headers</label>
-                                <div class="help-tooltip-container">
-                                    <span class="material-symbols-outlined help-icon-btn">help</span>
-                                    <div class="help-tooltip-card">
-                                        <span data-i18n="helpHeaders">Automatically detects the programming language, displays its official icon, and tries to extract the file name from the code context.</span>
-                                        <a href="https://tools.fertwbr.com/geminiexpressive/help#code_blocks"
-                                           target="_blank" class="help-learn-more">
-                                            <span data-i18n="learnMore">Learn more in the Help Center</span>
-                                            <span class="material-symbols-outlined"
-                                                  style="font-size: 14px; margin-left: 4px;">open_in_new</span>
-                                        </a>
+                        <div class="setting-row">
+                            <div class="setting-info">
+                                <div class="setting-header-group">
+                                    <label for="enableHeaders" class="input-label" data-i18n="headersLabel">Enable
+                                        Enhanced
+                                        Code Headers</label>
+                                    <div class="help-tooltip-container">
+                                        <span class="material-symbols-outlined help-icon-btn">help</span>
+                                        <div class="help-tooltip-card">
+                                            <span data-i18n="helpHeaders">Automatically detects the programming language, displays its official icon, and tries to extract the file name from the code context.</span>
+                                            <a href="https://tools.fertwbr.com/geminiexpressive/help#code_blocks"
+                                               target="_blank" class="help-learn-more">
+                                                <span data-i18n="learnMore">Learn more in the Help Center</span>
+                                                <span class="material-symbols-outlined"
+                                                      style="font-size: 14px; margin-left: 4px;">open_in_new</span>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
+                                <span class="setting-description" data-i18n="headersDesc">Displays language icons and extracts file names.</span>
                             </div>
-                            <span class="setting-description" data-i18n="headersDesc">Displays language icons and extracts file names.</span>
+                            <label class="md-switch">
+                                <input type="checkbox" id="enableHeaders" checked>
+                                <span class="md-slider"></span>
+                            </label>
                         </div>
-                        <label class="md-switch">
-                            <input type="checkbox" id="enableHeaders" checked>
-                            <span class="md-slider"></span>
-                        </label>
                     </div>
                 </div>
 
                 <div class="settings-section">
                     <h2 class="settings-section-header" data-i18n="headerAppearance">Appearance</h2>
 
-                    <div class="setting-row">
-                        <div class="setting-info">
-                            <div class="setting-header-group">
-                                <label for="hideUpgradeBtn" class="input-label" data-i18n="hideUpgradeLabel">Hide
-                                    Upgrade Button</label>
-                                <div class="help-tooltip-container">
-                                    <span class="material-symbols-outlined help-icon-btn">help</span>
-                                    <div class="help-tooltip-card">
-                                        <span data-i18n="helpHideUpgrade">Removes the 'Upgrade to Gemini Advanced' button from the bottom left of the screen for a cleaner interface.</span>
-                                        <a href="https://tools.fertwbr.com/geminiexpressive/help#getting_started"
-                                           target="_blank" class="help-learn-more">
-                                            <span data-i18n="learnMore">Learn more in the Help Center</span>
-                                            <span class="material-symbols-outlined"
-                                                  style="font-size: 14px; margin-left: 4px;">open_in_new</span>
-                                        </a>
+                    <div class="setting-group">
+                        <div class="setting-row">
+                            <div class="setting-info">
+                                <div class="setting-header-group">
+                                    <label for="hideUpgradeBtn" class="input-label" data-i18n="hideUpgradeLabel">Hide
+                                        Upgrade Button</label>
+                                    <div class="help-tooltip-container">
+                                        <span class="material-symbols-outlined help-icon-btn">help</span>
+                                        <div class="help-tooltip-card">
+                                            <span data-i18n="helpHideUpgrade">Removes the 'Upgrade to Gemini Advanced' button from the bottom left of the screen for a cleaner interface.</span>
+                                            <a href="https://tools.fertwbr.com/geminiexpressive/help#getting_started"
+                                               target="_blank" class="help-learn-more">
+                                                <span data-i18n="learnMore">Learn more in the Help Center</span>
+                                                <span class="material-symbols-outlined"
+                                                      style="font-size: 14px; margin-left: 4px;">open_in_new</span>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
+                                <span class="setting-description" data-i18n="hideUpgradeDesc">Removes the "Upgrade" button from the sidebar.</span>
                             </div>
-                            <span class="setting-description" data-i18n="hideUpgradeDesc">Removes the "Upgrade" button from the sidebar.</span>
-                        </div>
-                        <label class="md-switch">
-                            <input type="checkbox" id="hideUpgradeBtn">
-                            <span class="md-slider"></span>
-                        </label>
-                    </div>
-
-                    <div class="setting-row">
-                        <div class="setting-info">
-                            <div class="setting-header-group">
-                                <label class="input-label" data-i18n="themeModeLabel">Theme Mode</label>
-                                <div class="help-tooltip-container">
-                                    <span class="material-symbols-outlined help-icon-btn">help</span>
-                                    <div class="help-tooltip-card">
-                                        <span data-i18n="helpThemeMode">Forces the interface to be Light, Dark, or automatically follow your system's default preference.</span>
-                                        <a href="https://tools.fertwbr.com/geminiexpressive/help#getting_started"
-                                           target="_blank" class="help-learn-more">
-                                            <span data-i18n="learnMore">Learn more in the Help Center</span>
-                                            <span class="material-symbols-outlined"
-                                                  style="font-size: 14px; margin-left: 4px;">open_in_new</span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <span class="setting-description" data-i18n="themeModeDesc">Choose between light, dark, or system default appearance.</span>
-                        </div>
-                        <div class="setting-dropdown-wrapper">
-                            <button id="themeDropdownBtn" class="setting-dropdown-btn">
-                                <span id="currentThemeLabel">Auto</span>
-                                <span class="material-symbols-outlined setting-dropdown-icon">expand_more</span>
-                            </button>
-                            <div id="themeDropdownMenu" class="setting-dropdown-menu">
-                                <button class="setting-menu-item" data-theme="auto">
-                                    <div class="setting-menu-item-leading"><span class="material-symbols-outlined"
-                                                                                 style="font-size: 18px;">brightness_auto</span>
-                                    </div>
-                                    <span data-i18n="modeAuto">Auto</span>
-                                </button>
-                                <div class="menu-divider"></div>
-                                <button class="setting-menu-item" data-theme="light">
-                                    <div class="setting-menu-item-leading"><span class="material-symbols-outlined"
-                                                                                 style="font-size: 18px;">light_mode</span>
-                                    </div>
-                                    <span data-i18n="modeLight">Light</span>
-                                </button>
-                                <button class="setting-menu-item" data-theme="dark">
-                                    <div class="setting-menu-item-leading"><span class="material-symbols-outlined"
-                                                                                 style="font-size: 18px;">dark_mode</span>
-                                    </div>
-                                    <span data-i18n="modeDark">Dark</span>
-                                </button>
-                            </div>
+                            <label class="md-switch">
+                                <input type="checkbox" id="hideUpgradeBtn">
+                                <span class="md-slider"></span>
+                            </label>
                         </div>
                     </div>
 
-                    <div class="setting-row">
-                        <div class="setting-info">
-                            <div class="setting-header-group">
-                                <label for="enableDynamicColor" class="input-label" data-i18n="dynamicColorSwitchLabel">Enable
-                                    Dynamic Color</label>
-                                <div class="help-tooltip-container">
-                                    <span class="material-symbols-outlined help-icon-btn">help</span>
-                                    <div class="help-tooltip-card">
-                                        <span data-i18n="helpDynamicColor">Overrides Google's default colors with a custom Material You palette generated from your chosen seed color.</span>
-                                        <a href="https://tools.fertwbr.com/geminiexpressive/help#getting_started"
-                                           target="_blank" class="help-learn-more">
-                                            <span data-i18n="learnMore">Learn more in the Help Center</span>
-                                            <span class="material-symbols-outlined"
-                                                  style="font-size: 14px; margin-left: 4px;">open_in_new</span>
-                                        </a>
+                    <div class="setting-group">
+                        <div class="setting-row">
+                            <div class="setting-info">
+                                <div class="setting-header-group">
+                                    <label class="input-label" data-i18n="themeModeLabel">Theme Mode</label>
+                                    <div class="help-tooltip-container">
+                                        <span class="material-symbols-outlined help-icon-btn">help</span>
+                                        <div class="help-tooltip-card">
+                                            <span data-i18n="helpThemeMode">Forces the interface to be Light, Dark, or automatically follow your system's default preference.</span>
+                                            <a href="https://tools.fertwbr.com/geminiexpressive/help#getting_started"
+                                               target="_blank" class="help-learn-more">
+                                                <span data-i18n="learnMore">Learn more in the Help Center</span>
+                                                <span class="material-symbols-outlined"
+                                                      style="font-size: 14px; margin-left: 4px;">open_in_new</span>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
+                                <span class="setting-description" data-i18n="themeModeDesc">Choose between light, dark, or system default appearance.</span>
                             </div>
-                            <span class="setting-description" data-i18n="dynamicColorSwitchDesc">Applies dynamic theming to the interface.</span>
+                            <div class="setting-dropdown-wrapper">
+                                <button id="themeDropdownBtn" class="setting-dropdown-btn">
+                                    <span id="currentThemeLabel">Auto</span>
+                                    <span class="material-symbols-outlined setting-dropdown-icon">expand_more</span>
+                                </button>
+                                <div id="themeDropdownMenu" class="setting-dropdown-menu">
+                                    <button class="setting-menu-item" data-theme="auto">
+                                        <div class="setting-menu-item-leading"><span class="material-symbols-outlined"
+                                                                                     style="font-size: 18px;">brightness_auto</span>
+                                        </div>
+                                        <span data-i18n="modeAuto">Auto</span>
+                                    </button>
+                                    <div class="menu-divider"></div>
+                                    <button class="setting-menu-item" data-theme="light">
+                                        <div class="setting-menu-item-leading"><span class="material-symbols-outlined"
+                                                                                     style="font-size: 18px;">light_mode</span>
+                                        </div>
+                                        <span data-i18n="modeLight">Light</span>
+                                    </button>
+                                    <button class="setting-menu-item" data-theme="dark">
+                                        <div class="setting-menu-item-leading"><span class="material-symbols-outlined"
+                                                                                     style="font-size: 18px;">dark_mode</span>
+                                        </div>
+                                        <span data-i18n="modeDark">Dark</span>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                        <label class="md-switch">
-                            <input type="checkbox" id="enableDynamicColor" checked>
-                            <span class="md-slider"></span>
-                        </label>
                     </div>
 
-                    <div class="setting-row" id="colorPickerRow"
-                         style="margin-bottom: 0; flex-direction: column; align-items: flex-start;">
-                        <div class="setting-info" style="width: 100%; margin-bottom: 16px;">
-                            <div class="setting-header-group">
-                                <label for="themeColorPicker" class="input-label" data-i18n="themeColorLabel">Theme
-                                    Color</label>
-                                <div class="help-tooltip-container">
-                                    <span class="material-symbols-outlined help-icon-btn">help</span>
-                                    <div class="help-tooltip-card">
-                                        <span data-i18n="helpThemeColor">Pick a base color. The extension will automatically calculate all the necessary shades for the interface.</span>
-                                        <a href="https://tools.fertwbr.com/geminiexpressive/help#getting_started"
-                                           target="_blank" class="help-learn-more">
-                                            <span data-i18n="learnMore">Learn more in the Help Center</span>
-                                            <span class="material-symbols-outlined"
-                                                  style="font-size: 14px; margin-left: 4px;">open_in_new</span>
-                                        </a>
+                    <div class="setting-group">
+                        <div class="setting-row">
+                            <div class="setting-info">
+                                <div class="setting-header-group">
+                                    <label for="enableDynamicColor" class="input-label"
+                                           data-i18n="dynamicColorSwitchLabel">Enable
+                                        Dynamic Color</label>
+                                    <div class="help-tooltip-container">
+                                        <span class="material-symbols-outlined help-icon-btn">help</span>
+                                        <div class="help-tooltip-card">
+                                            <span data-i18n="helpDynamicColor">Overrides Google's default colors with a custom Material You palette generated from your chosen seed color.</span>
+                                            <a href="https://tools.fertwbr.com/geminiexpressive/help#getting_started"
+                                               target="_blank" class="help-learn-more">
+                                                <span data-i18n="learnMore">Learn more in the Help Center</span>
+                                                <span class="material-symbols-outlined"
+                                                      style="font-size: 14px; margin-left: 4px;">open_in_new</span>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
+                                <span class="setting-description" data-i18n="dynamicColorSwitchDesc">Applies dynamic theming to the interface.</span>
                             </div>
-                            <span class="setting-description" data-i18n="themeColorDesc">Select a seed color to generate the Material You palette.</span>
+                            <label class="md-switch">
+                                <input type="checkbox" id="enableDynamicColor" checked>
+                                <span class="md-slider"></span>
+                            </label>
                         </div>
-                        <div class="color-swatch-grid">
-                            <button class="color-swatch" data-color="#1A73E8" data-i18n-title="colorBlue"
-                                    style="--swatch-p: #1A73E8; --swatch-s: #7093DB; --swatch-t: #5C6270;"></button>
-                            <button class="color-swatch" data-color="#5F6368" data-i18n-title="colorGray"
-                                    style="--swatch-p: #5F6368; --swatch-s: #7A7E83; --swatch-t: #686D73;"></button>
-                            <button class="color-swatch" data-color="#3F51B5" data-i18n-title="colorIndigo"
-                                    style="--swatch-p: #3F51B5; --swatch-s: #7986CB; --swatch-t: #5C6BC0;"></button>
-                            <button class="color-swatch" data-color="#607D8B" data-i18n-title="colorBlueGray"
-                                    style="--swatch-p: #607D8B; --swatch-s: #90A4AE; --swatch-t: #78909C;"></button>
 
-                            <button class="color-swatch" data-color="#455A64" data-i18n-title="colorTealGray"
-                                    style="--swatch-p: #455A64; --swatch-s: #78909C; --swatch-t: #607D8B;"></button>
-                            <button class="color-swatch" data-color="#009688" data-i18n-title="colorTeal"
-                                    style="--swatch-p: #009688; --swatch-s: #4DB6AC; --swatch-t: #26A69A;"></button>
-                            <button class="color-swatch" data-color="#2E7D32" data-i18n-title="colorGreen"
-                                    style="--swatch-p: #2E7D32; --swatch-s: #66BB6A; --swatch-t: #4CAF50;"></button>
-                            <button class="color-swatch" data-color="#6B705C" data-i18n-title="colorOliveGray"
-                                    style="--swatch-p: #6B705C; --swatch-s: #A5A58D; --swatch-t: #B7B7A4;"></button>
-
-                            <button class="color-swatch" data-color="#C9A227" data-i18n-title="colorYellow"
-                                    style="--swatch-p: #C9A227; --swatch-s: #E3C148; --swatch-t: #D4B237;"></button>
-                            <button class="color-swatch" data-color="#E8710A" data-i18n-title="colorOrange"
-                                    style="--swatch-p: #E8710A; --swatch-s: #FF9800; --swatch-t: #F57C00;"></button>
-                            <button class="color-swatch" data-color="#8D6E63" data-i18n-title="colorBrown"
-                                    style="--swatch-p: #8D6E63; --swatch-s: #A1887F; --swatch-t: #BCAAA4;"></button>
-                            <button class="color-swatch" data-color="#C2185B" data-i18n-title="colorRose"
-                                    style="--swatch-p: #C2185B; --swatch-s: #E91E63; --swatch-t: #D81B60;"></button>
-
-                            <button class="color-swatch" data-color="#7B5E57" data-i18n-title="colorMauve"
-                                    style="--swatch-p: #7B5E57; --swatch-s: #A1887F; --swatch-t: #8D6E63;"></button>
-                            <button class="color-swatch" data-color="#9C27B0" data-i18n-title="colorPinkPurple"
-                                    style="--swatch-p: #9C27B0; --swatch-s: #BA68C8; --swatch-t: #AB47BC;"></button>
-                            <button class="color-swatch" data-color="#673AB7" data-i18n-title="colorPurple"
-                                    style="--swatch-p: #673AB7; --swatch-s: #9575CD; --swatch-t: #7E57C2;"></button>
-
-                            <div class="custom-color-wrapper" data-i18n-title="colorCustom">
-                                <div id="customColorPreview" class="custom-color-preview">
-                                    <span class="material-symbols-outlined custom-color-icon">edit</span>
+                        <div class="setting-row" id="colorPickerRow"
+                             style="flex-direction: column; align-items: flex-start;">
+                            <div class="setting-info" style="width: 100%; margin-bottom: 16px;">
+                                <div class="setting-header-group">
+                                    <label for="themeColorPicker" class="input-label" data-i18n="themeColorLabel">Theme
+                                        Color</label>
+                                    <div class="help-tooltip-container">
+                                        <span class="material-symbols-outlined help-icon-btn">help</span>
+                                        <div class="help-tooltip-card">
+                                            <span data-i18n="helpThemeColor">Pick a base color. The extension will automatically calculate all the necessary shades for the interface.</span>
+                                            <a href="https://tools.fertwbr.com/geminiexpressive/help#getting_started"
+                                               target="_blank" class="help-learn-more">
+                                                <span data-i18n="learnMore">Learn more in the Help Center</span>
+                                                <span class="material-symbols-outlined"
+                                                      style="font-size: 14px; margin-left: 4px;">open_in_new</span>
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
-                                <input type="color" id="themeColorPicker" value="#1A73E8" class="color-picker-input">
+                                <span class="setting-description" data-i18n="themeColorDesc">Select a seed color to generate the Material You palette.</span>
+                            </div>
+                            <div class="color-swatch-grid">
+                                <button class="color-swatch" data-color="#1A73E8" data-i18n-title="colorBlue"
+                                        style="--swatch-p: #1A73E8; --swatch-s: #7093DB; --swatch-t: #5C6270;"></button>
+                                <button class="color-swatch" data-color="#5F6368" data-i18n-title="colorGray"
+                                        style="--swatch-p: #5F6368; --swatch-s: #7A7E83; --swatch-t: #686D73;"></button>
+                                <button class="color-swatch" data-color="#3F51B5" data-i18n-title="colorIndigo"
+                                        style="--swatch-p: #3F51B5; --swatch-s: #7986CB; --swatch-t: #5C6BC0;"></button>
+                                <button class="color-swatch" data-color="#607D8B" data-i18n-title="colorBlueGray"
+                                        style="--swatch-p: #607D8B; --swatch-s: #90A4AE; --swatch-t: #78909C;"></button>
+
+                                <button class="color-swatch" data-color="#455A64" data-i18n-title="colorTealGray"
+                                        style="--swatch-p: #455A64; --swatch-s: #78909C; --swatch-t: #607D8B;"></button>
+                                <button class="color-swatch" data-color="#009688" data-i18n-title="colorTeal"
+                                        style="--swatch-p: #009688; --swatch-s: #4DB6AC; --swatch-t: #26A69A;"></button>
+                                <button class="color-swatch" data-color="#2E7D32" data-i18n-title="colorGreen"
+                                        style="--swatch-p: #2E7D32; --swatch-s: #66BB6A; --swatch-t: #4CAF50;"></button>
+                                <button class="color-swatch" data-color="#6B705C" data-i18n-title="colorOliveGray"
+                                        style="--swatch-p: #6B705C; --swatch-s: #A5A58D; --swatch-t: #B7B7A4;"></button>
+
+                                <button class="color-swatch" data-color="#C9A227" data-i18n-title="colorYellow"
+                                        style="--swatch-p: #C9A227; --swatch-s: #E3C148; --swatch-t: #D4B237;"></button>
+                                <button class="color-swatch" data-color="#E8710A" data-i18n-title="colorOrange"
+                                        style="--swatch-p: #E8710A; --swatch-s: #FF9800; --swatch-t: #F57C00;"></button>
+                                <button class="color-swatch" data-color="#8D6E63" data-i18n-title="colorBrown"
+                                        style="--swatch-p: #8D6E63; --swatch-s: #A1887F; --swatch-t: #BCAAA4;"></button>
+                                <button class="color-swatch" data-color="#C2185B" data-i18n-title="colorRose"
+                                        style="--swatch-p: #C2185B; --swatch-s: #E91E63; --swatch-t: #D81B60;"></button>
+
+                                <button class="color-swatch" data-color="#7B5E57" data-i18n-title="colorMauve"
+                                        style="--swatch-p: #7B5E57; --swatch-s: #A1887F; --swatch-t: #8D6E63;"></button>
+                                <button class="color-swatch" data-color="#9C27B0" data-i18n-title="colorPinkPurple"
+                                        style="--swatch-p: #9C27B0; --swatch-s: #BA68C8; --swatch-t: #AB47BC;"></button>
+                                <button class="color-swatch" data-color="#673AB7" data-i18n-title="colorPurple"
+                                        style="--swatch-p: #673AB7; --swatch-s: #9575CD; --swatch-t: #7E57C2;"></button>
+
+                                <div class="custom-color-wrapper" data-i18n-title="colorCustom">
+                                    <div id="customColorPreview" class="custom-color-preview">
+                                        <span class="material-symbols-outlined custom-color-icon">edit</span>
+                                    </div>
+                                    <input type="color" id="themeColorPicker" value="#1A73E8"
+                                           class="color-picker-input">
+                                </div>
                             </div>
                         </div>
                     </div>
