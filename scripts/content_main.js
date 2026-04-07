@@ -396,7 +396,7 @@ function renderSnippetMenu() {
             e.preventDefault();
             e.stopPropagation();
             closeSnippetMenu();
-            window.open(chrome.runtime.getURL('options/snippets.html'), '_blank');
+            chrome.runtime.sendMessage({action: 'openSnippets'});
         });
 
         addBtn.addEventListener('mouseenter', () => {
@@ -553,7 +553,7 @@ function handleSnippetKeydown(event) {
         event.stopPropagation();
         if (snippetState.matches.length === 0) {
             closeSnippetMenu();
-            window.open(chrome.runtime.getURL('options/snippets.html'), '_blank');
+            chrome.runtime.sendMessage({action: 'openSnippets'});
         } else {
             insertSnippet(snippetState.matches[snippetState.activeIndex]);
         }
@@ -739,25 +739,6 @@ function injectUIFixes() {
             .code-block-decoration .buttons button.mdc-icon-button .google-symbols {
                 margin: 0 !important;
                 display: block !important;
-            }
-            
-            /* RESTORED FROM ORIGINAL CODE TO FIX COLLAPSE ICON COLOR */
-            :root {
-               --bg-svg-filter: none;
-            }
-            
-            @media (prefers-color-scheme: dark) {
-               :root {
-                  --bg-svg-filter: invert(1);
-               }
-            }
-            
-            body.bg-dynamic-theme-enabled .bg-collapse-svg-icon {
-               filter: invert(0); 
-            }
-            
-            body.bg-dynamic-theme-enabled.dark-theme .bg-collapse-svg-icon {
-               filter: invert(1);
             }
         `;
         document.head.appendChild(style);
