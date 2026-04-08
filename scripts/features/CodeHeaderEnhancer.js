@@ -4,6 +4,9 @@
  */
 
 class CodeHeaderEnhancer {
+    /**
+     * @returns {void}
+     */
     static enhance() {
         const headers = document.querySelectorAll('.code-block-decoration.header-formatted:not(.bg-header-enhanced)');
         headers.forEach(header => {
@@ -21,7 +24,7 @@ class CodeHeaderEnhancer {
             const codeText = codeContainer ? codeContainer.textContent : '';
             const fileName = CodeUtils.extractCodeMetadata(codeText, language);
 
-            langSpan.innerHTML = '';
+            langSpan.textContent = '';
             langSpan.style.display = 'flex';
             langSpan.style.alignItems = 'baseline';
             langSpan.style.gap = '6px';

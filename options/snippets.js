@@ -81,6 +81,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     /**
      * @param {string} lang
+     * @returns {void}
      */
     function updateLangVisuals(lang) {
         if (!dropdownBtn || !currentFlag || !currentLangLabel) return;
@@ -112,7 +113,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     /**
      * Parses Markdown to Safe HTML
      * @param {string} text
-     * @returns {string} Safe HTML string
+     * @returns {string}
      */
     function parseMarkdownToHTML(text) {
         if (!text || !text.trim()) return `<div class="preview-empty">${LocaleManager.getString('previewEmpty')}</div>`;
@@ -163,6 +164,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         return result;
     }
 
+    /**
+     * @returns {void}
+     */
     function switchToWriteTab() {
         tabWrite.classList.add('active');
         tabPreview.classList.remove('active');
@@ -177,7 +181,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         tabWrite.classList.remove('active');
         contentInput.style.display = 'none';
         previewPanel.style.display = 'block';
-        previewPanel.innerHTML = parseMarkdownToHTML(contentInput.value);
+
+        const safeHtmlString = parseMarkdownToHTML(contentInput.value);
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(safeHtmlString, 'text/html');
+
+        previewPanel.textContent = '';
+        while (doc.body.firstChild) {
+            previewPanel.appendChild(doc.body.firstChild);
+        }
     };
 
     /**
@@ -229,6 +241,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     /**
      * @param {Function} [callback]
+     * @returns {Promise<void>}
      */
     async function saveSnippets(callback) {
         await StorageManager.setLocalData({geminiSnippets: snippets});
@@ -279,7 +292,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (index > 0) {
                 const upBtn = document.createElement('button');
                 upBtn.className = 'icon-btn-small';
-                upBtn.innerHTML = '<span class="material-symbols-outlined">arrow_upward</span>';
+                const upIconSpan = document.createElement('span');
+                upIconSpan.className = 'material-symbols-outlined';
+                upIconSpan.textContent = 'arrow_upward';
+                upBtn.appendChild(upIconSpan);
                 upBtn.title = LocaleManager.getString('moveUp');
                 upBtn.onclick = (e) => {
                     e.stopPropagation();
@@ -294,7 +310,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (index < snippets.length - 1) {
                 const downBtn = document.createElement('button');
                 downBtn.className = 'icon-btn-small';
-                downBtn.innerHTML = '<span class="material-symbols-outlined">arrow_downward</span>';
+                const downIconSpan = document.createElement('span');
+                downIconSpan.className = 'material-symbols-outlined';
+                downIconSpan.textContent = 'arrow_downward';
+                downBtn.appendChild(downIconSpan);
                 downBtn.title = LocaleManager.getString('moveDown');
                 downBtn.onclick = (e) => {
                     e.stopPropagation();
@@ -308,7 +327,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             const delItemBtn = document.createElement('button');
             delItemBtn.className = 'icon-btn-small danger';
-            delItemBtn.innerHTML = '<span class="material-symbols-outlined">delete</span>';
+            const delIconSpan = document.createElement('span');
+            delIconSpan.className = 'material-symbols-outlined';
+            delIconSpan.textContent = 'delete';
+            delItemBtn.appendChild(delIconSpan);
             delItemBtn.title = LocaleManager.getString('deleteSnippetBtn');
             delItemBtn.onclick = (e) => {
                 e.stopPropagation();
@@ -327,6 +349,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     /**
      * @param {string} id
+     * @returns {void}
      */
     function selectSnippet(id) {
         currentEditingId = id;
