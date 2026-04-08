@@ -127,7 +127,7 @@ body.bg-dynamic-theme-enabled .mat-mdc-list-item,
 body.bg-dynamic-theme-enabled .side-nav-entry-button,
 body.bg-dynamic-theme-enabled .conversation,
 body.bg-dynamic-theme-enabled .mdc-list-item__primary-text,
-body.bg-dynamic-theme-enabled .gds-label-l,
+body.bg-dynamic-theme-enabled bard-sidenav .gds-label-l,
 body.bg-dynamic-theme-enabled .conversation-title {
     color: var(--bg-sys-color-on-surface) !important;
 }
@@ -330,14 +330,14 @@ body.bg-dynamic-theme-enabled .toolbox-drawer-button-label-icon-text {
     color: var(--bg-sys-color-on-surface-variant) !important;
 }
 
-body.bg-dynamic-theme-enabled .mdc-button:not(.mat-mdc-unelevated-button):not(.mat-mdc-raised-button):not(.mat-mdc-outlined-button) {
+body.bg-dynamic-theme-enabled .mdc-button:not(.mat-mdc-unelevated-button):not(.mat-mdc-raised-button):not(.mat-mdc-outlined-button):not(.top-bar-actions button) {
     color: var(--bg-sys-color-primary) !important;
     background: transparent !important;
 }
 
-body.bg-dynamic-theme-enabled .mdc-button:not(.mat-mdc-unelevated-button):not(.mat-mdc-raised-button):not(.mat-mdc-outlined-button) .mdc-button__label,
-body.bg-dynamic-theme-enabled .mdc-button:not(.mat-mdc-unelevated-button):not(.mat-mdc-raised-button):not(.mat-mdc-outlined-button) .mat-icon,
-body.bg-dynamic-theme-enabled .mdc-button:not(.mat-mdc-unelevated-button):not(.mat-mdc-raised-button):not(.mat-mdc-outlined-button) .google-symbols {
+body.bg-dynamic-theme-enabled .mdc-button:not(.mat-mdc-unelevated-button):not(.mat-mdc-raised-button):not(.mat-mdc-outlined-button):not(.top-bar-actions button) .mdc-button__label,
+body.bg-dynamic-theme-enabled .mdc-button:not(.mat-mdc-unelevated-button):not(.mat-mdc-raised-button):not(.mat-mdc-outlined-button):not(.top-bar-actions button) .mat-icon,
+body.bg-dynamic-theme-enabled .mdc-button:not(.mat-mdc-unelevated-button):not(.mat-mdc-raised-button):not(.mat-mdc-outlined-button):not(.top-bar-actions button) .google-symbols {
     color: var(--bg-sys-color-primary) !important;
 }
 
@@ -368,7 +368,7 @@ body.bg-dynamic-theme-enabled .mat-mdc-outlined-button .google-symbols {
     color: var(--bg-sys-color-primary) !important;
 }
 
-body.bg-dynamic-theme-enabled .mdc-button:not(.mdc-icon-button) {
+body.bg-dynamic-theme-enabled .mdc-button:not(.mdc-icon-button):not(.top-bar-actions button) {
     height: auto !important;
     min-height: 36px !important;
     padding-top: 8px !important;
@@ -376,7 +376,7 @@ body.bg-dynamic-theme-enabled .mdc-button:not(.mdc-icon-button) {
     max-width: 100% !important;
 }
 
-body.bg-dynamic-theme-enabled .mdc-button:not(.mdc-icon-button) .mdc-button__label {
+body.bg-dynamic-theme-enabled .mdc-button:not(.mdc-icon-button):not(.top-bar-actions button) .mdc-button__label {
     white-space: normal !important;
     overflow-wrap: break-word !important;
     line-height: 1.4 !important;
