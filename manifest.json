@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Gemini Expressive",
-  "version": "2.5.0",
+  "version": "2.5.1",
   "description": "Enhances the Gemini web UI with a timeline, collapsible code blocks, and dynamic Material You theming.",
   "permissions": [
     "storage"
