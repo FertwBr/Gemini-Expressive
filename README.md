@@ -34,9 +34,9 @@ directly from your browser's extension store:
 
 | Browser                                                                                                                                               |   Status    | Link                                                                                                                      |
 |:------------------------------------------------------------------------------------------------------------------------------------------------------|:-----------:|:--------------------------------------------------------------------------------------------------------------------------|
-| <img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/chrome/chrome_48x48.png" width="24" height="24" alt="Chrome"> **Chrome**     |  Available  | [Get it on Chrome Web Store](https://chromewebstore.google.com/detail/gemini-expressive/onnljhamgihnkpcoickfmfhegimcgmho) |
+| <img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/chrome/chrome_48x48.png" width="24" height="24" alt="Chrome"> **Chrome** |  Available  | [Get it on Chrome Web Store](https://chromewebstore.google.com/detail/gemini-expressive/onnljhamgihnkpcoickfmfhegimcgmho) |
 | <img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/firefox/firefox_48x48.png" width="24" height="24" alt="Firefox"> **Firefox** |  Available  | [Get it on Mozilla Add-ons](https://addons.mozilla.org/en-US/firefox/addon/gemini-expressive/)                            |
-| <img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/edge/edge_48x48.png" width="24" height="24" alt="Edge"> **Edge**             | *In Review* | Coming Soon ([Store Link](https://microsoftedge.microsoft.com/addons/detail/))                                            |
+| <img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/edge/edge_48x48.png" width="24" height="24" alt="Edge"> **Edge** | *In Review* | Coming Soon ([Store Link](https://microsoftedge.microsoft.com/addons/detail/))                                            |
 
 ---
 
@@ -56,6 +56,8 @@ Enhance your chat efficiency with tools designed for power users.
 <div align="center">
   <img src="docs/media/timeline-navigation.png" width="48%" alt="Timeline Navigation">
   <img src="docs/media/prompt-snippets-&-shortcuts.png" width="48%" alt="Prompt Snippets & Shortcuts">
+  <br><br>
+  <img src="docs/media/snippet-editor.png" width="800" alt="Prompt Snippet Editor">
 </div>
 
 ### 💻 Developer Tools
@@ -79,6 +81,10 @@ Keep your workspace clean and easily read complex code structures.
   Material You palette that seamlessly overrides the default Gemini UI.
 * **Predefined Swatches:** Includes a wide variety of expressive, carefully crafted color swatches to personalize your
   workspace.
+
+<div align="center">
+  <img src="docs/media/settings-dashboard.png" width="800" alt="Expressive Settings Dashboard">
+</div>
 
 ---
 
