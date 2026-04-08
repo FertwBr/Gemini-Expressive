@@ -1,0 +1,26 @@
+{
+  "name": "better-gemini",
+  "version": "1.0.0",
+  "description": "A powerful browser extension designed to supercharge the Google Gemini web interface. Gemini Expressive brings advanced\r productivity tools, seamless code management, and beautiful, dynamic Material You theming directly to your workspace.",
+  "main": "background.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FertwBr/Gemini-Expressive.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FertwBr/Gemini-Expressive/issues"
+  },
+  "homepage": "https://github.com/FertwBr/Gemini-Expressive#readme",
+  "dependencies": {
+    "archiver": "^7.0.1"
+  }
+}
