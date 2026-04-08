@@ -283,7 +283,6 @@ body.bg-dynamic-theme-enabled .mdc-text-field--focused .mdc-notched-outline__tra
     border-width: 2px !important;
 }
 
-body.bg-dynamic-theme-enabled .text-input-field,
 body.bg-dynamic-theme-enabled .search-surface {
     background-color: var(--bg-sys-color-surface-container-high) !important;
     background: var(--bg-sys-color-surface-container-high) !important;
@@ -291,16 +290,12 @@ body.bg-dynamic-theme-enabled .search-surface {
     border: 1px solid var(--bg-sys-color-outline-variant) !important;
 }
 
-body.bg-dynamic-theme-enabled .text-input-field:focus-within,
 body.bg-dynamic-theme-enabled .search-surface:focus-within {
     background-color: var(--bg-sys-color-surface-container-highest) !important;
     background: var(--bg-sys-color-surface-container-highest) !important;
     border-color: var(--bg-sys-color-primary) !important;
 }
 
-body.bg-dynamic-theme-enabled .text-input-field_textarea-wrapper,
-body.bg-dynamic-theme-enabled .text-input-field-main-area,
-body.bg-dynamic-theme-enabled .text-input-field_textarea-inner,
 body.bg-dynamic-theme-enabled rich-textarea,
 body.bg-dynamic-theme-enabled .ql-container {
     background-color: transparent !important;
