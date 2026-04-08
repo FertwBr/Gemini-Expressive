@@ -4,6 +4,24 @@
  */
 
 class CodeCollapser {
+    /**
+     * @param {string} path
+     * @returns {string}
+     */
+    static getSafeUrl(path) {
+        try {
+            if (chrome && chrome.runtime && chrome.runtime.id) {
+                return `url(${chrome.runtime.getURL(path)})`;
+            }
+            return 'none';
+        } catch (e) {
+            return 'none';
+        }
+    }
+
+    /**
+     * @returns {void}
+     */
     static process() {
         const blocks = document.querySelectorAll('pre');
         blocks.forEach(block => {
@@ -61,7 +79,7 @@ class CodeCollapser {
 
                     const icon = document.createElement('span');
                     icon.className = 'bg-collapse-svg-icon';
-                    icon.style.setProperty('--bg-icon-url', `url(${chrome.runtime.getURL('assets/icons/expanded.svg')})`);
+                    icon.style.setProperty('--bg-icon-url', CodeCollapser.getSafeUrl('assets/icons/expanded.svg'));
                     btn.appendChild(icon);
 
                     const tooltip = document.createElement('div');
@@ -77,7 +95,8 @@ class CodeCollapser {
                             header.classList.toggle('bg-header-collapsed', isCollapsed);
                         }
 
-                        icon.style.setProperty('--bg-icon-url', `url(${chrome.runtime.getURL(isCollapsed ? 'assets/icons/collapsed.svg' : 'assets/icons/expanded.svg')})`);
+                        const targetIcon = isCollapsed ? 'assets/icons/collapsed.svg' : 'assets/icons/expanded.svg';
+                        icon.style.setProperty('--bg-icon-url', CodeCollapser.getSafeUrl(targetIcon));
 
                         const newText = isCollapsed ? LocaleManager.getString('expandCode') : LocaleManager.getString('collapseCode');
                         tooltip.textContent = newText;
