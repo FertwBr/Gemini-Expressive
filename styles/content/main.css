@@ -64,7 +64,6 @@ body.bg-dynamic-theme-enabled chat-window,
 body.bg-dynamic-theme-enabled chat-window-content,
 body.bg-dynamic-theme-enabled .chat-history-scroll-container,
 body.bg-dynamic-theme-enabled infinite-scroller.chat-history,
-body.bg-dynamic-theme-enabled .top-bar-actions,
 body.bg-dynamic-theme-enabled .announcement-banner-container,
 body.bg-dynamic-theme-enabled chat-app-banners {
     background: var(--bg-sys-color-surface) !important;
@@ -79,6 +78,7 @@ body.bg-dynamic-theme-enabled .disclaimer-container .content-container {
     background: transparent !important;
 }
 
+body.bg-dynamic-theme-enabled .top-bar-actions,
 body.bg-dynamic-theme-enabled .top-bar-actions .left-section,
 body.bg-dynamic-theme-enabled .top-bar-actions .center-section,
 body.bg-dynamic-theme-enabled .top-bar-actions .right-section,
