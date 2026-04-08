@@ -151,13 +151,7 @@ body.bg-dynamic-theme-enabled .conversation.selected .mat-icon {
     color: var(--bg-sys-color-on-secondary-container) !important;
 }
 
-body.bg-dynamic-theme-enabled input-container,
 body.bg-dynamic-theme-enabled .input-gradient,
-body.bg-dynamic-theme-enabled .input-area-container,
-body.bg-dynamic-theme-enabled input-area-v2,
-body.bg-dynamic-theme-enabled .input-area,
-body.bg-dynamic-theme-enabled .leading-actions-wrapper,
-body.bg-dynamic-theme-enabled .trailing-actions-wrapper,
 body.bg-dynamic-theme-enabled hallucination-disclaimer,
 body.bg-dynamic-theme-enabled condensed-tos-disclaimer,
 body.bg-dynamic-theme-enabled .capabilities-disclaimer,
@@ -281,27 +275,6 @@ body.bg-dynamic-theme-enabled .mdc-text-field--focused .mdc-notched-outline__not
 body.bg-dynamic-theme-enabled .mdc-text-field--focused .mdc-notched-outline__trailing {
     border-color: var(--bg-sys-color-primary) !important;
     border-width: 2px !important;
-}
-
-body.bg-dynamic-theme-enabled .search-surface {
-    background-color: var(--bg-sys-color-surface-container-high) !important;
-    background: var(--bg-sys-color-surface-container-high) !important;
-    border-radius: 28px !important;
-    border: 1px solid var(--bg-sys-color-outline-variant) !important;
-}
-
-body.bg-dynamic-theme-enabled .search-surface:focus-within {
-    background-color: var(--bg-sys-color-surface-container-highest) !important;
-    background: var(--bg-sys-color-surface-container-highest) !important;
-    border-color: var(--bg-sys-color-primary) !important;
-}
-
-body.bg-dynamic-theme-enabled rich-textarea,
-body.bg-dynamic-theme-enabled .ql-container {
-    background-color: transparent !important;
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
 }
 
 body.bg-dynamic-theme-enabled .ql-editor.textarea,
