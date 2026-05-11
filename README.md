@@ -14,8 +14,8 @@
   <a href="https://addons.mozilla.org/en-US/firefox/addon/gemini-expressive/">
     <img src="https://img.shields.io/badge/Firefox-Add--ons-FF7139?style=flat&logo=firefox&logoColor=white" alt="Firefox Add-ons">
   </a>
-  <a href="https://microsoftedge.microsoft.com/addons/detail/">
-    <img src="https://img.shields.io/badge/Edge-In_Review-0078D7?style=flat&logo=microsoftedge&logoColor=white" alt="Edge Add-ons">
+  <a href="https://microsoftedge.microsoft.com/addons/detail/gemini-expressive/lpecpklaodknmhhajimcbaggjphoeabe">
+    <img src="https://img.shields.io/badge/Edge-Add--ons-0078D7?style=flat&logo=microsoftedge&logoColor=white" alt="Edge Add-ons">
   </a>
   <a href="LICENSE">
     <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License: MIT">
@@ -36,7 +36,7 @@ directly from your browser's extension store:
 |:------------------------------------------------------------------------------------------------------------------------------------------------------|:-----------:|:--------------------------------------------------------------------------------------------------------------------------|
 | <img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/chrome/chrome_48x48.png" width="24" height="24" alt="Chrome"> **Chrome** |  Available  | [Get it on Chrome Web Store](https://chromewebstore.google.com/detail/gemini-expressive/onnljhamgihnkpcoickfmfhegimcgmho) |
 | <img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/firefox/firefox_48x48.png" width="24" height="24" alt="Firefox"> **Firefox** |  Available  | [Get it on Mozilla Add-ons](https://addons.mozilla.org/en-US/firefox/addon/gemini-expressive/)                            |
-| <img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/edge/edge_48x48.png" width="24" height="24" alt="Edge"> **Edge** | *In Review* | Coming Soon ([Store Link](https://microsoftedge.microsoft.com/addons/detail/))                                            |
+| <img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/edge/edge_48x48.png" width="24" height="24" alt="Edge"> **Edge** |  Available  | [Get it on Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/gemini-expressive/lpecpklaodknmhhajimcbaggjphoeabe) |
 
 ---
 
