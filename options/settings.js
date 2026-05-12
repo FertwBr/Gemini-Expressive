@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const headersSwitch = document.getElementById('enableHeaders');
     const dynamicColorSwitch = document.getElementById('enableDynamicColor');
     const hideUpgradeSwitch = document.getElementById('hideUpgradeBtn');
+    const hideDownloadSwitch = document.getElementById('hideDownloadBtn');
     const colorPickerRow = document.getElementById('colorPickerRow');
     const versionText = document.getElementById('versionText');
     const toastElement = document.getElementById('toast-notification');
@@ -154,6 +155,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     headersSwitch.checked = initialSettings.headersEnabled;
     dynamicColorSwitch.checked = initialSettings.dynamicColorEnabled;
     hideUpgradeSwitch.checked = initialSettings.hideUpgradeEnabled;
+    hideDownloadSwitch.checked = initialSettings.hideDownloadEnabled;
 
     selectedPrefix = initialSettings.snippetPrefix;
     updatePrefixVisuals(selectedPrefix);
@@ -194,6 +196,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             language: selectedLang,
             dynamicColorEnabled: dynamicColorSwitch.checked,
             hideUpgradeEnabled: hideUpgradeSwitch.checked,
+            hideDownloadEnabled: hideDownloadSwitch.checked,
             snippetPrefix: selectedPrefix
         });
 
@@ -231,6 +234,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     headersSwitch.addEventListener('change', () => saveSettings(false));
     dynamicColorSwitch.addEventListener('change', () => saveSettings(true));
     hideUpgradeSwitch.addEventListener('change', () => saveSettings(false));
+    hideDownloadSwitch.addEventListener('change', () => saveSettings(false));
 
     const manageSnippetsBtn = document.querySelector('a[href="snippets.html"]');
     if (manageSnippetsBtn) {
