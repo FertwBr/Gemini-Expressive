@@ -16,5 +16,6 @@ export const DefaultConfig = {
     language: 'auto',
     dynamicColorEnabled: true,
     hideUpgradeEnabled: false,
+    hideDownloadEnabled: false,
     snippetPrefix: '/'
 };
