@@ -61,6 +61,8 @@ class CodeCollapser {
                     if (existingBtn) {
                         btn = existingBtn.cloneNode(true);
                         btn.classList.add('bg-collapse-icon-btn');
+                        btn.classList.remove('download-button');
+
                         btn.removeAttribute('data-test-id');
                         btn.removeAttribute('mattooltip');
                         btn.removeAttribute('title');
