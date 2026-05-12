@@ -1,11 +1,12 @@
 /**
- * @fileoverview Centralized MutationObserver with debouncing.
+ * @fileoverview Centralized MutationObserver with debouncing and loop prevention.
  * @copyright (c) 2026 Fertwbr
  */
 
 class DomObserver {
     static debounceTimer = null;
     static observer = null;
+    static isMutating = false;
 
     /**
      * Starts the observer.
@@ -14,6 +15,8 @@ class DomObserver {
      */
     static start(onMutationCallback, onThemeClassChangeCallback) {
         this.observer = new MutationObserver((mutations) => {
+            if (this.isMutating) return;
+
             let themeChanged = false;
             for (const mutation of mutations) {
                 if (mutation.type === 'attributes' && (mutation.attributeName === 'class' || mutation.attributeName === 'data-theme')) {
@@ -25,12 +28,16 @@ class DomObserver {
             }
 
             if (themeChanged && onThemeClassChangeCallback) {
+                this.isMutating = true;
                 onThemeClassChangeCallback();
+                setTimeout(() => { this.isMutating = false; }, 50);
             }
 
             clearTimeout(this.debounceTimer);
             this.debounceTimer = setTimeout(() => {
+                this.isMutating = true;
                 if (onMutationCallback) onMutationCallback();
+                setTimeout(() => { this.isMutating = false; }, 50);
             }, 800);
         });
 
