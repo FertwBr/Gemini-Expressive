@@ -12,12 +12,14 @@ class UIManager {
      */
     static applyFeatureToggles(settings) {
         if (!document.body) return;
+
         document.body.classList.toggle('bg-timeline-disabled', !settings.timelineEnabled);
         document.body.classList.toggle('bg-collapse-disabled', !settings.collapseEnabled);
         document.body.classList.toggle('bg-headers-disabled', !settings.headersEnabled);
         document.body.classList.toggle('bg-code-nav-disabled', !settings.codeNavEnabled);
         document.body.classList.toggle('bg-dynamic-theme-enabled', settings.dynamicColorEnabled);
         document.body.classList.toggle('bg-hide-upgrade', settings.hideUpgradeEnabled);
+        document.body.classList.toggle('bg-hide-download', settings.hideDownloadEnabled);
     }
 
     /**
@@ -65,17 +67,30 @@ class UIManager {
                 .edit-button-area button.update-button:not(:disabled) .mdc-button__label { color: var(--gem-sys-color--on-primary) !important; }
                 .code-block-decoration .buttons button.mdc-icon-button { width: 32px !important; height: 32px !important; padding: 0 !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; }
                 .code-block-decoration .buttons button.mdc-icon-button mat-icon, .code-block-decoration .buttons button.mdc-icon-button .google-symbols { margin: 0 !important; display: block !important; }
+                
+                body.bg-hide-download button.mat-mdc-icon-button:has(mat-icon[data-mat-icon-name="download"]),
+                body.bg-hide-download button.mat-mdc-icon-button:has(mat-icon[fonticon="download"]) {
+                    display: none !important;
+                }
             `;
             document.head.appendChild(style);
         }
     }
 
+    /**
+     * @returns {void}
+     */
     static closeNativeMenus() {
         const backdrop = document.querySelector('.cdk-overlay-backdrop');
         if (backdrop) backdrop.click();
         else document.body.click();
     }
 
+    /**
+     * @param {HTMLElement} themeButton
+     * @param {string} targetMode
+     * @param {Object} settings
+     */
     static executeThemeClick(themeButton, targetMode, settings) {
         themeButton.click();
         setTimeout(() => {
@@ -119,6 +134,10 @@ class UIManager {
         }, 150);
     }
 
+    /**
+     * @param {string} targetMode
+     * @param {Object} settings
+     */
     static syncNativeTheme(targetMode, settings) {
         try {
             const themeButton = document.querySelector('[data-test-id="desktop-theme-menu-button"]');
