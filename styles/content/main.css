@@ -603,6 +603,8 @@ body.bg-hide-upgrade div:has(> .dynamic-upsell-label) {
     color: var(--bg-sys-color-on-surface, #1a1c1e);
     transition: background 0.2s;
     border-radius: 8px;
+    scroll-margin-top: 56px;
+    scroll-margin-bottom: 12px;
 }
 
 .bg-snippet-menu-item.active,
@@ -685,6 +687,8 @@ body.bg-hide-upgrade div:has(> .dynamic-upsell-label) {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s;
+    scroll-margin-top: 56px;
+    scroll-margin-bottom: 12px;
 }
 
 .bg-snippet-add-btn:hover,

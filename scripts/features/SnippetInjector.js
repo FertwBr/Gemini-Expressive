@@ -225,7 +225,15 @@ class SnippetInjector {
 
         const activeItem = menu.querySelector('.bg-snippet-menu-item.active, .bg-snippet-add-btn.active');
         if (activeItem) {
-            activeItem.scrollIntoView({block: 'nearest'});
+            const maxIndex = this.state.matches.length > 0 ? this.state.matches.length : 1;
+
+            if (this.state.activeIndex === 0) {
+                menu.scrollTop = 0;
+            } else if (this.state.activeIndex === maxIndex - 1) {
+                menu.scrollTop = menu.scrollHeight;
+            } else {
+                activeItem.scrollIntoView({block: 'nearest'});
+            }
         }
     }
 
