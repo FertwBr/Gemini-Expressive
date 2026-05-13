@@ -202,7 +202,14 @@ class SnippetInjector {
 
         menu.classList.add('visible');
 
-        const inputContainer = document.querySelector('.text-input-field');
+        let inputContainer = null;
+        if (this.state.node && this.state.node.parentElement) {
+            inputContainer = this.state.node.parentElement.closest('.text-input-field');
+        }
+        if (!inputContainer) {
+            inputContainer = document.querySelector('.text-input-field');
+        }
+
         if (inputContainer) {
             const rect = inputContainer.getBoundingClientRect();
             menu.style.position = 'fixed';
@@ -212,14 +219,14 @@ class SnippetInjector {
             const spaceAbove = rect.top;
             const spaceBelow = window.innerHeight - rect.bottom;
 
-            if (spaceAbove >= 250 || spaceAbove > spaceBelow) {
-                menu.style.top = 'auto';
-                menu.style.bottom = `${window.innerHeight - rect.top + 8}px`;
-                menu.style.maxHeight = `${Math.min(Math.max(spaceAbove - 24, 150), 360)}px`;
-            } else {
+            if (spaceAbove < 200 && spaceBelow > spaceAbove) {
                 menu.style.bottom = 'auto';
                 menu.style.top = `${rect.bottom + 8}px`;
                 menu.style.maxHeight = `${Math.min(Math.max(spaceBelow - 24, 150), 360)}px`;
+            } else {
+                menu.style.top = 'auto';
+                menu.style.bottom = `${window.innerHeight - rect.top + 8}px`;
+                menu.style.maxHeight = `${Math.min(Math.max(spaceAbove - 24, 150), 360)}px`;
             }
         }
 
