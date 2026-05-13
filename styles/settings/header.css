@@ -81,6 +81,7 @@
     align-items: center;
     gap: 12px;
     margin-left: auto;
+    flex-wrap: wrap;
 }
 
 .icon-btn-outline, .header-pill-btn {
@@ -113,6 +114,9 @@
     font-size: 0.9rem;
     text-decoration: none;
     white-space: nowrap;
+    border: 1px solid var(--md-sys-color-outline-variant);
+    color: var(--md-sys-color-on-surface-variant);
+    background: transparent;
 }
 
 .header-pill-btn .material-symbols-outlined {
