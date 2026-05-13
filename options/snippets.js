@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const toastElement = document.getElementById('toast-notification');
     const toastMessageElement = document.getElementById('toast-message');
     const versionText = document.getElementById('versionText');
+    const headerVersionText = document.getElementById('headerVersionText');
 
     const editorTitleIcon = document.getElementById('editorTitleIcon');
     const editorTitleText = document.getElementById('editorTitleText');
@@ -47,8 +48,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     let snippetToDelete = null;
     let currentPrefix = '/';
 
-    if (versionText && chrome.runtime && chrome.runtime.getManifest) {
-        versionText.textContent = 'v' + chrome.runtime.getManifest().version;
+    if (window.chrome && chrome.runtime && chrome.runtime.getManifest) {
+        const manifestVersion = 'v' + chrome.runtime.getManifest().version;
+        if (versionText) versionText.textContent = manifestVersion;
+        if (headerVersionText) headerVersionText.textContent = manifestVersion;
     }
 
     const langDropdown = new DropdownMenu(
@@ -96,8 +99,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     /**
-     * Updates the visual representation of the currently selected prefix in the UI.
-     * @param {string} prefix The prefix string to display.
+     * @param {string} prefix
      * @returns {void}
      */
     function updatePrefixVisuals(prefix) {
