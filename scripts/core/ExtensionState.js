@@ -7,6 +7,7 @@ class ExtensionState {
     static settings = {
         timelineEnabled: true,
         collapseEnabled: true,
+        autoCenterCollapseEnabled: false,
         headersEnabled: true,
         codeNavEnabled: true,
         themeMode: 'auto',

@@ -15,6 +15,7 @@ class UIManager {
 
         document.body.classList.toggle('bg-timeline-disabled', !settings.timelineEnabled);
         document.body.classList.toggle('bg-collapse-disabled', !settings.collapseEnabled);
+        document.body.classList.toggle('bg-auto-center-enabled', settings.autoCenterCollapseEnabled);
         document.body.classList.toggle('bg-headers-disabled', !settings.headersEnabled);
         document.body.classList.toggle('bg-code-nav-disabled', !settings.codeNavEnabled);
         document.body.classList.toggle('bg-dynamic-theme-enabled', settings.dynamicColorEnabled);
