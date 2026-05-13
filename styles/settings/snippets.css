@@ -1,9 +1,14 @@
-/* styles/settings/snippets.css */
+/**
+ * @fileoverview snippets.css
+ * @description Snippet manager styles optimized to prevent flex-box blowouts.
+ */
+
 .snippets-layout {
     display: flex;
     flex-direction: column;
-    gap: 32px;
+    gap: 20px;
     width: 100%;
+    min-width: 0;
 }
 
 @media (min-width: 800px) {
@@ -48,6 +53,7 @@
     display: flex;
     flex-direction: column;
     order: 2;
+    min-width: 0;
 }
 
 @media (min-width: 800px) {
@@ -60,7 +66,7 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
-    max-height: 350px;
+    max-height: 140px;
     overflow-y: auto;
     overflow-x: hidden;
     scrollbar-width: thin;
@@ -160,6 +166,7 @@
     gap: 4px;
     overflow: hidden;
     flex: 1;
+    min-width: 0;
 }
 
 .snippet-item-keyword {
@@ -244,12 +251,13 @@
     background: var(--md-sys-color-surface-container-low);
     border: 1px solid var(--md-sys-color-outline-variant);
     border-radius: 20px;
-    padding: 24px;
+    padding: 16px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 12px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.02);
     order: 1;
+    min-width: 0;
 }
 
 .snippet-editor-card.is-new {
@@ -276,11 +284,15 @@
 @media (min-width: 800px) {
     .snippet-editor-card {
         order: unset;
+        padding: 24px;
+        gap: 20px;
     }
 }
 
 .custom-input {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
     background: var(--md-sys-color-surface-container-high);
     border: 1px solid var(--md-sys-color-outline-variant);
     color: var(--md-sys-color-on-surface);
@@ -299,15 +311,25 @@
 }
 
 .custom-textarea {
-    resize: none;
-    min-height: 250px;
+    resize: vertical;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    min-height: 80px;
     max-height: 60vh;
     line-height: 1.5;
     padding: 16px;
     white-space: pre-wrap;
     overflow-y: auto;
+    box-sizing: border-box;
     scrollbar-width: thin;
     scrollbar-color: var(--md-sys-color-outline-variant) transparent;
+}
+
+@media (min-width: 800px) {
+    .custom-textarea {
+        min-height: 250px;
+    }
 }
 
 .custom-textarea::-webkit-scrollbar {
@@ -443,7 +465,7 @@
     border-radius: 12px;
     padding: 16px;
     overflow-y: auto;
-    min-height: 250px;
+    min-height: 80px;
     max-height: 60vh;
     font-family: 'Roboto', sans-serif;
     color: var(--md-sys-color-on-surface);
@@ -451,6 +473,12 @@
     width: 100%;
     scrollbar-width: thin;
     scrollbar-color: var(--md-sys-color-outline-variant) transparent;
+}
+
+@media (min-width: 800px) {
+    .preview-panel {
+        min-height: 250px;
+    }
 }
 
 .preview-panel::-webkit-scrollbar {
