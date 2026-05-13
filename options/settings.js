@@ -9,7 +9,7 @@ import {ToastNotification} from './components/ToastNotification.js';
 import {TooltipManager} from './components/TooltipManager.js';
 import {DropdownMenu} from './components/DropdownMenu.js';
 import {ColorPicker} from './components/ColorPicker.js';
-import {BackupManager} from './components/BackupManager.js';
+import {BackupExporter, BackupImporter} from './components/BackupManager.js';
 import {LanguageSelector} from './components/LanguageSelector.js';
 import {QuickThemeToggle} from './components/QuickThemeToggle.js';
 import {PrefixSelector} from './components/PrefixSelector.js';
@@ -17,6 +17,7 @@ import {VersionDisplay} from './components/VersionDisplay.js';
 import {PageTransition} from './components/PageTransition.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
+    window.LocaleManager.initLanguage();
     Localization.apply();
     TooltipManager.init();
 
@@ -30,11 +31,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('headerVersionText')
     ]);
 
-    new BackupManager(
-        document.getElementById('importBackupBtn'),
-        document.getElementById('exportBackupBtn'),
+    new BackupImporter(
+        [document.getElementById('importBackupBtn'), document.getElementById('sectionImportBackupBtn')],
         document.getElementById('importBackupInput'),
-        toast
+        toast,
+        document.getElementById('lastRestoreDate')
+    );
+
+    new BackupExporter(
+        [document.getElementById('exportBackupBtn'), document.getElementById('sectionExportBackupBtn')],
+        toast,
+        document.getElementById('lastBackupDate')
     );
 
     PageTransition.bind('a[href="snippets.html"]', 'snippets.html');
@@ -82,9 +89,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             snippetPrefix: selectedPrefix
         });
 
-        LocaleManager.currentLanguage = selectedLang === 'auto' ? navigator.language.split('-')[0] : selectedLang;
-        if (!LocaleManager.BG_LOCALES || !LocaleManager.BG_LOCALES[LocaleManager.currentLanguage]) {
-            LocaleManager.currentLanguage = 'en';
+        window.LocaleManager.currentLanguage = selectedLang === 'auto' ? navigator.language.split('-')[0] : selectedLang;
+        if (!window.LocaleManager.BG_LOCALES || !window.LocaleManager.BG_LOCALES[window.LocaleManager.currentLanguage]) {
+            window.LocaleManager.currentLanguage = 'en';
         }
 
         Localization.apply();
@@ -115,9 +122,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         if (isThemeToggle) {
-            toast.show(LocaleManager.getString('statusSavedRefresh'), true);
+            toast.show(window.LocaleManager.getString('statusSavedRefresh'), true);
         } else {
-            toast.show(LocaleManager.getString('statusSaved'));
+            toast.show(window.LocaleManager.getString('statusSaved'));
         }
     };
 
