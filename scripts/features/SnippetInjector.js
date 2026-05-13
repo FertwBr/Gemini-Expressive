@@ -3,7 +3,16 @@
  * @copyright (c) 2026 Fertwbr
  */
 
+/**
+ * Manages the detection of snippet triggers and handles the UI and injection
+ * of snippet content into active text editor nodes.
+ * @class SnippetInjector
+ */
 class SnippetInjector {
+    /**
+     * Holds the current state of the snippet dropdown menu, including active matches and cursor positions.
+     * @type {Object}
+     */
     static state = {
         isOpen: false,
         query: '',
@@ -14,11 +23,16 @@ class SnippetInjector {
         endOffset: 0
     };
 
+    /**
+     * Reference to the global extension settings loaded from storage.
+     * @type {Object|null}
+     */
     static settingsRef = null;
 
     /**
-     * Initializes the snippet listener.
+     * Initializes the snippet listener by attaching global DOM event listeners for keyboard and mouse interactions.
      * @param {Object} settings Reference to the global extension settings.
+     * @returns {void}
      */
     static init(settings) {
         this.settingsRef = settings;
@@ -27,6 +41,10 @@ class SnippetInjector {
         document.addEventListener('mousedown', (e) => this.handleClick(e), true);
     }
 
+    /**
+     * Closes the snippet dropdown menu and resets the internal state matches.
+     * @returns {void}
+     */
     static closeMenu() {
         this.state.isOpen = false;
         this.state.matches = [];
@@ -36,6 +54,11 @@ class SnippetInjector {
         }
     }
 
+    /**
+     * Inserts the selected snippet text into the active text node using native text insertion to preserve formatting.
+     * @param {Object} snippet The snippet object containing the text content to insert.
+     * @returns {void}
+     */
     static insertSnippet(snippet) {
         if (!this.state.node) return;
 
@@ -47,8 +70,7 @@ class SnippetInjector {
         selection.removeAllRanges();
         selection.addRange(range);
 
-        const formattedContent = snippet.content.replace(/\n/g, '<br>');
-        document.execCommand('insertHTML', false, formattedContent);
+        document.execCommand('insertText', false, snippet.content);
 
         const targetEditor = this.state.node.parentElement ? this.state.node.parentElement.closest('.ql-editor') : null;
         if (targetEditor) {
@@ -58,6 +80,10 @@ class SnippetInjector {
         this.closeMenu();
     }
 
+    /**
+     * Renders or updates the DOM elements for the snippet dropdown menu based on the current state and matches.
+     * @returns {void}
+     */
     static renderMenu() {
         let menu = document.getElementById('bg-snippet-menu');
         if (!menu) {
@@ -187,6 +213,15 @@ class SnippetInjector {
         }
     }
 
+    /**
+     * Opens the snippet dropdown menu and populates it with the matching snippets based on the user's query.
+     * @param {string} query The raw text typed by the user matching the prefix.
+     * @param {Array} matches The array of matching snippet objects.
+     * @param {Node} node The DOM text node where the typing occurred.
+     * @param {number} startOffset The character start index of the query in the text node.
+     * @param {number} endOffset The character end index of the query in the text node.
+     * @returns {void}
+     */
     static openMenu(query, matches, node, startOffset, endOffset) {
         this.state.isOpen = true;
         this.state.query = query;
@@ -198,6 +233,10 @@ class SnippetInjector {
         this.renderMenu();
     }
 
+    /**
+     * Checks the current text selection and cursor position to determine if the snippet menu should be triggered.
+     * @returns {void}
+     */
     static checkTrigger() {
         const selection = window.getSelection();
         if (!selection || !selection.rangeCount) {
@@ -250,6 +289,11 @@ class SnippetInjector {
         }
     }
 
+    /**
+     * Intercepts keyboard navigation events to move the selection focus within the open snippet menu.
+     * @param {KeyboardEvent} event The captured keyboard event.
+     * @returns {void}
+     */
     static handleKeydown(event) {
         if (!this.state.isOpen) return;
 
@@ -281,6 +325,11 @@ class SnippetInjector {
         }
     }
 
+    /**
+     * Triggers the snippet check logic after a keyup event that might alter text content.
+     * @param {KeyboardEvent} event The captured keyboard event.
+     * @returns {void}
+     */
     static handleKeyup(event) {
         if (['ArrowDown', 'ArrowUp', 'Enter', 'Tab', 'Escape'].includes(event.key)) {
             return;
@@ -288,6 +337,11 @@ class SnippetInjector {
         this.checkTrigger();
     }
 
+    /**
+     * Detects mouse clicks outside the snippet menu area to close it.
+     * @param {MouseEvent} event The captured mouse event.
+     * @returns {void}
+     */
     static handleClick(event) {
         const menu = document.getElementById('bg-snippet-menu');
         if (menu && !menu.contains(event.target)) {
