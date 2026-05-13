@@ -38,11 +38,17 @@
                         <span class="material-symbols-outlined" id="quickThemeIcon">brightness_auto</span>
                         <span class="custom-tooltip-text" data-i18n="toggleTheme">Toggle Theme</span>
                     </button>
-                    <button id="exportBackupBtn" class="action-btn-outline header-pill-btn" aria-label="Export Settings Backup">
+                    <button id="importBackupBtn" class="header-pill-btn" aria-label="Restore Settings Backup">
+                        <span class="material-symbols-outlined">upload</span>
+                        <span data-i18n="importBackup">Restore</span>
+                        <span class="custom-tooltip-text" data-i18n="importBackupTitle">Import Settings Backup</span>
+                    </button>
+                    <button id="exportBackupBtn" class="header-pill-btn" aria-label="Export Settings Backup">
                         <span class="material-symbols-outlined">download</span>
                         <span data-i18n="exportBackup">Backup</span>
                         <span class="custom-tooltip-text" data-i18n="exportBackupTitle">Export Settings Backup</span>
                     </button>
+                    <input type="file" id="importBackupInput" accept=".json" style="display: none;">
                 </div>
             </div>
         </header>
