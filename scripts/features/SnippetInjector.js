@@ -206,9 +206,21 @@ class SnippetInjector {
         if (inputContainer) {
             const rect = inputContainer.getBoundingClientRect();
             menu.style.position = 'fixed';
-            menu.style.bottom = `${window.innerHeight - rect.top + 8}px`;
             menu.style.left = `${rect.left + 24}px`;
             menu.style.zIndex = '2147483647';
+
+            const spaceAbove = rect.top;
+            const spaceBelow = window.innerHeight - rect.bottom;
+
+            if (spaceAbove >= 250 || spaceAbove > spaceBelow) {
+                menu.style.top = 'auto';
+                menu.style.bottom = `${window.innerHeight - rect.top + 8}px`;
+                menu.style.maxHeight = `${Math.min(Math.max(spaceAbove - 24, 150), 360)}px`;
+            } else {
+                menu.style.bottom = 'auto';
+                menu.style.top = `${rect.bottom + 8}px`;
+                menu.style.maxHeight = `${Math.min(Math.max(spaceBelow - 24, 150), 360)}px`;
+            }
         }
 
         const activeItem = menu.querySelector('.bg-snippet-menu-item.active, .bg-snippet-add-btn.active');

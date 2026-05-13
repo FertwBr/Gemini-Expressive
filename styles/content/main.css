@@ -562,7 +562,7 @@ body.bg-hide-upgrade div:has(> .dynamic-upsell-label) {
     z-index: 2147483647 !important;
     display: none;
     flex-direction: column;
-    padding: 8px;
+    padding: 0 0 8px 0;
     font-family: "Google Sans Flex", "Google Sans Text", "Google Sans", sans-serif;
     box-sizing: border-box;
 }
@@ -574,11 +574,18 @@ body.bg-hide-upgrade div:has(> .dynamic-upsell-label) {
 .bg-snippet-menu-header {
     font-size: 0.85rem;
     color: var(--bg-sys-color-primary, #0b57d0);
-    padding: 8px 8px 12px 8px;
+    padding: 12px 16px;
     font-weight: 600;
     display: flex;
     align-items: center;
     gap: 8px;
+    position: sticky;
+    top: 0;
+    background: var(--bg-sys-color-surface-container-high, #e1e2e8);
+    z-index: 10;
+    margin-bottom: 4px;
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 4px 10px -4px rgba(0, 0, 0, 0.15);
 }
 
 .bg-snippet-menu-item {
@@ -589,12 +596,13 @@ body.bg-hide-upgrade div:has(> .dynamic-upsell-label) {
     align-items: center;
     gap: 12px;
     cursor: pointer;
-    width: 100%;
+    width: calc(100% - 16px);
+    margin: 0 8px 2px 8px;
+    box-sizing: border-box;
     text-align: left;
     color: var(--bg-sys-color-on-surface, #1a1c1e);
     transition: background 0.2s;
     border-radius: 8px;
-    margin-bottom: 2px;
 }
 
 .bg-snippet-menu-item.active,
@@ -664,7 +672,10 @@ body.bg-hide-upgrade div:has(> .dynamic-upsell-label) {
 .bg-snippet-add-btn {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 6px;
+    margin: 0 8px;
+    width: calc(100% - 16px);
     background: transparent;
     color: var(--bg-sys-color-primary, #0b57d0);
     border: 1px solid var(--bg-sys-color-primary, #0b57d0);
