@@ -63,9 +63,9 @@ class UIManager {
                 .bg-code-nav-btn .google-symbols { margin: 0 !important; display: block !important; font-size: 24px; line-height: 1; }
                 .bg-code-nav-btn:hover { background: var(--gem-sys-color--surface-variant, #44474e); transform: scale(1.05); }
                 .bg-code-nav-btn:active { transform: scale(0.95); }
-                .edit-button-area button.cancel-button .mdc-button__label { color: var(--gem-sys-color--primary) !important; }
-                .edit-button-area button.update-button:not(:disabled) { background-color: var(--gem-sys-color--primary) !important; }
-                .edit-button-area button.update-button:not(:disabled) .mdc-button__label { color: var(--gem-sys-color--on-primary) !important; }
+                .edit-button-area button.cancel-button:not(:disabled):not([disabled]) .mdc-button__label { color: var(--gem-sys-color--primary) !important; }
+                .edit-button-area button.update-button:not(:disabled):not([disabled]) { background-color: var(--gem-sys-color--primary) !important; }
+                .edit-button-area button.update-button:not(:disabled):not([disabled]) .mdc-button__label { color: var(--gem-sys-color--on-primary) !important; }
                 .code-block-decoration .buttons button.mdc-icon-button { width: 32px !important; height: 32px !important; padding: 0 !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; }
                 .code-block-decoration .buttons button.mdc-icon-button mat-icon, .code-block-decoration .buttons button.mdc-icon-button .google-symbols { margin: 0 !important; display: block !important; }
                 

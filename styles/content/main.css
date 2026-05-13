@@ -308,41 +308,41 @@ body.bg-dynamic-theme-enabled .toolbox-drawer-button-label-icon-text {
     color: var(--bg-sys-color-on-surface-variant) !important;
 }
 
-body.bg-dynamic-theme-enabled .mdc-button:not(.mat-mdc-unelevated-button):not(.mat-mdc-raised-button):not(.mat-mdc-outlined-button):not(.top-bar-actions button) {
+body.bg-dynamic-theme-enabled .mdc-button:not(.mat-mdc-unelevated-button):not(.mat-mdc-raised-button):not(.mat-mdc-outlined-button):not(.top-bar-actions button):not(:disabled):not([disabled]) {
     color: var(--bg-sys-color-primary) !important;
     background: transparent !important;
 }
 
-body.bg-dynamic-theme-enabled .mdc-button:not(.mat-mdc-unelevated-button):not(.mat-mdc-raised-button):not(.mat-mdc-outlined-button):not(.top-bar-actions button) .mdc-button__label,
-body.bg-dynamic-theme-enabled .mdc-button:not(.mat-mdc-unelevated-button):not(.mat-mdc-raised-button):not(.mat-mdc-outlined-button):not(.top-bar-actions button) .mat-icon,
-body.bg-dynamic-theme-enabled .mdc-button:not(.mat-mdc-unelevated-button):not(.mat-mdc-raised-button):not(.mat-mdc-outlined-button):not(.top-bar-actions button) .google-symbols {
+body.bg-dynamic-theme-enabled .mdc-button:not(.mat-mdc-unelevated-button):not(.mat-mdc-raised-button):not(.mat-mdc-outlined-button):not(.top-bar-actions button):not(:disabled):not([disabled]) .mdc-button__label,
+body.bg-dynamic-theme-enabled .mdc-button:not(.mat-mdc-unelevated-button):not(.mat-mdc-raised-button):not(.mat-mdc-outlined-button):not(.top-bar-actions button):not(:disabled):not([disabled]) .mat-icon,
+body.bg-dynamic-theme-enabled .mdc-button:not(.mat-mdc-unelevated-button):not(.mat-mdc-raised-button):not(.mat-mdc-outlined-button):not(.top-bar-actions button):not(:disabled):not([disabled]) .google-symbols {
     color: var(--bg-sys-color-primary) !important;
 }
 
-body.bg-dynamic-theme-enabled .mat-mdc-unelevated-button,
-body.bg-dynamic-theme-enabled .mat-mdc-raised-button {
+body.bg-dynamic-theme-enabled .mat-mdc-unelevated-button:not(:disabled):not([disabled]),
+body.bg-dynamic-theme-enabled .mat-mdc-raised-button:not(:disabled):not([disabled]) {
     background-color: var(--bg-sys-color-primary) !important;
     color: var(--bg-sys-color-on-primary) !important;
 }
 
-body.bg-dynamic-theme-enabled .mat-mdc-unelevated-button .mdc-button__label,
-body.bg-dynamic-theme-enabled .mat-mdc-raised-button .mdc-button__label,
-body.bg-dynamic-theme-enabled .mat-mdc-unelevated-button .mat-icon,
-body.bg-dynamic-theme-enabled .mat-mdc-raised-button .mat-icon,
-body.bg-dynamic-theme-enabled .mat-mdc-unelevated-button .google-symbols,
-body.bg-dynamic-theme-enabled .mat-mdc-raised-button .google-symbols {
+body.bg-dynamic-theme-enabled .mat-mdc-unelevated-button:not(:disabled):not([disabled]) .mdc-button__label,
+body.bg-dynamic-theme-enabled .mat-mdc-raised-button:not(:disabled):not([disabled]) .mdc-button__label,
+body.bg-dynamic-theme-enabled .mat-mdc-unelevated-button:not(:disabled):not([disabled]) .mat-icon,
+body.bg-dynamic-theme-enabled .mat-mdc-raised-button:not(:disabled):not([disabled]) .mat-icon,
+body.bg-dynamic-theme-enabled .mat-mdc-unelevated-button:not(:disabled):not([disabled]) .google-symbols,
+body.bg-dynamic-theme-enabled .mat-mdc-raised-button:not(:disabled):not([disabled]) .google-symbols {
     color: var(--bg-sys-color-on-primary) !important;
 }
 
-body.bg-dynamic-theme-enabled .mat-mdc-outlined-button {
+body.bg-dynamic-theme-enabled .mat-mdc-outlined-button:not(:disabled):not([disabled]) {
     background-color: transparent !important;
     border-color: var(--bg-sys-color-outline-variant) !important;
     color: var(--bg-sys-color-primary) !important;
 }
 
-body.bg-dynamic-theme-enabled .mat-mdc-outlined-button .mdc-button__label,
-body.bg-dynamic-theme-enabled .mat-mdc-outlined-button .mat-icon,
-body.bg-dynamic-theme-enabled .mat-mdc-outlined-button .google-symbols {
+body.bg-dynamic-theme-enabled .mat-mdc-outlined-button:not(:disabled):not([disabled]) .mdc-button__label,
+body.bg-dynamic-theme-enabled .mat-mdc-outlined-button:not(:disabled):not([disabled]) .mat-icon,
+body.bg-dynamic-theme-enabled .mat-mdc-outlined-button:not(:disabled):not([disabled]) .google-symbols {
     color: var(--bg-sys-color-primary) !important;
 }
 
