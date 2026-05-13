@@ -398,6 +398,29 @@
                             <div class="setting-row">
                                 <div class="setting-info">
                                     <div class="setting-header-group">
+                                        <label for="enableAutoCenter" class="input-label" data-i18n="autoCenterCollapseLabel">Auto-Center on Collapse</label>
+                                        <div class="help-tooltip-container">
+                                            <span class="material-symbols-outlined help-icon-btn">help</span>
+                                            <div class="help-tooltip-card">
+                                                <span data-i18n="helpAutoCenterCollapse">If you scroll far down a long code block and collapse it, this will smoothly snap the view back so the code header remains centered on your screen.</span>
+                                                <a href="https://tools.fertwbr.com/geminiexpressive/help#code_blocks" target="_blank" class="help-learn-more">
+                                                    <span data-i18n="learnMore">Learn more in the Help Center</span>
+                                                    <span class="material-symbols-outlined" style="font-size: 14px; margin-left: 4px;">open_in_new</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span class="setting-description" data-i18n="autoCenterCollapseDesc">Automatically scrolls the code block to the center of the screen when collapsed.</span>
+                                </div>
+                                <label class="md-switch">
+                                    <input type="checkbox" id="enableAutoCenter">
+                                    <span class="md-slider"></span>
+                                </label>
+                            </div>
+
+                            <div class="setting-row">
+                                <div class="setting-info">
+                                    <div class="setting-header-group">
                                         <label for="enableCodeNav" class="input-label" data-i18n="codeNavLabel">Enable Code
                                             Block Navigation</label>
                                         <div class="help-tooltip-container">
@@ -597,7 +620,7 @@
                         <span class="material-symbols-outlined">language</span>
                     </a>
                 </div>
-            </div>óø
+            </div>
         </div>
     </footer>
 </div>

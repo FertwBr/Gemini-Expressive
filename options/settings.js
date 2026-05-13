@@ -55,6 +55,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const timelineSwitch = document.getElementById('enableTimeline');
     const collapseSwitch = document.getElementById('enableCollapse');
+    const autoCenterSwitch = document.getElementById('enableAutoCenter');
     const codeNavSwitch = document.getElementById('enableCodeNav');
     const headersSwitch = document.getElementById('enableHeaders');
     const dynamicColorSwitch = document.getElementById('enableDynamicColor');
@@ -64,6 +65,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     timelineSwitch.checked = initialSettings.timelineEnabled;
     collapseSwitch.checked = initialSettings.collapseEnabled;
+    autoCenterSwitch.checked = initialSettings.autoCenterCollapseEnabled;
     codeNavSwitch.checked = initialSettings.codeNavEnabled;
     headersSwitch.checked = initialSettings.headersEnabled;
     dynamicColorSwitch.checked = initialSettings.dynamicColorEnabled;
@@ -78,6 +80,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         await StorageManager.saveSettings({
             timelineEnabled: timelineSwitch.checked,
             collapseEnabled: collapseSwitch.checked,
+            autoCenterCollapseEnabled: autoCenterSwitch.checked,
             codeNavEnabled: codeNavSwitch.checked,
             headersEnabled: headersSwitch.checked,
             themeMode: selectedThemeMode,
@@ -200,6 +203,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     timelineSwitch.addEventListener('change', () => saveSettings(false));
     collapseSwitch.addEventListener('change', () => saveSettings(false));
+    autoCenterSwitch.addEventListener('change', () => saveSettings(false));
     codeNavSwitch.addEventListener('change', () => saveSettings(false));
     headersSwitch.addEventListener('change', () => saveSettings(false));
     dynamicColorSwitch.addEventListener('change', () => saveSettings(true));
