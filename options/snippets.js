@@ -3,11 +3,16 @@
  * @copyright (c) 2026 Fertwbr
  */
 
-import {StorageManager} from './core/StorageManager.js';
-import {Localization} from './core/Localization.js';
-import {ToastNotification} from './components/ToastNotification.js';
-import {DropdownMenu} from './components/DropdownMenu.js';
-import {DragDropList} from './components/DragDropList.js';
+import { StorageManager } from './core/StorageManager.js';
+import { Localization } from './core/Localization.js';
+import { ToastNotification } from './components/ToastNotification.js';
+import { DragDropList } from './components/DragDropList.js';
+import { BackupManager } from './components/BackupManager.js';
+import { LanguageSelector } from './components/LanguageSelector.js';
+import { QuickThemeToggle } from './components/QuickThemeToggle.js';
+import { PrefixSelector } from './components/PrefixSelector.js';
+import { VersionDisplay } from './components/VersionDisplay.js';
+import { PageTransition } from './components/PageTransition.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     Localization.apply();
@@ -22,32 +27,33 @@ document.addEventListener('DOMContentLoaded', async () => {
     const tabPreview = document.getElementById('tabPreview');
     const saveBtn = document.getElementById('saveSnippetBtn');
     const deleteBtn = document.getElementById('deleteSnippetBtn');
-    const toastElement = document.getElementById('toast-notification');
-    const toastMessageElement = document.getElementById('toast-message');
-    const versionText = document.getElementById('versionText');
-    const headerVersionText = document.getElementById('headerVersionText');
-
-    const quickThemeBtn = document.getElementById('quickThemeBtn');
-    const quickThemeIcon = document.getElementById('quickThemeIcon');
-    const exportBackupBtn = document.getElementById('exportBackupBtn');
-    const importBackupBtn = document.getElementById('importBackupBtn');
-    const importBackupInput = document.getElementById('importBackupInput');
 
     const editorTitleIcon = document.getElementById('editorTitleIcon');
     const editorTitleText = document.getElementById('editorTitleText');
     const saveSnippetBtnText = document.getElementById('saveSnippetBtnText');
 
-    const dropdownBtn = document.getElementById('langDropdownBtn');
-    const currentFlag = document.getElementById('currentFlag');
-    const currentLangLabel = document.getElementById('currentLangLabel');
-
     const deleteConfirmDialog = document.getElementById('deleteConfirmDialog');
     const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
     const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
 
-    const currentPrefixLabel = document.getElementById('currentPrefixLabel');
+    const toast = new ToastNotification(
+        document.getElementById('toast-notification'),
+        document.getElementById('toast-message')
+    );
 
-    const toast = new ToastNotification(toastElement, toastMessageElement);
+    VersionDisplay.apply([
+        document.getElementById('versionText'),
+        document.getElementById('headerVersionText')
+    ]);
+
+    new BackupManager(
+        document.getElementById('importBackupBtn'),
+        document.getElementById('exportBackupBtn'),
+        document.getElementById('importBackupInput'),
+        toast
+    );
+
+    PageTransition.bind('a[href="settings.html"]', 'settings.html');
 
     let snippets = [];
     let currentEditingId = null;
@@ -55,43 +61,50 @@ document.addEventListener('DOMContentLoaded', async () => {
     let currentPrefix = '/';
     let selectedThemeMode = 'auto';
 
-    if (window.chrome && chrome.runtime && chrome.runtime.getManifest) {
-        const manifestVersion = 'v' + chrome.runtime.getManifest().version;
-        if (versionText) versionText.textContent = manifestVersion;
-        if (headerVersionText) headerVersionText.textContent = manifestVersion;
-    }
-
-    const langDropdown = new DropdownMenu(
-        dropdownBtn,
+    new LanguageSelector(
+        document.getElementById('langDropdownBtn'),
         document.getElementById('langDropdownMenu'),
-        '.footer-menu-item',
-        'active',
-        async (item) => {
-            const selectedLang = item.getAttribute('data-lang');
-            await StorageManager.saveSettings({language: selectedLang});
-
-            LocaleManager.currentLanguage = selectedLang === 'auto' ? navigator.language.split('-')[0] : selectedLang;
+        document.getElementById('currentFlag'),
+        document.getElementById('currentLangLabel'),
+        'auto',
+        async (lang) => {
+            await StorageManager.saveSettings({ language: lang });
+            LocaleManager.currentLanguage = lang === 'auto' ? navigator.language.split('-')[0] : lang;
             if (!LocaleManager.BG_LOCALES || !LocaleManager.BG_LOCALES[LocaleManager.currentLanguage]) {
                 LocaleManager.currentLanguage = 'en';
             }
-
             Localization.apply();
-            updateLangVisuals(selectedLang);
             toast.show(LocaleManager.getString('statusSaved'));
         }
     );
 
-    const prefixDropdown = new DropdownMenu(
+    const prefixSelector = new PrefixSelector(
         document.getElementById('prefixDropdownBtn'),
         document.getElementById('prefixDropdownMenu'),
-        '.setting-menu-item',
-        'active',
-        async (item) => {
-            currentPrefix = item.getAttribute('data-prefix');
-            updatePrefixVisuals(currentPrefix);
-            await StorageManager.saveSettings({snippetPrefix: currentPrefix});
+        document.getElementById('currentPrefixLabel'),
+        currentPrefix,
+        async (prefix) => {
+            currentPrefix = prefix;
+            await StorageManager.saveSettings({ snippetPrefix: prefix });
             toast.show(LocaleManager.getString('statusSaved'));
             renderList();
+        }
+    );
+
+    const quickThemeToggle = new QuickThemeToggle(
+        document.getElementById('quickThemeBtn'),
+        document.getElementById('quickThemeIcon'),
+        selectedThemeMode,
+        async (theme) => {
+            selectedThemeMode = theme;
+            await StorageManager.saveSettings({ themeMode: theme });
+            if (typeof ThemeUtils !== 'undefined') {
+                const currentSettings = await StorageManager.getSettings();
+                if (currentSettings.dynamicColorEnabled) {
+                    ThemeUtils.applyMaterialTheme(currentSettings.themeColor || '#0b57d0', theme);
+                }
+            }
+            toast.show(LocaleManager.getString('statusSavedRefresh'), true);
         }
     );
 
@@ -104,59 +117,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             renderList();
         });
     });
-
-    /**
-     * @param {string} prefix
-     * @returns {void}
-     */
-    function updatePrefixVisuals(prefix) {
-        if (!currentPrefixLabel) return;
-        prefixDropdown.setActiveByAttribute('data-prefix', prefix);
-        currentPrefixLabel.textContent = prefix;
-    }
-
-    /**
-     * @param {string} theme
-     * @returns {void}
-     */
-    function updateThemeVisuals(theme) {
-        if (quickThemeIcon) {
-            if (theme === 'auto') quickThemeIcon.textContent = 'brightness_auto';
-            if (theme === 'light') quickThemeIcon.textContent = 'light_mode';
-            if (theme === 'dark') quickThemeIcon.textContent = 'dark_mode';
-        }
-    }
-
-    /**
-     * @param {string} lang
-     * @returns {void}
-     */
-    function updateLangVisuals(lang) {
-        if (!dropdownBtn || !currentFlag || !currentLangLabel) return;
-
-        langDropdown.setActiveByAttribute('data-lang', lang);
-
-        if (lang === 'auto') {
-            currentFlag.style.display = 'none';
-            let autoIcon = dropdownBtn.querySelector('.auto-icon-temp');
-            if (!autoIcon) {
-                autoIcon = document.createElement('span');
-                autoIcon.className = 'material-symbols-outlined auto-icon-temp';
-                autoIcon.textContent = 'auto_awesome';
-                autoIcon.style.fontSize = '16px';
-                dropdownBtn.insertBefore(autoIcon, currentLangLabel);
-            }
-            currentLangLabel.textContent = LocaleManager.getString('lang_auto');
-        } else {
-            let autoIcon = dropdownBtn.querySelector('.auto-icon-temp');
-            if (autoIcon) {
-                autoIcon.remove();
-            }
-            currentFlag.style.display = 'block';
-            currentFlag.src = `https://flagcdn.com/w40/${Localization.getFlagCode(lang)}.png`;
-            currentLangLabel.textContent = LocaleManager.getString(`lang_${lang}`);
-        }
-    }
 
     /**
      * @param {string} text
@@ -256,7 +216,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
 
         if (needsMigration) {
-            await StorageManager.setLocalData({geminiSnippets: snippets});
+            await StorageManager.setLocalData({ geminiSnippets: snippets });
         }
 
         renderList();
@@ -291,7 +251,7 @@ document.addEventListener('DOMContentLoaded', async () => {
      * @returns {Promise<void>}
      */
     async function saveSnippets(callback) {
-        await StorageManager.setLocalData({geminiSnippets: snippets});
+        await StorageManager.setLocalData({ geminiSnippets: snippets });
         if (callback) {
             callback();
         }
@@ -415,7 +375,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             deleteBtn.style.display = 'inline-flex';
             renderList();
             if (window.innerWidth < 800) {
-                window.scrollTo({top: 0, behavior: 'smooth'});
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         }
     }
@@ -436,7 +396,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         keywordInput.focus();
         renderList();
         if (window.innerWidth < 800) {
-            window.scrollTo({top: 0, behavior: 'smooth'});
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     };
 
@@ -506,112 +466,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         deleteConfirmDialog.close();
     };
 
-    if (quickThemeBtn) {
-        quickThemeBtn.addEventListener('click', async () => {
-            if (selectedThemeMode === 'auto') selectedThemeMode = 'dark';
-            else if (selectedThemeMode === 'dark') selectedThemeMode = 'light';
-            else selectedThemeMode = 'auto';
-            updateThemeVisuals(selectedThemeMode);
-            await StorageManager.saveSettings({themeMode: selectedThemeMode});
-            if (typeof ThemeUtils !== 'undefined') {
-                const currentSettings = await StorageManager.getSettings();
-                if (currentSettings.dynamicColorEnabled) {
-                    ThemeUtils.applyMaterialTheme(currentSettings.themeColor || '#0b57d0', selectedThemeMode);
-                }
-            }
-            toast.show(LocaleManager.getString('statusSavedRefresh'), true);
-        });
-    }
-
-    if (importBackupBtn && importBackupInput) {
-        importBackupBtn.addEventListener('click', () => {
-            importBackupInput.click();
-        });
-
-        importBackupInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = async (event) => {
-                try {
-                    const data = JSON.parse(event.target.result);
-
-                    if (typeof data !== 'object' || data === null || Array.isArray(data)) {
-                        throw new Error('Invalid format');
-                    }
-
-                    await StorageManager.setLocalData(data);
-
-                    toast.show(LocaleManager.getString('restoreSuccess'));
-
-                    setTimeout(() => {
-                        const wrapper = document.querySelector('.page-wrapper');
-                        if (wrapper) wrapper.classList.add('page-transition-exit');
-                        setTimeout(() => {
-                            window.location.reload();
-                        }, 200);
-                    }, 1300);
-
-                } catch (error) {
-                    console.error("Backup restore error:", error);
-                    toast.show(LocaleManager.getString('restoreInvalidFile'), true);
-                }
-
-                importBackupInput.value = '';
-            };
-
-            reader.onerror = () => {
-                toast.show(LocaleManager.getString('restoreError'), true);
-                importBackupInput.value = '';
-            };
-
-            reader.readAsText(file);
-        });
-    }
-
-    if (exportBackupBtn) {
-        exportBackupBtn.addEventListener('click', async () => {
-            try {
-                const currentData = await StorageManager.getLocalData(null);
-                const dataStr = JSON.stringify(currentData, null, 2);
-                const dataBlob = new Blob([dataStr], {type: 'application/json'});
-                const url = URL.createObjectURL(dataBlob);
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = `gemini_expressive_backup_${new Date().toISOString().slice(0,10)}.json`;
-                link.click();
-                URL.revokeObjectURL(url);
-                toast.show(LocaleManager.getString('backupSuccess'));
-            } catch (error) {
-                console.error("Backup export error:", error);
-                toast.show(LocaleManager.getString('backupError'), true);
-            }
-        });
-    }
-
     const initialSettings = await StorageManager.getSettings();
     currentPrefix = initialSettings.snippetPrefix;
     selectedThemeMode = initialSettings.themeMode || 'auto';
-    updatePrefixVisuals(currentPrefix);
-    updateThemeVisuals(selectedThemeMode);
+
+    prefixSelector.updateVisuals(currentPrefix);
+    quickThemeToggle.updateVisuals(selectedThemeMode);
 
     if (initialSettings.dynamicColorEnabled !== false && typeof ThemeUtils !== 'undefined') {
         const colorToApply = initialSettings.themeColor || '#0b57d0';
         ThemeUtils.applyMaterialTheme(colorToApply, selectedThemeMode);
     }
 
-    updateLangVisuals(initialSettings.language);
     await loadSnippets();
-
-    const backToSettingsBtn = document.querySelector('a[href="settings.html"]');
-    if (backToSettingsBtn) {
-        backToSettingsBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            document.querySelector('.page-wrapper').classList.add('page-transition-exit');
-            setTimeout(() => {
-                window.location.href = 'settings.html';
-            }, 200);
-        });
-    }
 });

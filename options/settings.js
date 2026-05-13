@@ -9,10 +9,42 @@ import {ToastNotification} from './components/ToastNotification.js';
 import {TooltipManager} from './components/TooltipManager.js';
 import {DropdownMenu} from './components/DropdownMenu.js';
 import {ColorPicker} from './components/ColorPicker.js';
+import {BackupManager} from './components/BackupManager.js';
+import {LanguageSelector} from './components/LanguageSelector.js';
+import {QuickThemeToggle} from './components/QuickThemeToggle.js';
+import {PrefixSelector} from './components/PrefixSelector.js';
+import {VersionDisplay} from './components/VersionDisplay.js';
+import {PageTransition} from './components/PageTransition.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     Localization.apply();
     TooltipManager.init();
+
+    const toast = new ToastNotification(
+        document.getElementById('toast-notification'),
+        document.getElementById('toast-message')
+    );
+
+    VersionDisplay.apply([
+        document.getElementById('versionText'),
+        document.getElementById('headerVersionText')
+    ]);
+
+    new BackupManager(
+        document.getElementById('importBackupBtn'),
+        document.getElementById('exportBackupBtn'),
+        document.getElementById('importBackupInput'),
+        toast
+    );
+
+    PageTransition.bind('a[href="snippets.html"]', 'snippets.html');
+
+    const initialSettings = await StorageManager.getSettings();
+
+    let selectedThemeMode = initialSettings.themeMode;
+    let selectedLang = initialSettings.language;
+    let selectedPrefix = initialSettings.snippetPrefix;
+    let selectedColor = initialSettings.themeColor;
 
     const timelineSwitch = document.getElementById('enableTimeline');
     const collapseSwitch = document.getElementById('enableCollapse');
@@ -22,144 +54,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const hideUpgradeSwitch = document.getElementById('hideUpgradeBtn');
     const hideDownloadSwitch = document.getElementById('hideDownloadBtn');
     const colorPickerRow = document.getElementById('colorPickerRow');
-    const headerVersionText = document.getElementById('headerVersionText');
-    const versionText = document.getElementById('versionText');
-    const toastElement = document.getElementById('toast-notification');
-    const toastMessageElement = document.getElementById('toast-message');
-
-    const quickThemeBtn = document.getElementById('quickThemeBtn');
-    const quickThemeIcon = document.getElementById('quickThemeIcon');
-    const exportBackupBtn = document.getElementById('exportBackupBtn');
-    const importBackupBtn = document.getElementById('importBackupBtn');
-    const importBackupInput = document.getElementById('importBackupInput');
-
-    const toast = new ToastNotification(toastElement, toastMessageElement);
-
-    let selectedPrefix = '/';
-    let selectedThemeMode = 'auto';
-    let selectedLang = 'auto';
-    let selectedColor = '#1A73E8';
-
-    if (window.chrome && chrome.runtime && chrome.runtime.getManifest) {
-        const manifestVersion = 'v' + chrome.runtime.getManifest().version;
-        if (versionText) versionText.textContent = manifestVersion;
-        if (headerVersionText) headerVersionText.textContent = manifestVersion;
-    }
-
-    const currentPrefixLabel = document.getElementById('currentPrefixLabel');
-    const prefixDropdown = new DropdownMenu(
-        document.getElementById('prefixDropdownBtn'),
-        document.getElementById('prefixDropdownMenu'),
-        '.setting-menu-item',
-        'active',
-        (item) => {
-            selectedPrefix = item.getAttribute('data-prefix');
-            updatePrefixVisuals(selectedPrefix);
-            saveSettings(false);
-        }
-    );
-
-    const currentThemeLabel = document.getElementById('currentThemeLabel');
-    const themeDropdown = new DropdownMenu(
-        document.getElementById('themeDropdownBtn'),
-        document.getElementById('themeDropdownMenu'),
-        '.setting-menu-item',
-        'active',
-        (item) => {
-            selectedThemeMode = item.getAttribute('data-theme');
-            updateThemeVisuals(selectedThemeMode);
-            saveSettings(false);
-        }
-    );
-
-    const dropdownBtn = document.getElementById('langDropdownBtn');
-    const currentFlag = document.getElementById('currentFlag');
-    const currentLangLabel = document.getElementById('currentLangLabel');
-    const langDropdown = new DropdownMenu(
-        dropdownBtn,
-        document.getElementById('langDropdownMenu'),
-        '.footer-menu-item',
-        'active',
-        (item) => {
-            selectedLang = item.getAttribute('data-lang');
-            updateLangVisuals(selectedLang);
-            saveSettings(false);
-        }
-    );
-
-    const colorPicker = new ColorPicker(
-        document.querySelectorAll('.color-swatch'),
-        document.getElementById('themeColorPicker'),
-        document.querySelector('.custom-color-wrapper'),
-        document.getElementById('customColorPreview'),
-        (color) => {
-            selectedColor = color;
-            saveSettings(false);
-        }
-    );
-
-    /**
-     * @param {string} prefix
-     * @returns {void}
-     */
-    function updatePrefixVisuals(prefix) {
-        if (!currentPrefixLabel) return;
-        prefixDropdown.setActiveByAttribute('data-prefix', prefix);
-        currentPrefixLabel.textContent = prefix;
-    }
-
-    /**
-     * @param {string} theme
-     * @returns {void}
-     */
-    function updateThemeVisuals(theme) {
-        themeDropdown.setActiveByAttribute('data-theme', theme);
-        themeDropdown.items.forEach(item => {
-            if (item.getAttribute('data-theme') === theme) {
-                const spanEl = item.querySelector('span[data-i18n]');
-                if (spanEl) {
-                    currentThemeLabel.textContent = spanEl.textContent;
-                }
-            }
-        });
-
-        if (quickThemeIcon) {
-            if (theme === 'auto') quickThemeIcon.textContent = 'brightness_auto';
-            if (theme === 'light') quickThemeIcon.textContent = 'light_mode';
-            if (theme === 'dark') quickThemeIcon.textContent = 'dark_mode';
-        }
-    }
-
-    /**
-     * @param {string} lang
-     * @returns {void}
-     */
-    function updateLangVisuals(lang) {
-        langDropdown.setActiveByAttribute('data-lang', lang);
-
-        if (lang === 'auto') {
-            currentFlag.style.display = 'none';
-            let autoIcon = dropdownBtn.querySelector('.auto-icon-temp');
-            if (!autoIcon) {
-                autoIcon = document.createElement('span');
-                autoIcon.className = 'material-symbols-outlined auto-icon-temp';
-                autoIcon.textContent = 'auto_awesome';
-                autoIcon.style.fontSize = '16px';
-                dropdownBtn.insertBefore(autoIcon, currentLangLabel);
-            }
-            currentLangLabel.textContent = LocaleManager.getString('lang_auto');
-        } else {
-            let autoIcon = dropdownBtn.querySelector('.auto-icon-temp');
-            if (autoIcon) {
-                autoIcon.remove();
-            }
-            currentFlag.style.display = 'block';
-            currentFlag.src = `https://flagcdn.com/w40/${Localization.getFlagCode(lang)}.png`;
-            currentLangLabel.textContent = LocaleManager.getString(`lang_${lang}`);
-        }
-    }
-
-    const initialSettings = await StorageManager.getSettings();
 
     timelineSwitch.checked = initialSettings.timelineEnabled;
     collapseSwitch.checked = initialSettings.collapseEnabled;
@@ -169,35 +63,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     hideUpgradeSwitch.checked = initialSettings.hideUpgradeEnabled;
     hideDownloadSwitch.checked = initialSettings.hideDownloadEnabled;
 
-    selectedPrefix = initialSettings.snippetPrefix;
-    updatePrefixVisuals(selectedPrefix);
-
-    selectedThemeMode = initialSettings.themeMode;
-    updateThemeVisuals(selectedThemeMode);
-
-    selectedColor = initialSettings.themeColor;
-    colorPicker.customInput.value = selectedColor;
-    colorPicker.updateSelection(selectedColor);
-
-    selectedLang = initialSettings.language;
-    updateLangVisuals(selectedLang);
-
-    if (!dynamicColorSwitch.checked) {
-        colorPickerRow.style.opacity = '0.5';
-        colorPickerRow.style.pointerEvents = 'none';
-    } else {
-        colorPickerRow.style.opacity = '1';
-        colorPickerRow.style.pointerEvents = 'auto';
-        if (typeof ThemeUtils !== 'undefined') {
-            ThemeUtils.applyMaterialTheme(selectedColor, selectedThemeMode);
-        }
-    }
-
     /**
      * @param {boolean} [isThemeToggle=false]
      * @returns {Promise<void>}
      */
-    async function saveSettings(isThemeToggle = false) {
+    const saveSettings = async (isThemeToggle = false) => {
         await StorageManager.saveSettings({
             timelineEnabled: timelineSwitch.checked,
             collapseEnabled: collapseSwitch.checked,
@@ -218,9 +88,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         Localization.apply();
-        updateLangVisuals(selectedLang);
-        updateThemeVisuals(selectedThemeMode);
-        updatePrefixVisuals(selectedPrefix);
+        languageSelector.updateVisuals(selectedLang);
+        themeDropdown.setActiveByAttribute('data-theme', selectedThemeMode);
+
+        themeDropdown.items.forEach(item => {
+            if (item.getAttribute('data-theme') === selectedThemeMode) {
+                const spanEl = item.querySelector('span[data-i18n]');
+                if (spanEl) {
+                    document.getElementById('currentThemeLabel').textContent = spanEl.textContent;
+                }
+            }
+        });
+
+        quickThemeToggle.updateVisuals(selectedThemeMode);
+        prefixSelector.updateVisuals(selectedPrefix);
 
         if (dynamicColorSwitch.checked) {
             colorPickerRow.style.opacity = '1';
@@ -238,83 +119,76 @@ document.addEventListener('DOMContentLoaded', async () => {
         } else {
             toast.show(LocaleManager.getString('statusSaved'));
         }
-    }
+    };
 
-    if (quickThemeBtn) {
-        quickThemeBtn.addEventListener('click', () => {
-            if (selectedThemeMode === 'auto') selectedThemeMode = 'dark';
-            else if (selectedThemeMode === 'dark') selectedThemeMode = 'light';
-            else selectedThemeMode = 'auto';
-            updateThemeVisuals(selectedThemeMode);
+    const languageSelector = new LanguageSelector(
+        document.getElementById('langDropdownBtn'),
+        document.getElementById('langDropdownMenu'),
+        document.getElementById('currentFlag'),
+        document.getElementById('currentLangLabel'),
+        selectedLang,
+        (lang) => {
+            selectedLang = lang;
+            saveSettings(false);
+        }
+    );
+
+    const prefixSelector = new PrefixSelector(
+        document.getElementById('prefixDropdownBtn'),
+        document.getElementById('prefixDropdownMenu'),
+        document.getElementById('currentPrefixLabel'),
+        selectedPrefix,
+        (prefix) => {
+            selectedPrefix = prefix;
+            saveSettings(false);
+        }
+    );
+
+    const quickThemeToggle = new QuickThemeToggle(
+        document.getElementById('quickThemeBtn'),
+        document.getElementById('quickThemeIcon'),
+        selectedThemeMode,
+        (theme) => {
+            selectedThemeMode = theme;
             saveSettings(true);
-        });
-    }
+        }
+    );
 
-    if (importBackupBtn && importBackupInput) {
-        importBackupBtn.addEventListener('click', () => {
-            importBackupInput.click();
-        });
+    const themeDropdown = new DropdownMenu(
+        document.getElementById('themeDropdownBtn'),
+        document.getElementById('themeDropdownMenu'),
+        '.setting-menu-item',
+        'active',
+        (item) => {
+            selectedThemeMode = item.getAttribute('data-theme');
+            quickThemeToggle.updateVisuals(selectedThemeMode);
+            saveSettings(false);
+        }
+    );
 
-        importBackupInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
+    const colorPicker = new ColorPicker(
+        document.querySelectorAll('.color-swatch'),
+        document.getElementById('themeColorPicker'),
+        document.querySelector('.custom-color-wrapper'),
+        document.getElementById('customColorPreview'),
+        (color) => {
+            selectedColor = color;
+            saveSettings(false);
+        }
+    );
 
-            const reader = new FileReader();
-            reader.onload = async (event) => {
-                try {
-                    const data = JSON.parse(event.target.result);
+    colorPicker.customInput.value = selectedColor;
+    colorPicker.updateSelection(selectedColor);
 
-                    if (typeof data !== 'object' || data === null || Array.isArray(data)) {
-                        throw new Error('Invalid format');
-                    }
-
-                    await StorageManager.setLocalData(data);
-
-                    toast.show(LocaleManager.getString('restoreSuccess'));
-
-                    setTimeout(() => {
-                        const wrapper = document.querySelector('.page-wrapper');
-                        if (wrapper) wrapper.classList.add('page-transition-exit');
-                        setTimeout(() => {
-                            window.location.reload();
-                        }, 200);
-                    }, 1300);
-
-                } catch (error) {
-                    console.error("Backup restore error:", error);
-                    toast.show(LocaleManager.getString('restoreInvalidFile'), true);
-                }
-
-                importBackupInput.value = '';
-            };
-
-            reader.onerror = () => {
-                toast.show(LocaleManager.getString('restoreError'), true);
-                importBackupInput.value = '';
-            };
-
-            reader.readAsText(file);
-        });
-    }
-
-    if (exportBackupBtn) {
-        exportBackupBtn.addEventListener('click', async () => {
-            try {
-                const currentData = await StorageManager.getLocalData(null);
-                const dataStr = JSON.stringify(currentData, null, 2);
-                const dataBlob = new Blob([dataStr], {type: 'application/json'});
-                const url = URL.createObjectURL(dataBlob);
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = `gemini_expressive_backup_${new Date().toISOString().slice(0,10)}.json`;
-                link.click();
-                URL.revokeObjectURL(url);
-                toast.show(LocaleManager.getString('backupSuccess'));
-            } catch (error) {
-                console.error("Backup export error:", error);
-                toast.show(LocaleManager.getString('backupError'), true);
-            }
-        });
+    if (!dynamicColorSwitch.checked) {
+        colorPickerRow.style.opacity = '0.5';
+        colorPickerRow.style.pointerEvents = 'none';
+    } else {
+        colorPickerRow.style.opacity = '1';
+        colorPickerRow.style.pointerEvents = 'auto';
+        if (typeof ThemeUtils !== 'undefined') {
+            ThemeUtils.applyMaterialTheme(selectedColor, selectedThemeMode);
+        }
     }
 
     timelineSwitch.addEventListener('change', () => saveSettings(false));
@@ -325,14 +199,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     hideUpgradeSwitch.addEventListener('change', () => saveSettings(false));
     hideDownloadSwitch.addEventListener('change', () => saveSettings(false));
 
-    const manageSnippetsBtn = document.querySelector('a[href="snippets.html"]');
-    if (manageSnippetsBtn) {
-        manageSnippetsBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            document.querySelector('.page-wrapper').classList.add('page-transition-exit');
-            setTimeout(() => {
-                window.location.href = 'snippets.html';
-            }, 200);
-        });
-    }
+    themeDropdown.setActiveByAttribute('data-theme', selectedThemeMode);
+    themeDropdown.items.forEach(item => {
+        if (item.getAttribute('data-theme') === selectedThemeMode) {
+            const spanEl = item.querySelector('span[data-i18n]');
+            if (spanEl) {
+                document.getElementById('currentThemeLabel').textContent = spanEl.textContent;
+            }
+        }
+    });
 });
