@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const hideDownloadSwitch = document.getElementById('hideDownloadBtn');
     const colorPickerRow = document.getElementById('colorPickerRow');
     const versionText = document.getElementById('versionText');
+    const headerVersionText = document.getElementById('headerVersionText');
     const toastElement = document.getElementById('toast-notification');
     const toastMessageElement = document.getElementById('toast-message');
 
@@ -34,7 +35,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     let selectedColor = '#1A73E8';
 
     if (window.chrome && chrome.runtime && chrome.runtime.getManifest) {
-        versionText.textContent = 'v' + chrome.runtime.getManifest().version;
+        const manifestVersion = 'v' + chrome.runtime.getManifest().version;
+        if (versionText) versionText.textContent = manifestVersion;
+        if (headerVersionText) headerVersionText.textContent = manifestVersion;
     }
 
     const currentPrefixLabel = document.getElementById('currentPrefixLabel');
@@ -90,8 +93,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     );
 
     /**
-     * Updates the visual representation of the currently selected prefix in the UI.
-     * @param {string} prefix The prefix string to display.
+     * @param {string} prefix
      * @returns {void}
      */
     function updatePrefixVisuals(prefix) {
