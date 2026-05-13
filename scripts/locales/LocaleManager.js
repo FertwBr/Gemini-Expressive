@@ -121,7 +121,10 @@ class LocaleManager {
             moveDown: "Move down",
             tabWrite: "Write",
             tabPreview: "Preview",
-            previewEmpty: "Nothing to preview yet..."
+            previewEmpty: "Nothing to preview yet...",
+            toggleTheme: "Toggle Theme",
+            exportBackupTitle: "Export Settings Backup",
+            exportBackup: "Backup"
         },
         pt: {
             settingsTitle: "Gemini Expressive",
@@ -231,7 +234,10 @@ class LocaleManager {
             moveDown: "Mover para baixo",
             tabWrite: "Escrever",
             tabPreview: "Visualizar",
-            previewEmpty: "Nada para visualizar ainda..."
+            previewEmpty: "Nada para visualizar ainda...",
+            toggleTheme: "Alternar Tema",
+            exportBackupTitle: "Exportar Backup de Configurações",
+            exportBackup: "Backup"
         },
         es: {
             settingsTitle: "Gemini Expressive",
@@ -341,7 +347,10 @@ class LocaleManager {
             moveDown: "Mover hacia abajo",
             tabWrite: "Escribir",
             tabPreview: "Vista Previa",
-            previewEmpty: "Nada que previsualizar aún..."
+            previewEmpty: "Nada que previsualizar aún...",
+            toggleTheme: "Alternar Tema",
+            exportBackupTitle: "Exportar Copia de Seguridad",
+            exportBackup: "Copia de Seguridad"
         },
         de: {
             settingsTitle: "Gemini Expressive",
@@ -451,7 +460,10 @@ class LocaleManager {
             moveDown: "Nach unten bewegen",
             tabWrite: "Schreiben",
             tabPreview: "Vorschau",
-            previewEmpty: "Noch nichts zur Vorschau..."
+            previewEmpty: "Noch nichts zur Vorschau...",
+            toggleTheme: "Design Umschalten",
+            exportBackupTitle: "Backup der Einstellungen Exportieren",
+            exportBackup: "Backup"
         },
         hi: {
             settingsTitle: "Gemini Expressive",
@@ -561,7 +573,10 @@ class LocaleManager {
             moveDown: "नीचे ले जाएँ",
             tabWrite: "लिखें",
             tabPreview: "पूर्वावलोकन",
-            previewEmpty: "पूर्वावलोकन के लिए अभी कुछ नहीं..."
+            previewEmpty: "पूर्वावलोकन के लिए अभी कुछ नहीं...",
+            toggleTheme: "थीम बदलें",
+            exportBackupTitle: "सेटिंग्स बैकअप निर्यात करें",
+            exportBackup: "बैकअप"
         },
         ja: {
             settingsTitle: "Gemini Expressive",
@@ -671,7 +686,10 @@ class LocaleManager {
             moveDown: "下に移動",
             tabWrite: "書く",
             tabPreview: "プレビュー",
-            previewEmpty: "プレビューするものがまだありません..."
+            previewEmpty: "プレビューするものがまだありません...",
+            toggleTheme: "テーマの切り替え",
+            exportBackupTitle: "設定バックアップのエクスポート",
+            exportBackup: "バックアップ"
         }
     };
 
