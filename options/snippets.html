@@ -35,6 +35,33 @@
 
         <div class="snippets-layout">
             <div class="snippets-sidebar">
+
+                <div class="setting-row" style="margin-bottom: 16px; padding: 12px; border-radius: 12px; min-height: unset;">
+                    <div class="setting-info" style="padding-right: 8px;">
+                        <label class="input-label" data-i18n="snippetPrefixLabel" style="font-size: 0.85rem;">Snippet Prefix</label>
+                    </div>
+                    <div class="setting-dropdown-wrapper" style="width: 140px;">
+                        <button id="prefixDropdownBtn" class="setting-dropdown-btn" style="height: 36px; padding: 0 10px;">
+                            <span id="currentPrefixLabel">/ (Slash)</span>
+                            <span class="material-symbols-outlined setting-dropdown-icon" style="font-size: 18px;">expand_more</span>
+                        </button>
+                        <div id="prefixDropdownMenu" class="setting-dropdown-menu">
+                            <button class="setting-menu-item" data-prefix="/">
+                                <div class="setting-menu-item-leading"><span style="font-family: monospace; font-size: 16px; font-weight: bold;">/</span></div>
+                                <span>Slash</span>
+                            </button>
+                            <button class="setting-menu-item" data-prefix="!">
+                                <div class="setting-menu-item-leading"><span style="font-family: monospace; font-size: 16px; font-weight: bold;">!</span></div>
+                                <span>Exclamation</span>
+                            </button>
+                            <button class="setting-menu-item" data-prefix="#">
+                                <div class="setting-menu-item-leading"><span style="font-family: monospace; font-size: 16px; font-weight: bold;">#</span></div>
+                                <span>Hash</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
                 <button id="addNewBtn" class="action-btn-primary"
                         style="width: 100%; justify-content: center; margin-bottom: 16px;">
                     <span class="material-symbols-outlined">add</span>

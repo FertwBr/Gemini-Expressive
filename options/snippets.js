@@ -38,6 +38,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
     const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
 
+    const currentPrefixLabel = document.getElementById('currentPrefixLabel');
+
     const toast = new ToastNotification(toastElement, toastMessageElement);
 
     let snippets = [];
@@ -69,6 +71,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     );
 
+    const prefixDropdown = new DropdownMenu(
+        document.getElementById('prefixDropdownBtn'),
+        document.getElementById('prefixDropdownMenu'),
+        '.setting-menu-item',
+        'active',
+        async (item) => {
+            currentPrefix = item.getAttribute('data-prefix');
+            updatePrefixVisuals(currentPrefix);
+            await StorageManager.saveSettings({snippetPrefix: currentPrefix});
+            toast.show(LocaleManager.getString('statusSaved'));
+            renderList();
+        }
+    );
+
     new DragDropList(snippetsListEl, (draggedIndex, dropIndex) => {
         const draggedSnippet = snippets.splice(draggedIndex, 1)[0];
         if (dropIndex > draggedIndex) dropIndex--;
@@ -78,6 +94,23 @@ document.addEventListener('DOMContentLoaded', async () => {
             renderList();
         });
     });
+
+    /**
+     * @param {string} prefix
+     * @returns {void}
+     */
+    function updatePrefixVisuals(prefix) {
+        if (!currentPrefixLabel) return;
+        prefixDropdown.setActiveByAttribute('data-prefix', prefix);
+        prefixDropdown.items.forEach(item => {
+            if (item.getAttribute('data-prefix') === prefix) {
+                const spans = item.getElementsByTagName('span');
+                if (spans.length > 1) {
+                    currentPrefixLabel.textContent = prefix + ' (' + spans[1].textContent + ')';
+                }
+            }
+        });
+    }
 
     /**
      * @param {string} lang
@@ -111,7 +144,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     /**
-     * Parses Markdown to Safe HTML
      * @param {string} text
      * @returns {string}
      */
@@ -461,6 +493,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const initialSettings = await StorageManager.getSettings();
     currentPrefix = initialSettings.snippetPrefix;
+    updatePrefixVisuals(currentPrefix);
 
     if (initialSettings.dynamicColorEnabled !== false && typeof ThemeUtils !== 'undefined') {
         const colorToApply = initialSettings.themeColor || '#0b57d0';
@@ -480,4 +513,4 @@ document.addEventListener('DOMContentLoaded', async () => {
             }, 150);
         });
     }
-});
+});óø
