@@ -1,5 +1,5 @@
 /**
- * @fileoverview Adds collapse/expand functionality to code blocks.
+ * @fileoverview Adds collapse/expand functionality to code blocks with scroll anchoring.
  * @copyright (c) 2026 Fertwbr
  */
 
@@ -77,7 +77,7 @@ class CodeCollapser {
                         btn.appendChild(touchTarget);
                     }
 
-                    btn.setAttribute('aria-label', LocaleManager.getString('collapseCode'));
+                    btn.setAttribute('aria-label', typeof window.LocaleManager !== 'undefined' ? window.LocaleManager.getString('collapseCode') : 'Collapse');
 
                     const icon = document.createElement('span');
                     icon.className = 'bg-collapse-svg-icon';
@@ -86,21 +86,49 @@ class CodeCollapser {
 
                     const tooltip = document.createElement('div');
                     tooltip.className = 'bg-custom-tooltip';
-                    tooltip.textContent = LocaleManager.getString('collapseCode');
+                    tooltip.textContent = typeof window.LocaleManager !== 'undefined' ? window.LocaleManager.getString('collapseCode') : 'Collapse';
                     btn.appendChild(tooltip);
 
                     btn.onclick = (e) => {
                         e.preventDefault();
                         e.stopPropagation();
+
+                        const getScrollParent = (node) => {
+                            if (node == null || node === document.body || node === document.documentElement) return null;
+                            if (node.scrollHeight > node.clientHeight) {
+                                const overflowY = window.getComputedStyle(node).overflowY;
+                                if (overflowY === 'auto' || overflowY === 'scroll' || overflowY === 'overlay') return node;
+                            }
+                            return getScrollParent(node.parentNode);
+                        };
+
+                        const anchor = header || block;
+                        const scrollParent = getScrollParent(anchor);
+                        const beforeRect = anchor.getBoundingClientRect();
+
                         const isCollapsed = block.classList.toggle('bg-collapsed');
                         if (header) {
                             header.classList.toggle('bg-header-collapsed', isCollapsed);
                         }
 
+                        const afterRect = anchor.getBoundingClientRect();
+                        const diff = afterRect.top - beforeRect.top;
+
+                        if (diff !== 0) {
+                            if (scrollParent) {
+                                scrollParent.scrollTop += diff;
+                            } else {
+                                window.scrollBy(0, diff);
+                            }
+                        }
+
                         const targetIcon = isCollapsed ? 'assets/icons/collapsed.svg' : 'assets/icons/expanded.svg';
                         icon.style.setProperty('--bg-icon-url', CodeCollapser.getSafeUrl(targetIcon));
 
-                        const newText = isCollapsed ? LocaleManager.getString('expandCode') : LocaleManager.getString('collapseCode');
+                        const newText = isCollapsed ?
+                            (typeof window.LocaleManager !== 'undefined' ? window.LocaleManager.getString('expandCode') : 'Expand') :
+                            (typeof window.LocaleManager !== 'undefined' ? window.LocaleManager.getString('collapseCode') : 'Collapse');
+
                         tooltip.textContent = newText;
                         btn.setAttribute('aria-label', newText);
                     };
