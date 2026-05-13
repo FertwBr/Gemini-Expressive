@@ -22,10 +22,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     const hideUpgradeSwitch = document.getElementById('hideUpgradeBtn');
     const hideDownloadSwitch = document.getElementById('hideDownloadBtn');
     const colorPickerRow = document.getElementById('colorPickerRow');
-    const versionText = document.getElementById('versionText');
     const headerVersionText = document.getElementById('headerVersionText');
+    const versionText = document.getElementById('versionText');
     const toastElement = document.getElementById('toast-notification');
     const toastMessageElement = document.getElementById('toast-message');
+
+    const quickThemeBtn = document.getElementById('quickThemeBtn');
+    const quickThemeIcon = document.getElementById('quickThemeIcon');
+    const exportBackupBtn = document.getElementById('exportBackupBtn');
 
     const toast = new ToastNotification(toastElement, toastMessageElement);
 
@@ -116,6 +120,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             }
         });
+
+        if (quickThemeIcon) {
+            if (theme === 'auto') quickThemeIcon.textContent = 'brightness_auto';
+            if (theme === 'light') quickThemeIcon.textContent = 'light_mode';
+            if (theme === 'dark') quickThemeIcon.textContent = 'dark_mode';
+        }
     }
 
     /**
@@ -226,6 +236,31 @@ document.addEventListener('DOMContentLoaded', async () => {
         } else {
             toast.show(LocaleManager.getString('statusSaved'));
         }
+    }
+
+    if (quickThemeBtn) {
+        quickThemeBtn.addEventListener('click', () => {
+            if (selectedThemeMode === 'auto') selectedThemeMode = 'dark';
+            else if (selectedThemeMode === 'dark') selectedThemeMode = 'light';
+            else selectedThemeMode = 'auto';
+            updateThemeVisuals(selectedThemeMode);
+            saveSettings(true);
+        });
+    }
+
+    if (exportBackupBtn) {
+        exportBackupBtn.addEventListener('click', async () => {
+            const currentData = await StorageManager.getLocalData(null);
+            const dataStr = JSON.stringify(currentData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `gemini_expressive_backup_${new Date().toISOString().slice(0,10)}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+            toast.show(LocaleManager.getString('statusSaved'));
+        });
     }
 
     timelineSwitch.addEventListener('change', () => saveSettings(false));
