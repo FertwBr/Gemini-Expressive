@@ -30,6 +30,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const quickThemeBtn = document.getElementById('quickThemeBtn');
     const quickThemeIcon = document.getElementById('quickThemeIcon');
     const exportBackupBtn = document.getElementById('exportBackupBtn');
+    const importBackupBtn = document.getElementById('importBackupBtn');
+    const importBackupInput = document.getElementById('importBackupInput');
 
     const toast = new ToastNotification(toastElement, toastMessageElement);
 
@@ -248,18 +250,66 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
+    if (importBackupBtn && importBackupInput) {
+        importBackupBtn.addEventListener('click', () => {
+            importBackupInput.click();
+        });
+
+        importBackupInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = async (event) => {
+                try {
+                    const data = JSON.parse(event.target.result);
+
+                    if (typeof data !== 'object' || data === null || Array.isArray(data)) {
+                        throw new Error('Invalid format');
+                    }
+
+                    await StorageManager.setLocalData(data);
+
+                    toast.show(LocaleManager.getString('restoreSuccess'));
+
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
+
+                } catch (error) {
+                    console.error("Backup restore error:", error);
+                    toast.show(LocaleManager.getString('restoreInvalidFile'), true);
+                }
+
+                importBackupInput.value = '';
+            };
+
+            reader.onerror = () => {
+                toast.show(LocaleManager.getString('restoreError'), true);
+                importBackupInput.value = '';
+            };
+
+            reader.readAsText(file);
+        });
+    }
+
     if (exportBackupBtn) {
         exportBackupBtn.addEventListener('click', async () => {
-            const currentData = await StorageManager.getLocalData(null);
-            const dataStr = JSON.stringify(currentData, null, 2);
-            const dataBlob = new Blob([dataStr], {type: 'application/json'});
-            const url = URL.createObjectURL(dataBlob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `gemini_expressive_backup_${new Date().toISOString().slice(0,10)}.json`;
-            link.click();
-            URL.revokeObjectURL(url);
-            toast.show(LocaleManager.getString('statusSaved'));
+            try {
+                const currentData = await StorageManager.getLocalData(null);
+                const dataStr = JSON.stringify(currentData, null, 2);
+                const dataBlob = new Blob([dataStr], {type: 'application/json'});
+                const url = URL.createObjectURL(dataBlob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `gemini_expressive_backup_${new Date().toISOString().slice(0,10)}.json`;
+                link.click();
+                URL.revokeObjectURL(url);
+                toast.show(LocaleManager.getString('backupSuccess'));
+            } catch (error) {
+                console.error("Backup export error:", error);
+                toast.show(LocaleManager.getString('backupError'), true);
+            }
         });
     }
 
