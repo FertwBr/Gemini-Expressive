@@ -9,6 +9,7 @@
 export const DefaultConfig = {
     timelineEnabled: true,
     collapseEnabled: true,
+    autoCenterCollapseEnabled: false,
     codeNavEnabled: true,
     headersEnabled: true,
     themeMode: 'auto',
