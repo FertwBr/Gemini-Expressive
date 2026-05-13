@@ -15,23 +15,34 @@
 <body>
 <div class="page-wrapper">
     <div class="app-layout-container">
-        <div style="margin-bottom: 24px;">
-            <a href="settings.html" class="action-btn-outline" style="padding: 6px 16px; font-size: 0.85rem;">
-                <span class="material-symbols-outlined" style="font-size: 18px;">arrow_back</span>
+
+        <div class="top-nav-bar">
+            <a href="settings.html" class="nav-back-btn">
+                <span class="material-symbols-outlined" style="font-size: 20px;">arrow_back</span>
                 <span data-i18n="backToSettings">Back to Settings</span>
             </a>
         </div>
 
         <header class="page-header-container">
             <div class="header-content-wrapper">
-                <span class="material-symbols-outlined" style="font-size: 64px; color: var(--md-sys-color-primary);">edit_note</span>
+                <span class="material-symbols-outlined header-icon" style="font-size: 56px; color: var(--md-sys-color-primary);">edit_note</span>
                 <div class="header-text-content">
                     <div class="header-title-row">
                         <h1 class="viewer-title" data-i18n="snippetsTitle">Prompt Snippets</h1>
-                        <span id="headerVersionText" class="header-version-badge">vX.X.X</span>
+                        <a href="https://tools.fertwbr.com/geminiexpressive/changelog" target="_blank" id="headerVersionText" class="header-version-badge">vX.X.X</a>
                     </div>
-                    <p class="header-intro" data-i18n="snippetsSubtitle">Manage your saved prompts and quick
-                        shortcuts.</p>
+                    <p class="header-intro" data-i18n="snippetsSubtitle">Manage your saved prompts and quick shortcuts.</p>
+                </div>
+                <div class="header-actions">
+                    <button id="quickThemeBtn" class="icon-btn-outline" aria-label="Toggle Theme">
+                        <span class="material-symbols-outlined" id="quickThemeIcon">brightness_auto</span>
+                        <span class="custom-tooltip-text" data-i18n="toggleTheme">Toggle Theme</span>
+                    </button>
+                    <button id="exportBackupBtn" class="action-btn-outline header-pill-btn" aria-label="Export Settings Backup">
+                        <span class="material-symbols-outlined">download</span>
+                        <span data-i18n="exportBackup">Backup</span>
+                        <span class="custom-tooltip-text" data-i18n="exportBackupTitle">Export Settings Backup</span>
+                    </button>
                 </div>
             </div>
         </header>

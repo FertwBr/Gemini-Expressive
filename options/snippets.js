@@ -27,6 +27,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     const versionText = document.getElementById('versionText');
     const headerVersionText = document.getElementById('headerVersionText');
 
+    const quickThemeBtn = document.getElementById('quickThemeBtn');
+    const quickThemeIcon = document.getElementById('quickThemeIcon');
+    const exportBackupBtn = document.getElementById('exportBackupBtn');
+
     const editorTitleIcon = document.getElementById('editorTitleIcon');
     const editorTitleText = document.getElementById('editorTitleText');
     const saveSnippetBtnText = document.getElementById('saveSnippetBtnText');
@@ -47,6 +51,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     let currentEditingId = null;
     let snippetToDelete = null;
     let currentPrefix = '/';
+    let selectedThemeMode = 'auto';
 
     if (window.chrome && chrome.runtime && chrome.runtime.getManifest) {
         const manifestVersion = 'v' + chrome.runtime.getManifest().version;
@@ -106,6 +111,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!currentPrefixLabel) return;
         prefixDropdown.setActiveByAttribute('data-prefix', prefix);
         currentPrefixLabel.textContent = prefix;
+    }
+
+    /**
+     * @param {string} theme
+     * @returns {void}
+     */
+    function updateThemeVisuals(theme) {
+        if (quickThemeIcon) {
+            if (theme === 'auto') quickThemeIcon.textContent = 'brightness_auto';
+            if (theme === 'light') quickThemeIcon.textContent = 'light_mode';
+            if (theme === 'dark') quickThemeIcon.textContent = 'dark_mode';
+        }
     }
 
     /**
@@ -487,13 +504,47 @@ document.addEventListener('DOMContentLoaded', async () => {
         deleteConfirmDialog.close();
     };
 
+    if (quickThemeBtn) {
+        quickThemeBtn.addEventListener('click', async () => {
+            if (selectedThemeMode === 'auto') selectedThemeMode = 'dark';
+            else if (selectedThemeMode === 'dark') selectedThemeMode = 'light';
+            else selectedThemeMode = 'auto';
+            updateThemeVisuals(selectedThemeMode);
+            await StorageManager.saveSettings({themeMode: selectedThemeMode});
+            if (typeof ThemeUtils !== 'undefined') {
+                const currentSettings = await StorageManager.getSettings();
+                if (currentSettings.dynamicColorEnabled) {
+                    ThemeUtils.applyMaterialTheme(currentSettings.themeColor || '#0b57d0', selectedThemeMode);
+                }
+            }
+            toast.show(LocaleManager.getString('statusSavedRefresh'), true);
+        });
+    }
+
+    if (exportBackupBtn) {
+        exportBackupBtn.addEventListener('click', async () => {
+            const currentData = await StorageManager.getLocalData(null);
+            const dataStr = JSON.stringify(currentData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `gemini_expressive_backup_${new Date().toISOString().slice(0,10)}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+            toast.show(LocaleManager.getString('statusSaved'));
+        });
+    }
+
     const initialSettings = await StorageManager.getSettings();
     currentPrefix = initialSettings.snippetPrefix;
+    selectedThemeMode = initialSettings.themeMode || 'auto';
     updatePrefixVisuals(currentPrefix);
+    updateThemeVisuals(selectedThemeMode);
 
     if (initialSettings.dynamicColorEnabled !== false && typeof ThemeUtils !== 'undefined') {
         const colorToApply = initialSettings.themeColor || '#0b57d0';
-        ThemeUtils.applyMaterialTheme(colorToApply, initialSettings.themeMode || 'auto');
+        ThemeUtils.applyMaterialTheme(colorToApply, selectedThemeMode);
     }
 
     updateLangVisuals(initialSettings.language);
