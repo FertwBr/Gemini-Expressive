@@ -124,7 +124,14 @@ class LocaleManager {
             previewEmpty: "Nothing to preview yet...",
             toggleTheme: "Toggle Theme",
             exportBackupTitle: "Export Settings Backup",
-            exportBackup: "Backup"
+            exportBackup: "Backup",
+            importBackupTitle: "Import Settings Backup",
+            importBackup: "Restore",
+            backupSuccess: "Backup exported successfully!",
+            backupError: "Failed to export backup.",
+            restoreSuccess: "Backup restored! Reloading...",
+            restoreError: "Failed to read the backup file.",
+            restoreInvalidFile: "Invalid backup file format."
         },
         pt: {
             settingsTitle: "Gemini Expressive",
@@ -237,7 +244,14 @@ class LocaleManager {
             previewEmpty: "Nada para visualizar ainda...",
             toggleTheme: "Alternar Tema",
             exportBackupTitle: "Exportar Backup de Configurações",
-            exportBackup: "Backup"
+            exportBackup: "Backup",
+            importBackupTitle: "Importar Backup de Configurações",
+            importBackup: "Restaurar",
+            backupSuccess: "Backup exportado com sucesso!",
+            backupError: "Falha ao exportar backup.",
+            restoreSuccess: "Backup restaurado! Recarregando...",
+            restoreError: "Falha ao ler o arquivo de backup.",
+            restoreInvalidFile: "Formato de arquivo de backup inválido."
         },
         es: {
             settingsTitle: "Gemini Expressive",
@@ -350,7 +364,14 @@ class LocaleManager {
             previewEmpty: "Nada que previsualizar aún...",
             toggleTheme: "Alternar Tema",
             exportBackupTitle: "Exportar Copia de Seguridad",
-            exportBackup: "Copia de Seguridad"
+            exportBackup: "Copia de Seguridad",
+            importBackupTitle: "Importar Copia de Seguridad",
+            importBackup: "Restaurar",
+            backupSuccess: "¡Copia de seguridad exportada con éxito!",
+            backupError: "Error al exportar la copia de seguridad.",
+            restoreSuccess: "¡Copia restaurada! Recargando...",
+            restoreError: "Error al leer el archivo de copia de seguridad.",
+            restoreInvalidFile: "Formato de archivo de copia de seguridad no válido."
         },
         de: {
             settingsTitle: "Gemini Expressive",
@@ -463,7 +484,14 @@ class LocaleManager {
             previewEmpty: "Noch nichts zur Vorschau...",
             toggleTheme: "Design Umschalten",
             exportBackupTitle: "Backup der Einstellungen Exportieren",
-            exportBackup: "Backup"
+            exportBackup: "Backup",
+            importBackupTitle: "Backup Importieren",
+            importBackup: "Wiederherstellen",
+            backupSuccess: "Backup erfolgreich exportiert!",
+            backupError: "Fehler beim Exportieren des Backups.",
+            restoreSuccess: "Backup wiederhergestellt! Neu laden...",
+            restoreError: "Fehler beim Lesen der Backup-Datei.",
+            restoreInvalidFile: "Ungültiges Backup-Dateiformat."
         },
         hi: {
             settingsTitle: "Gemini Expressive",
@@ -576,7 +604,14 @@ class LocaleManager {
             previewEmpty: "पूर्वावलोकन के लिए अभी कुछ नहीं...",
             toggleTheme: "थीम बदलें",
             exportBackupTitle: "सेटिंग्स बैकअप निर्यात करें",
-            exportBackup: "बैकअप"
+            exportBackup: "बैकअप",
+            importBackupTitle: "बैकअप आयात करें",
+            importBackup: "पुनर्स्थापित करें",
+            backupSuccess: "बैकअप सफलतापूर्वक निर्यात किया गया!",
+            backupError: "बैकअप निर्यात करने में विफल।",
+            restoreSuccess: "बैकअप पुनर्स्थापित! पुनः लोड हो रहा है...",
+            restoreError: "बैकअप फ़ाइल पढ़ने में विफल।",
+            restoreInvalidFile: "अमान्य बैकअप फ़ाइल प्रारूप।"
         },
         ja: {
             settingsTitle: "Gemini Expressive",
@@ -689,7 +724,14 @@ class LocaleManager {
             previewEmpty: "プレビューするものがまだありません...",
             toggleTheme: "テーマの切り替え",
             exportBackupTitle: "設定バックアップのエクスポート",
-            exportBackup: "バックアップ"
+            exportBackup: "バックアップ",
+            importBackupTitle: "バックアップをインポート",
+            importBackup: "復元する",
+            backupSuccess: "バックアップが正常にエクスポートされました！",
+            backupError: "バックアップのエクスポートに失敗しました。",
+            restoreSuccess: "バックアップが復元されました！再読み込み中...",
+            restoreError: "バックアップファイルの読み込みに失敗しました。",
+            restoreInvalidFile: "無効なバックアップファイル形式です。"
         }
     };
 
