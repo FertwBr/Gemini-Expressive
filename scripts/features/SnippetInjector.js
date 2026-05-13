@@ -89,12 +89,7 @@ class SnippetInjector {
         if (!menu) {
             menu = document.createElement('div');
             menu.id = 'bg-snippet-menu';
-            const inputContainer = document.querySelector('.text-input-field');
-            if (inputContainer) {
-                inputContainer.appendChild(menu);
-            } else {
-                document.body.appendChild(menu);
-            }
+            document.body.appendChild(menu);
         }
 
         menu.textContent = '';
@@ -206,6 +201,15 @@ class SnippetInjector {
         }
 
         menu.classList.add('visible');
+
+        const inputContainer = document.querySelector('.text-input-field');
+        if (inputContainer) {
+            const rect = inputContainer.getBoundingClientRect();
+            menu.style.position = 'fixed';
+            menu.style.bottom = `${window.innerHeight - rect.top + 8}px`;
+            menu.style.left = `${rect.left + 24}px`;
+            menu.style.zIndex = '2147483647';
+        }
 
         const activeItem = menu.querySelector('.bg-snippet-menu-item.active, .bg-snippet-add-btn.active');
         if (activeItem) {
