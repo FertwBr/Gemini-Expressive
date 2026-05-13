@@ -1,5 +1,5 @@
 /**
- * @fileoverview Adds collapse/expand functionality to code blocks with scroll anchoring.
+ * @fileoverview Adds collapse/expand functionality to code blocks with scroll anchoring and auto-centering.
  * @copyright (c) 2026 Fertwbr
  */
 
@@ -122,6 +122,12 @@ class CodeCollapser {
                             }
                         }
 
+                        if (document.body.classList.contains('bg-auto-center-enabled')) {
+                            setTimeout(() => {
+                                anchor.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            }, 50);
+                        }
+
                         const targetIcon = isCollapsed ? 'assets/icons/collapsed.svg' : 'assets/icons/expanded.svg';
                         icon.style.setProperty('--bg-icon-url', CodeCollapser.getSafeUrl(targetIcon));
 
@@ -179,7 +185,7 @@ class CodeCollapser {
                 downBtn.onclick = (e) => {
                     e.preventDefault();
                     const allProcessed = Array.from(document.querySelectorAll('pre.bg-processed'));
-                    const currentIndex = allProcessed.indexOf(block);
+                    const currentIndex = allProcóøessed.indexOf(block);
                     if (currentIndex < allProcessed.length - 1) {
                         const target = allProcessed[currentIndex + 1];
                         const targetContainer = target.closest('code-block') || target;
