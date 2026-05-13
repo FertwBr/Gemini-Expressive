@@ -96,20 +96,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     /**
-     * @param {string} prefix
+     * Updates the visual representation of the currently selected prefix in the UI.
+     * @param {string} prefix The prefix string to display.
      * @returns {void}
      */
     function updatePrefixVisuals(prefix) {
         if (!currentPrefixLabel) return;
         prefixDropdown.setActiveByAttribute('data-prefix', prefix);
-        prefixDropdown.items.forEach(item => {
-            if (item.getAttribute('data-prefix') === prefix) {
-                const spans = item.getElementsByTagName('span');
-                if (spans.length > 1) {
-                    currentPrefixLabel.textContent = prefix + ' (' + spans[1].textContent + ')';
-                }
-            }
-        });
+        currentPrefixLabel.textContent = prefix;
     }
 
     /**
@@ -513,4 +507,4 @@ document.addEventListener('DOMContentLoaded', async () => {
             }, 150);
         });
     }
-});óø
+});
