@@ -102,16 +102,25 @@
 }
 
 .snippet-list-item.active {
-    background: var(--md-sys-color-secondary-container);
-    color: var(--md-sys-color-on-secondary-container);
+    background: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+}
+
+.snippet-list-item.active .snippet-item-drag-handle {
+    color: var(--md-sys-color-on-primary);
+    opacity: 0.7;
+}
+
+.snippet-list-item.active .snippet-item-drag-handle:hover {
+    opacity: 1;
 }
 
 .snippet-list-item.active .snippet-item-keyword {
-    color: var(--md-sys-color-on-secondary-container);
+    color: var(--md-sys-color-on-primary);
 }
 
 .snippet-list-item.active .snippet-item-preview {
-    color: var(--md-sys-color-on-secondary-container);
+    color: var(--md-sys-color-on-primary);
     opacity: 0.8;
 }
 
@@ -179,11 +188,12 @@
 }
 
 .snippet-list-item.active .icon-btn-small {
-    color: var(--md-sys-color-on-secondary-container);
+    color: var(--md-sys-color-on-primary);
 }
 
 .snippet-list-item.active .icon-btn-small:hover {
-    background: rgba(0, 0, 0, 0.1);
+    background: color-mix(in srgb, var(--md-sys-color-on-primary) 15%, transparent);
+    color: var(--md-sys-color-on-primary);
 }
 
 .icon-btn-small.danger:hover {
@@ -192,8 +202,8 @@
 }
 
 .snippet-list-item.active .icon-btn-small.danger:hover {
-    background: rgba(211, 47, 47, 0.2);
-    color: #d32f2f;
+    background: #d32f2f;
+    color: #ffffff;
 }
 
 .icon-btn-small span {
