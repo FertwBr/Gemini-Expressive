@@ -273,8 +273,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                     toast.show(LocaleManager.getString('restoreSuccess'));
 
                     setTimeout(() => {
-                        window.location.reload();
-                    }, 1500);
+                        const wrapper = document.querySelector('.page-wrapper');
+                        if (wrapper) wrapper.classList.add('page-transition-exit');
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 200);
+                    }, 1300);
 
                 } catch (error) {
                     console.error("Backup restore error:", error);
@@ -328,7 +332,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.querySelector('.page-wrapper').classList.add('page-transition-exit');
             setTimeout(() => {
                 window.location.href = 'snippets.html';
-            }, 150);
+            }, 200);
         });
     }
 });
