@@ -131,7 +131,12 @@ class LocaleManager {
             backupError: "Failed to export backup.",
             restoreSuccess: "Backup restored! Reloading...",
             restoreError: "Failed to read the backup file.",
-            restoreInvalidFile: "Invalid backup file format."
+            restoreInvalidFile: "Invalid backup file format.",
+            headerBackup: "Backup & Restore",
+            backupSectionDesc: "Manage your settings and snippets backups.",
+            lastBackupLabel: "Last Backup:",
+            lastRestoreLabel: "Last Restore:",
+            neverAction: "Never"
         },
         pt: {
             settingsTitle: "Gemini Expressive",
@@ -251,7 +256,12 @@ class LocaleManager {
             backupError: "Falha ao exportar backup.",
             restoreSuccess: "Backup restaurado! Recarregando...",
             restoreError: "Falha ao ler o arquivo de backup.",
-            restoreInvalidFile: "Formato de arquivo de backup inválido."
+            restoreInvalidFile: "Formato de arquivo de backup inválido.",
+            headerBackup: "Backup e Restauração",
+            backupSectionDesc: "Gerencie os backups das suas configurações e atalhos.",
+            lastBackupLabel: "Último Backup:",
+            lastRestoreLabel: "Última Restauração:",
+            neverAction: "Nunca"
         },
         es: {
             settingsTitle: "Gemini Expressive",
@@ -371,7 +381,12 @@ class LocaleManager {
             backupError: "Error al exportar la copia de seguridad.",
             restoreSuccess: "¡Copia restaurada! Recargando...",
             restoreError: "Error al leer el archivo de copia de seguridad.",
-            restoreInvalidFile: "Formato de archivo de copia de seguridad no válido."
+            restoreInvalidFile: "Formato de archivo de copia de seguridad no válido.",
+            headerBackup: "Copia de Seguridad",
+            backupSectionDesc: "Gestiona tus copias de seguridad de configuraciones y atajos.",
+            lastBackupLabel: "Última Copia:",
+            lastRestoreLabel: "Última Restauración:",
+            neverAction: "Nunca"
         },
         de: {
             settingsTitle: "Gemini Expressive",
@@ -491,7 +506,12 @@ class LocaleManager {
             backupError: "Fehler beim Exportieren des Backups.",
             restoreSuccess: "Backup wiederhergestellt! Neu laden...",
             restoreError: "Fehler beim Lesen der Backup-Datei.",
-            restoreInvalidFile: "Ungültiges Backup-Dateiformat."
+            restoreInvalidFile: "Ungültiges Backup-Dateiformat.",
+            headerBackup: "Sicherung & Wiederherstellung",
+            backupSectionDesc: "Verwalten Sie Ihre Backups.",
+            lastBackupLabel: "Letztes Backup:",
+            lastRestoreLabel: "Letzte Wiederherstellung:",
+            neverAction: "Niemals"
         },
         hi: {
             settingsTitle: "Gemini Expressive",
@@ -611,7 +631,12 @@ class LocaleManager {
             backupError: "बैकअप निर्यात करने में विफल।",
             restoreSuccess: "बैकअप पुनर्स्थापित! पुनः लोड हो रहा है...",
             restoreError: "बैकअप फ़ाइल पढ़ने में विफल।",
-            restoreInvalidFile: "अमान्य बैकअप फ़ाइल प्रारूप।"
+            restoreInvalidFile: "अमान्य बैकअप फ़ाइल प्रारूप।",
+            headerBackup: "बैकअप और पुनर्स्थापना",
+            backupSectionDesc: "अपने बैकअप प्रबंधित करें।",
+            lastBackupLabel: "अंतिम बैकअप:",
+            lastRestoreLabel: "अंतिम पुनर्स्थापना:",
+            neverAction: "कभी नहीं"
         },
         ja: {
             settingsTitle: "Gemini Expressive",
@@ -731,7 +756,12 @@ class LocaleManager {
             backupError: "バックアップのエクスポートに失敗しました。",
             restoreSuccess: "バックアップが復元されました！再読み込み中...",
             restoreError: "バックアップファイルの読み込みに失敗しました。",
-            restoreInvalidFile: "無効なバックアップファイル形式です。"
+            restoreInvalidFile: "無効なバックアップファイル形式です。",
+            headerBackup: "バックアップと復元",
+            backupSectionDesc: "バックアップを管理します。",
+            lastBackupLabel: "最終バックアップ:",
+            lastRestoreLabel: "最終復元:",
+            neverAction: "なし"
         }
     };
 
