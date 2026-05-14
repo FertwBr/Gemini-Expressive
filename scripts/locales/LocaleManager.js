@@ -146,7 +146,9 @@ class LocaleManager {
             backupSectionDesc: "Manage your settings and snippets backups.",
             lastBackupLabel: "Last Backup:",
             lastRestoreLabel: "Last Restore:",
-            neverAction: "Never"
+            neverAction: "Never",
+            badgeNew: "New",
+            badgeBeta: "Beta"
         },
         pt: {
             settingsTitle: "Gemini Expressive",
@@ -274,7 +276,9 @@ class LocaleManager {
             backupSectionDesc: "Gerencie os backups das suas configurações e atalhos.",
             lastBackupLabel: "Último Backup:",
             lastRestoreLabel: "Última Restauração:",
-            neverAction: "Nunca"
+            neverAction: "Nunca",
+            badgeNew: "Novo",
+            badgeBeta: "Beta"
         },
         es: {
             settingsTitle: "Gemini Expressive",
@@ -402,7 +406,9 @@ class LocaleManager {
             backupSectionDesc: "Gestiona tus copias de seguridad de configuraciones y atajos.",
             lastBackupLabel: "Última Copia:",
             lastRestoreLabel: "Última Restauración:",
-            neverAction: "Nunca"
+            neverAction: "Nunca",
+            badgeNew: "Nuevo",
+            badgeBeta: "Beta"
         },
         de: {
             settingsTitle: "Gemini Expressive",
@@ -530,7 +536,9 @@ class LocaleManager {
             backupSectionDesc: "Verwalten Sie Ihre Backups.",
             lastBackupLabel: "Letztes Backup:",
             lastRestoreLabel: "Letzte Wiederherstellung:",
-            neverAction: "Niemals"
+            neverAction: "Niemals",
+            badgeNew: "Neu",
+            badgeBeta: "Beta"
         },
         hi: {
             settingsTitle: "Gemini Expressive",
@@ -658,7 +666,9 @@ class LocaleManager {
             backupSectionDesc: "अपने बैकअप प्रबंधित करें।",
             lastBackupLabel: "अंतिम बैकअप:",
             lastRestoreLabel: "अंतिम पुनर्स्थापना:",
-            neverAction: "कभी नहीं"
+            neverAction: "कभी नहीं",
+            badgeNew: "नया",
+            badgeBeta: "बीटा"
         },
         ja: {
             settingsTitle: "Gemini Expressive",
@@ -786,7 +796,9 @@ class LocaleManager {
             backupSectionDesc: "バックアップを管理します。",
             lastBackupLabel: "最終バックアップ:",
             lastRestoreLabel: "最終復元:",
-            neverAction: "なし"
+            neverAction: "なし",
+            badgeNew: "新機能",
+            badgeBeta: "ベータ"
         }
     };
 
