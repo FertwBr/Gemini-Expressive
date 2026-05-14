@@ -1,15 +1,24 @@
-/**
- * @fileoverview Manager for backup import and export operations.
- * @copyright (c) 2026 Fertwbr
+/*
+ * Copyright (c) 2026 Fernando Vaz
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 
 import {StorageManager} from '../core/StorageManager.js';
 
+/**
+ * Facilitates the exportation of application data to a downloadable JSON file.
+ * It interacts with the local storage manager to retrieve current user configurations,
+ * appends a timestamp indicating when the backup was created, and triggers a file
+ * download natively in the browser.
+ */
 export class BackupExporter {
     /**
-     * @param {Array<HTMLElement>|HTMLElement} exportBtns
-     * @param {Object} toast
-     * @param {HTMLElement} [lastBackupEl=null]
+     * Initializes the exporter with the necessary UI elements.
+     * @param {Array<HTMLElement>|HTMLElement} exportBtns - The button or array of buttons that trigger the export.
+     * @param {Object} toast - The notification system used to display success or error messages.
+     * @param {HTMLElement} [lastBackupEl=null] - The DOM element where the last backup date is displayed.
      */
     constructor(exportBtns, toast, lastBackupEl = null) {
         this.exportBtns = Array.isArray(exportBtns) ? exportBtns : [exportBtns];
@@ -21,6 +30,7 @@ export class BackupExporter {
     }
 
     /**
+     * Binds the click event listeners to the export buttons.
      * @private
      * @returns {void}
      */
@@ -35,6 +45,7 @@ export class BackupExporter {
     }
 
     /**
+     * Retrieves the last backup date from local storage and updates the UI element to reflect it.
      * @private
      * @returns {Promise<void>}
      */
@@ -46,6 +57,8 @@ export class BackupExporter {
     }
 
     /**
+     * Gathers all local storage data, updates the backup timestamp, and generates a downloadable JSON blob.
+     * Displays a toast notification based on the success or failure of the operation.
      * @private
      * @returns {Promise<void>}
      */
@@ -76,12 +89,18 @@ export class BackupExporter {
     }
 }
 
+/**
+ * Handles the importation and restoration of application data from a JSON file.
+ * Validates the uploaded file format, overwrites the local storage with the new data,
+ * updates the restoration timestamp, and reloads the application to apply the changes.
+ */
 export class BackupImporter {
     /**
-     * @param {Array<HTMLElement>|HTMLElement} importBtns
-     * @param {HTMLInputElement} importInput
-     * @param {Object} toast
-     * @param {HTMLElement} [lastRestoreEl=null]
+     * Initializes the importer with UI components and the hidden file input element.
+     * @param {Array<HTMLElement>|HTMLElement} importBtns - The visible button(s) that trigger the hidden file input.
+     * @param {HTMLInputElement} importInput - The hidden file input element that accepts the JSON file.
+     * @param {Object} toast - The notification system for displaying operation status.
+     * @param {HTMLElement} [lastRestoreEl=null] - The DOM element displaying the last restoration date.
      */
     constructor(importBtns, importInput, toast, lastRestoreEl = null) {
         this.importBtns = Array.isArray(importBtns) ? importBtns : [importBtns];
@@ -94,6 +113,7 @@ export class BackupImporter {
     }
 
     /**
+     * Binds the necessary event listeners to trigger the file selector and handle the file upload change event.
      * @private
      * @returns {void}
      */
@@ -114,6 +134,7 @@ export class BackupImporter {
     }
 
     /**
+     * Retrieves the last restore date from local storage and updates the corresponding UI element.
      * @private
      * @returns {Promise<void>}
      */
@@ -125,8 +146,10 @@ export class BackupImporter {
     }
 
     /**
+     * Processes the selected file, parses its JSON content, validates its structure,
+     * saves the new configuration to local storage, and triggers a page reload with a transition.
      * @private
-     * @param {Event} event
+     * @param {Event} event - The file input change event.
      * @returns {void}
      */
     _handleImport(event) {

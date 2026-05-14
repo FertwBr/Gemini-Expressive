@@ -1,11 +1,20 @@
-/**
- * @fileoverview Tooltip positioning manager.
- * @copyright (c) 2026 Fertwbr
+/*
+ * Copyright (c) 2026 Fernando Vaz
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 
+/**
+ * Manages the dynamic positioning of informational tooltips to prevent them from clipping off-screen.
+ * It listens for hover events and evaluates the tooltip's bounding rectangle against the current
+ * viewport dimensions, applying corrective CSS classes to reposition the card on the fly.
+ */
 export class TooltipManager {
     /**
-     * @param {string} [selector='.help-tooltip-container']
+     * Scans the document for tooltip containers and attaches the boundary-checking logic.
+     * @param {string} [selector='.help-tooltip-container'] - The CSS selector for the wrapper element that triggers the hover state.
+     * @returns {void}
      */
     static init(selector = '.help-tooltip-container') {
         document.querySelectorAll(selector).forEach(container => {

@@ -1,12 +1,20 @@
-/**
- * @fileoverview Drag and drop list manager.
- * @copyright (c) 2026 Fertwbr
+/*
+ * Copyright (c) 2026 Fernando Vaz
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 
+/**
+ * Provides HTML5 native drag-and-drop reordering functionality for a list container.
+ * Calculates drop coordinates based on element bounding boxes to determine whether an item
+ * is being dragged above or below another list item, and triggers a callback upon successful drop.
+ */
 export class DragDropList {
     /**
-     * @param {HTMLElement} container
-     * @param {Function} onReorder
+     * Initializes the drag-and-drop instance on a specific container.
+     * @param {HTMLElement} container - The wrapper element containing the draggable items.
+     * @param {Function} onReorder - Callback executed with the original and target indexes after a drop event.
      */
     constructor(container, onReorder) {
         this.container = container;
@@ -17,7 +25,10 @@ export class DragDropList {
     }
 
     /**
+     * Attaches all native HTML5 drag events (dragstart, dragend, dragover, dragleave, drop)
+     * to the container to handle styling and positional calculations dynamically.
      * @private
+     * @returns {void}
      */
     _initEvents() {
         this.container.addEventListener('dragstart', (e) => {

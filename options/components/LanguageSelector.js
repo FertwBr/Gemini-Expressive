@@ -1,19 +1,27 @@
-/**
- * @fileoverview Language selector dropdown component.
- * @copyright (c) 2026 Fertwbr
+/*
+ * Copyright (c) 2026 Fernando Vaz
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 
 import {Localization} from '../core/Localization.js';
 import {DropdownMenu} from './DropdownMenu.js';
 
+/**
+ * Manages the language selection UI, extending standard dropdown functionality.
+ * It coordinates the rendering of country flags, language labels, and dynamic icon injection
+ * when the "auto" language detection option is selected.
+ */
 export class LanguageSelector {
     /**
-     * @param {HTMLElement} btn
-     * @param {HTMLElement} menu
-     * @param {HTMLElement} flagImg
-     * @param {HTMLElement} label
-     * @param {string} initialLang
-     * @param {Function} onChange
+     * Initializes the selector, hooking into a generic DropdownMenu instance.
+     * @param {HTMLElement} btn - The main button that opens the language menu.
+     * @param {HTMLElement} menu - The dropdown menu container holding language options.
+     * @param {HTMLElement} flagImg - The image element used to display the selected language's country flag.
+     * @param {HTMLElement} label - The text element displaying the name of the currently selected language.
+     * @param {string} initialLang - The language code to be selected upon initialization.
+     * @param {Function} onChange - The callback function triggered when a new language is selected.
      */
     constructor(btn, menu, flagImg, label, initialLang, onChange) {
         this.btn = btn;
@@ -37,7 +45,9 @@ export class LanguageSelector {
     }
 
     /**
-     * @param {string} lang
+     * Updates the button UI to reflect the newly selected language. Replaces the flag with
+     * an icon for the "auto" option, or fetches the appropriate flag URL from flagcdn for specific languages.
+     * @param {string} lang - The language code representing the new selection.
      * @returns {void}
      */
     updateVisuals(lang) {

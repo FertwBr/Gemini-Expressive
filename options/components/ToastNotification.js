@@ -1,15 +1,20 @@
-/**
- * @fileoverview Toast notification component.
- * @copyright (c) 2026 Fertwbr
+/*
+ * Copyright (c) 2026 Fernando Vaz
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 
 /**
- * Handles displaying toast notifications.
+ * Controls transient alert messages (toasts) presented over the main UI.
+ * Handles the application and automatic removal of CSS visibility classes based on a timer,
+ * ensuring overlapping requests clear the previous timeout to avoid premature hiding.
  */
 export class ToastNotification {
     /**
-     * @param {HTMLElement} element
-     * @param {HTMLElement} messageElement
+     * Binds the core layout elements needed to render the toast notification.
+     * @param {HTMLElement} element - The main wrapper element of the toast container.
+     * @param {HTMLElement} messageElement - The inner node where the text string is injected.
      */
     constructor(element, messageElement) {
         this.element = element;
@@ -18,9 +23,10 @@ export class ToastNotification {
     }
 
     /**
-     * Shows the toast notification.
-     * @param {string} message
-     * @param {boolean} [isLong=false]
+     * Activates the toast element to display a message, queuing its automatic disappearance.
+     * @param {string} message - The textual content to present to the user.
+     * @param {boolean} [isLong=false] - Whether the notification should stay visible for an extended duration (5s vs 2.5s).
+     * @returns {void}
      */
     show(message, isLong = false) {
         this.messageElement.textContent = message;
