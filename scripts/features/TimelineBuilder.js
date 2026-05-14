@@ -1,23 +1,41 @@
-/**
- * @fileoverview Constructs and manages the floating timeline.
- * @copyright (c) 2026 Fertwbr
+/*
+ * Copyright (c) 2026 Fernando Vaz
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 
+/**
+ * Constructs and manages a dynamic floating timeline interface that allows users to visually navigate
+ * through long conversation threads. It observes the DOM for new message blocks, extracts their context,
+ * and builds clickable anchor points that sync with the user's scrolling position.
+ */
 class TimelineBuilder {
     static timelineObserver = null;
     static isManualScrolling = false;
     static scrollTimeout = null;
 
+    /**
+     * Scans the document object model to identify discrete conversational message blocks.
+     * It filters out nested elements to ensure only top-level query and response containers are tracked.
+     * @returns {Array<HTMLElement>} An array of top-level message container elements.
+     */
     static getMessageBlocks() {
         const selectors = 'user-query, model-response, message-row, chunked-message, [data-message-author], [data-test-id*="message"]';
         const blocks = Array.from(document.querySelectorAll(selectors));
         return blocks.filter(block => !block.parentElement.closest(selectors));
     }
 
+    /**
+     * Extracts contextual metadata from a given message block to populate the timeline tooltip.
+     * It identifies text content or code snippets, stripping away conversational filler to generate a concise preview.
+     * @param {HTMLElement} block - The DOM element representing a single chat message.
+     * @returns {Object} An object containing the extracted 'text' preview and an optional 'icon' identifier.
+     */
     static getPreviewData(block) {
         let p = block.querySelector('p');
         if (p && p.textContent.trim().length > 0) {
-            return { text: CodeUtils.cleanText(p.textContent), icon: null };
+            return {text: CodeUtils.cleanText(p.textContent), icon: null};
         }
 
         let codeHeader = block.querySelector('.code-block-decoration');
@@ -44,12 +62,18 @@ class TimelineBuilder {
                     previewText += ' Code';
                 }
 
-                return { text: previewText, icon: CodeUtils.getLanguageIcon(language) };
+                return {text: previewText, icon: CodeUtils.getLanguageIcon(language)};
             }
         }
-        return { text: CodeUtils.cleanText(block.textContent), icon: null };
+        return {text: CodeUtils.cleanText(block.textContent), icon: null};
     }
 
+    /**
+     * Generates and injects the core DOM structure for the floating timeline, including scroll containers
+     * and directional indicators for hidden items. It also binds scroll event listeners to manage the visibility
+     * of off-screen message counters.
+     * @returns {HTMLElement} The constructed timeline container element.
+     */
     static createTimelineContainer() {
         const container = document.createElement('div');
         container.id = 'better-gemini-timeline';
@@ -120,18 +144,23 @@ class TimelineBuilder {
                 topCounter.classList.remove('visible');
                 bottomCounter.classList.remove('visible');
             }, 800);
-        }, { passive: true });
+        }, {passive: true});
 
         window.addEventListener('scroll', () => {
             const tooltip = document.getElementById('bg-global-tooltip');
             if (tooltip) {
                 tooltip.classList.remove('visible');
             }
-        }, { passive: true, capture: true });
+        }, {passive: true, capture: true});
 
         return container;
     }
 
+    /**
+     * Provisions a reusable, globally positioned tooltip element used to display message previews
+     * when the user hovers over individual timeline nodes.
+     * @returns {HTMLElement} The global tooltip DOM node.
+     */
     static createGlobalTooltip() {
         let tooltip = document.getElementById('bg-global-tooltip');
         if (!tooltip) {
@@ -154,6 +183,11 @@ class TimelineBuilder {
         return tooltip;
     }
 
+    /**
+     * Drives the core logic of the timeline system. It evaluates the current chat state, registers new
+     * message blocks with an IntersectionObserver to track viewport visibility, creates graphical nodes
+     * based on content type, and manages programmatic scrolling when a timeline node is clicked.
+     */
     static update() {
         const container = document.getElementById('better-gemini-timeline') || this.createTimelineContainer();
         const itemsContainer = document.getElementById('bg-timeline-items');
@@ -199,7 +233,7 @@ class TimelineBuilder {
                         }
                     }
                 }
-            }, { threshold: [0, 0.1, 0.5, 0.9] });
+            }, {threshold: [0, 0.1, 0.5, 0.9]});
         }
 
         dialogBlocks.forEach((block) => {
@@ -249,14 +283,15 @@ class TimelineBuilder {
                     const shapeUrl = chrome.runtime.getURL('assets/shapes/' + shapeName);
                     dot.style.webkitMaskImage = 'url(' + shapeUrl + ')';
                     dot.style.maskImage = 'url(' + shapeUrl + ')';
-                } catch (e) {}
+                } catch (e) {
+                }
 
                 link.appendChild(dot);
 
                 link.addEventListener('mouseenter', () => {
                     const rect = link.getBoundingClientRect();
                     const currentBlock = document.querySelector('[data-bg-id="' + blockId + '"]');
-                    let previewData = { text: '', icon: null };
+                    let previewData = {text: '', icon: null};
 
                     if (currentBlock) {
                         previewData = this.getPreviewData(currentBlock);
@@ -296,7 +331,7 @@ class TimelineBuilder {
                     const scrollTarget = targetBlock.closest('message-row') || targetBlock.closest('.message-row') || targetBlock;
 
                     scrollTarget.style.scrollMarginTop = '80px';
-                    scrollTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    scrollTarget.scrollIntoView({behavior: 'smooth', block: 'start'});
 
                     globalTooltip.classList.remove('visible');
 

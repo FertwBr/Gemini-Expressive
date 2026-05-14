@@ -1,6 +1,8 @@
-/**
- * @fileoverview Main entry point for the settings page.
- * @copyright (c) 2026 Fertwbr
+/*
+ * Copyright (c) 2026 Fernando Vaz
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 
 import {StorageManager} from './core/StorageManager.js';

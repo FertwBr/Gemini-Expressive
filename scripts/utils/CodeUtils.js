@@ -1,16 +1,21 @@
-/**
- * @fileoverview Utilities for code block processing.
- * @copyright (c) 2026 Fertwbr
+/*
+ * Copyright (c) 2026 Fernando Vaz
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 
 /**
- * Utility class for parsing and cleaning code strings.
+ * Provides static utilities for analyzing, parsing, and sanitizing raw text and code blocks.
+ * It encapsulates logic for identifying programming languages, mapping them to official icons,
+ * and using regular expressions to extract metadata such as file names directly from the code syntax.
  */
 class CodeUtils {
     /**
-     * Cleans the text content by removing known UI injected strings.
-     * @param {string} text The raw text content.
-     * @returns {string} The cleaned text.
+     * Strips away localized conversational filler text injected by the AI interface (e.g., "You said",
+     * "Gemini said", "Show reasoning") to ensure clean extraction of the actual code or message intent.
+     * @param {string} text - The raw text content retrieved from the DOM.
+     * @returns {string} The sanitized text string ready for UI preview rendering.
      */
     static cleanText(text) {
         let cleaned = text.replace(/Você disse\s*/gi, '');
@@ -23,9 +28,10 @@ class CodeUtils {
     }
 
     /**
-     * Maps a language name to its corresponding Google Material Symbol icon name.
-     * @param {string} lang The programming language name.
-     * @returns {string} The Material Symbol icon name.
+     * Evaluates a recognized programming language string and maps it to the most semantically
+     * appropriate Google Material Symbol icon identifier for visual representation in headers.
+     * @param {string} lang - The string name of the programming language.
+     * @returns {string} The string identifier for the matching Material Symbol.
      */
     static getLanguageIcon(lang) {
         const language = lang.toLowerCase();
@@ -42,10 +48,11 @@ class CodeUtils {
     }
 
     /**
-     * Extracts a potential file name from code content based on language heuristics.
-     * @param {string} code The code content.
-     * @param {string} language The language of the code.
-     * @returns {string|null} The extracted file name or null.
+     * Applies language-specific regex heuristics to infer a plausible file name based on class,
+     * struct, function, or interface declarations found within the raw code block content.
+     * @param {string} code - The raw, unformatted code string.
+     * @param {string} language - The identified language context of the code.
+     * @returns {string|null} The inferred file name with extension, or null if no confident match is found.
      */
     static extractCodeMetadata(code, language) {
         let ext = '';

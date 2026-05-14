@@ -1,8 +1,15 @@
-/**
- * @fileoverview Aggregator for localization resources.
- * @copyright (c) 2026 Fertwbr
+/*
+ * Copyright (c) 2026 Fernando Vaz
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 
+/**
+ * Acts as the centralized dictionary and resolution engine for internationalization (i18n).
+ * It determines the optimal language context based on user settings or browser defaults,
+ * and provides translation mapping for all extension-injected strings.
+ */
 class LocaleManager {
     /**
      * @type {string}
@@ -784,7 +791,8 @@ class LocaleManager {
     };
 
     /**
-     * Initializes the language based on browser settings, subsequently overridden by user preference.
+     * Inspects the browser's native language settings upon initialization and falls back
+     * to synchronized user preferences if they exist in the extension's Chrome storage.
      * @returns {void}
      */
     static initLanguage() {
@@ -806,9 +814,10 @@ class LocaleManager {
     }
 
     /**
-     * Retrieves the localized string for a given key.
-     * @param {string} key The translation key.
-     * @returns {string} The localized string.
+     * Resolves a translation key to its localized text representation based on the active language state.
+     * Implements a cascading fallback to English if the specific key is missing in the target locale.
+     * @param {string} key - The dictionary key referencing the target string.
+     * @returns {string} The resolved, human-readable localized string.
      */
     static getString(key) {
         return this.BG_LOCALES[this.currentLanguage]?.[key] || this.BG_LOCALES['en'][key] || key;

@@ -1,17 +1,19 @@
-/**
- * @fileoverview Manages prompt snippet injection and UI.
- * @copyright (c) 2026 Fertwbr
+/*
+ * Copyright (c) 2026 Fernando Vaz
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 
 /**
- * Manages the detection of snippet triggers and handles the UI and injection
- * of snippet content into active text editor nodes.
- * @class SnippetInjector
+ * Listens for specific keystroke patterns within active text editors to trigger a contextual
+ * dropdown menu. It allows users to quickly select and insert predefined text snippets natively,
+ * preserving existing formatting and editor state.
  */
 class SnippetInjector {
     /**
-     * Holds the current state of the snippet dropdown menu, including active matches and cursor positions.
-     * @type {Object}
+     * Holds the active session state of the snippet overlay, keeping track of visibility,
+     * matched search results, keyboard navigation index, and the exact text node being edited.
      */
     static state = {
         isOpen: false,
@@ -24,15 +26,15 @@ class SnippetInjector {
     };
 
     /**
-     * Reference to the global extension settings loaded from storage.
-     * @type {Object|null}
+     * Cache for the global extension settings, used to determine the activation prefix
+     * and access the list of user-defined snippets.
      */
     static settingsRef = null;
 
     /**
-     * Initializes the snippet listener by attaching global DOM event listeners for keyboard and mouse interactions.
-     * @param {Object} settings Reference to the global extension settings.
-     * @returns {void}
+     * Initializes the snippet engine by binding global event listeners to intercept
+     * typing, navigation keystrokes, and out-of-bounds mouse clicks.
+     * @param {Object} settings - Reference to the global extension settings state.
      */
     static init(settings) {
         this.settingsRef = settings;
@@ -42,8 +44,7 @@ class SnippetInjector {
     }
 
     /**
-     * Closes the snippet dropdown menu and resets the internal state matches.
-     * @returns {void}
+     * Hides the snippet overlay and purges the current matching results from the active state.
      */
     static closeMenu() {
         this.state.isOpen = false;
@@ -55,9 +56,10 @@ class SnippetInjector {
     }
 
     /**
-     * Inserts the selected snippet text into the active text node using native text insertion to preserve formatting.
-     * @param {Object} snippet The snippet object containing the text content to insert.
-     * @returns {void}
+     * Replaces the user's typed trigger keyword with the full snippet content. It uses
+     * the native Document.execCommand API to ensure compatibility with rich text editors
+     * and manually dispatches an input event to notify frameworks of the change.
+     * @param {Object} snippet - The selected snippet data object to be inserted.
      */
     static insertSnippet(snippet) {
         if (!this.state.node) return;
@@ -81,8 +83,9 @@ class SnippetInjector {
     }
 
     /**
-     * Renders or updates the DOM elements for the snippet dropdown menu based on the current state and matches.
-     * @returns {void}
+     * Dynamically generates and positions the DOM elements for the popup menu based on
+     * the current search state. Calculates available viewport space to decide whether to
+     * render the menu above or below the active input field.
      */
     static renderMenu() {
         let menu = document.getElementById('bg-snippet-menu');
@@ -245,13 +248,12 @@ class SnippetInjector {
     }
 
     /**
-     * Opens the snippet dropdown menu and populates it with the matching snippets based on the user's query.
-     * @param {string} query The raw text typed by the user matching the prefix.
-     * @param {Array} matches The array of matching snippet objects.
-     * @param {Node} node The DOM text node where the typing occurred.
-     * @param {number} startOffset The character start index of the query in the text node.
-     * @param {number} endOffset The character end index of the query in the text node.
-     * @returns {void}
+     * Updates the internal state variables to prepare the menu for display and triggers the render cycle.
+     * @param {string} query - The exact text typed by the user including the activation prefix.
+     * @param {Array} matches - Filtered array of snippet objects matching the query.
+     * @param {Node} node - The DOM text node containing the user's cursor.
+     * @param {number} startOffset - The starting character index of the query within the text node.
+     * @param {number} endOffset - The ending character index of the query within the text node.
      */
     static openMenu(query, matches, node, startOffset, endOffset) {
         this.state.isOpen = true;
@@ -265,8 +267,8 @@ class SnippetInjector {
     }
 
     /**
-     * Checks the current text selection and cursor position to determine if the snippet menu should be triggered.
-     * @returns {void}
+     * Evaluates the current text selection and string immediately preceding the cursor
+     * to determine if it matches the configured activation prefix and triggers the menu.
      */
     static checkTrigger() {
         const selection = window.getSelection();
@@ -321,9 +323,9 @@ class SnippetInjector {
     }
 
     /**
-     * Intercepts keyboard navigation events to move the selection focus within the open snippet menu.
-     * @param {KeyboardEvent} event The captured keyboard event.
-     * @returns {void}
+     * Intercepts keydown events when the menu is active to allow keyboard navigation
+     * (up/down arrows) and selection confirmation (enter/tab) without affecting the underlying text.
+     * @param {KeyboardEvent} event - The keyboard event passed by the global listener.
      */
     static handleKeydown(event) {
         if (!this.state.isOpen) return;
@@ -357,9 +359,9 @@ class SnippetInjector {
     }
 
     /**
-     * Triggers the snippet check logic after a keyup event that might alter text content.
-     * @param {KeyboardEvent} event The captured keyboard event.
-     * @returns {void}
+     * Fires after a keystroke is completed to re-evaluate the text context and determine
+     * if the dropdown should be opened, updated, or closed based on the new cursor position.
+     * @param {KeyboardEvent} event - The keyup event passed by the global listener.
      */
     static handleKeyup(event) {
         if (['ArrowDown', 'ArrowUp', 'Enter', 'Tab', 'Escape'].includes(event.key)) {
@@ -369,9 +371,9 @@ class SnippetInjector {
     }
 
     /**
-     * Detects mouse clicks outside the snippet menu area to close it.
-     * @param {MouseEvent} event The captured mouse event.
-     * @returns {void}
+     * Detects mouse clicks outside the boundaries of the snippet menu overlay
+     * and forces the menu to close, restoring normal UI interaction.
+     * @param {MouseEvent} event - The mouse click event passed by the global listener.
      */
     static handleClick(event) {
         const menu = document.getElementById('bg-snippet-menu');

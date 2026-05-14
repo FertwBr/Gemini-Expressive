@@ -1,16 +1,21 @@
-/**
- * @fileoverview Utilities for dynamic theming.
- * @copyright (c) 2026 Fertwbr
+/*
+ * Copyright (c) 2026 Fernando Vaz
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 
 /**
- * Handles colors math and theme injections.
+ * Calculates and applies custom Material You (Material 3) color palettes programmatically.
+ * It handles the complex color math required to convert user-selected hex seed colors into HSL
+ * tonal ranges, generating a cohesive CSS variable scheme that overwrites the application's default styles.
  */
 class ThemeUtils {
     /**
-     * Converts a Hex color to an HSL array.
-     * @param {string} hex The hexadecimal color string.
-     * @returns {number[]} An array containing the hue, saturation, and lightness values.
+     * Transforms a standard hexadecimal color code into Hue, Saturation, and Lightness components.
+     * This intermediate format is essential for accurately calculating the tonal variants needed for Material You.
+     * @param {string} hex - The input hexadecimal color string (e.g., "#FF0000" or "#F00").
+     * @returns {number[]} A 3-element array representing [Hue (0-360), Saturation (0-100), Lightness (0-100)].
      */
     static hexToHsl(hex) {
         let r = 0, g = 0, b = 0;
@@ -49,11 +54,11 @@ class ThemeUtils {
     }
 
     /**
-     * Converts HSL values to a Hex color string.
-     * @param {number} h The hue value.
-     * @param {number} s The saturation value.
-     * @param {number} l The lightness value.
-     * @returns {string} The hexadecimal color string.
+     * Converts calculated HSL tonal values back into a web-safe hexadecimal string for CSS injection.
+     * @param {number} h - The hue value (0-360).
+     * @param {number} s - The saturation value (0-100).
+     * @param {number} l - The lightness value (0-100).
+     * @returns {string} The output hexadecimal color string.
      */
     static hslToHex(h, s, l) {
         l /= 100;
@@ -67,9 +72,10 @@ class ThemeUtils {
     }
 
     /**
-     * Converts a Hex color directly to an RGB comma-separated string.
-     * @param {string} hex The hexadecimal color string.
-     * @returns {string} The RGB comma-separated string.
+     * Translates a hex color into a raw RGB comma-separated string, necessary for CSS variables
+     * that require alpha channel modifications via `rgba(var(--color), alpha)`.
+     * @param {string} hex - The hexadecimal color string.
+     * @returns {string} The RGB integer values separated by commas (e.g., "255, 0, 0").
      */
     static hexToRgbString(hex) {
         let r = parseInt(hex.slice(1, 3), 16);
@@ -79,9 +85,10 @@ class ThemeUtils {
     }
 
     /**
-     * Checks if the dark mode is currently active.
-     * @param {string} themeMode The user's theme preference.
-     * @returns {boolean} True if dark mode should be applied, false otherwise.
+     * Evaluates the active environment to determine if the dark theme scheme should be applied.
+     * It checks explicit user overrides, existing DOM classes set by the host application, and system media queries.
+     * @param {string} themeMode - The user's specific theme preference ('light', 'dark', or 'auto').
+     * @returns {boolean} True if the mathematical calculations should generate a dark-mode tonal palette.
      */
     static isDarkModeActive(themeMode) {
         if (themeMode === 'dark') return true;
@@ -97,10 +104,10 @@ class ThemeUtils {
     }
 
     /**
-     * Highly accurate approximation of Material 3 Tonal Palettes.
-     * Applies the generated theme to the document structure based on the seed color and the selected mode.
-     * @param {string} seedColor The primary seed color.
-     * @param {string} themeMode The active theme mode.
+     * Generates a full Material Design 3 color palette mapping based on a single seed color and injects
+     * the results directly into the document root and body as CSS custom properties, overwriting native styles.
+     * @param {string} seedColor - The primary hex color chosen by the user.
+     * @param {string} themeMode - The lighting mode context under which the colors should be generated.
      */
     static applyMaterialTheme(seedColor, themeMode) {
         if (!seedColor) return;

@@ -1,8 +1,15 @@
-/**
- * @fileoverview Manages extension state and storage synchronization.
- * @copyright (c) 2026 Fertwbr
+/*
+ * Copyright (c) 2026 Fernando Vaz
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 
+/**
+ * Acts as the central state management system for the extension.
+ * It loads user preferences from both local and synchronized Chrome storage, merges them
+ * into a single unified state, and broadcasts updates to registered listeners whenever changes occur.
+ */
 class ExtensionState {
     static settings = {
         timelineEnabled: true,
@@ -21,8 +28,9 @@ class ExtensionState {
     static listeners = [];
 
     /**
-     * Loads settings from both local and sync storage.
-     * @returns {Promise<Object>}
+     * Retrieves the latest configuration states. It fetches heavy/device-specific data (like snippets)
+     * from local storage and user preferences from sync storage, combining them into the active settings object.
+     * @returns {Promise<Object>} A promise resolving to the fully merged settings object.
      */
     static async load() {
         return new Promise((resolve) => {
@@ -38,7 +46,8 @@ class ExtensionState {
     }
 
     /**
-     * Starts listening to storage changes.
+     * Attaches an event listener to the Chrome Storage API to detect real-time changes
+     * made in other tabs or contexts, updating the internal state and notifying UI components.
      */
     static listen() {
         chrome.storage.onChanged.addListener((changes, namespace) => {
@@ -65,8 +74,8 @@ class ExtensionState {
     }
 
     /**
-     * Registers a callback for when settings change.
-     * @param {Function} callback
+     * Registers a callback function to be executed whenever the extension's settings change.
+     * @param {Function} callback - The function to invoke, receiving the changed keys and the new state.
      */
     static onChange(callback) {
         this.listeners.push(callback);

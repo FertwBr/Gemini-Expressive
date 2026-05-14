@@ -1,11 +1,19 @@
-/**
- * @fileoverview Enhances code blocks headers with icons and file names.
- * @copyright (c) 2026 Fertwbr
+/*
+ * Copyright (c) 2026 Fernando Vaz
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 
+/**
+ * Upgrades the visual presentation of code block headers by injecting language-specific icons
+ * and extracting filename metadata directly from the code content, appending it to the UI label.
+ */
 class CodeHeaderEnhancer {
     /**
-     * @returns {void}
+     * Identifies code blocks that haven't been enhanced yet, determines their programming language,
+     * fetches the appropriate iconography, searches for file name hints within the raw code string,
+     * and restructures the header DOM to display the consolidated information.
      */
     static enhance() {
         const headers = document.querySelectorAll('.code-block-decoration.header-formatted:not(.bg-header-enhanced)');

@@ -1,12 +1,21 @@
-/**
- * @fileoverview Localization utilities.
- * @copyright (c) 2026 Fertwbr
+/*
+ * Copyright (c) 2026 Fernando Vaz
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 
+/**
+ * Provides utility functions to handle internationalization and region-specific
+ * visual indicators across the application's user interface.
+ */
 export class Localization {
     /**
-     * @param {string} languageCode
-     * @returns {string}
+     * Determines the most appropriate regional country code to fetch the correct flag icon.
+     * It evaluates the base language code and attempts to refine the geographic region
+     * by inspecting the user's current system timezone.
+     * * @param {string} languageCode - The base two-letter language code (e.g., 'pt', 'es', 'en').
+     * @returns {string} The refined region code matching a flagcdn image identifier.
      */
     static getFlagCode(languageCode) {
         let tz = '';
@@ -48,7 +57,10 @@ export class Localization {
     }
 
     /**
-     * @returns {void}
+     * Scans the document object model for specific localization attributes and replaces
+     * the text content or input values of those elements with the corresponding translated strings.
+     * Also processes tooltips defined by the data-i18n-title attribute.
+     * * @returns {void}
      */
     static apply() {
         document.querySelectorAll('[data-i18n]').forEach(el => {

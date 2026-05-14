@@ -1,14 +1,22 @@
-/**
- * @fileoverview Manages UI injections, native theme synchronization, and layout fixes.
- * @copyright (c) 2026 Fertwbr
+/*
+ * Copyright (c) 2026 Fernando Vaz
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 
+/**
+ * Handles direct DOM manipulations to enforce UI features, inject structural layout fixes,
+ * and synchronize the application's appearance with the native Material You theme settings.
+ * Includes fallback logic to interact with native interface menus invisibly.
+ */
 class UIManager {
     static isApplyingTheme = false;
 
     /**
-     * Applies CSS classes to the body to instantly hide/show features.
-     * @param {Object} settings Current extension settings.
+     * Maps the current extension settings to specific CSS classes on the document body,
+     * acting as global toggles to show or hide injected features purely via CSS rules.
+     * @param {Object} settings - The current extension state containing boolean feature flags.
      */
     static applyFeatureToggles(settings) {
         if (!document.body) return;
@@ -24,8 +32,9 @@ class UIManager {
     }
 
     /**
-     * Attempts to apply the Material You theme using ThemeUtils.
-     * @param {Object} settings Current extension settings.
+     * Requests the ThemeUtils library to generate and apply a Material You theme scheme
+     * based on the user's chosen hex color and light/dark mode preference.
+     * @param {Object} settings - The current settings containing themeMode and themeColor.
      */
     static attemptThemeApplication(settings) {
         this.applyFeatureToggles(settings);
@@ -41,7 +50,8 @@ class UIManager {
     }
 
     /**
-     * Injects a static <style> element to handle structural layout fixes.
+     * Injects a persistent <style> tag into the document head containing critical layout
+     * overwrites required for the extension's custom components to render correctly over the native UI.
      */
     static injectUIFixes() {
         if (!document.getElementById('bg-ui-fixes')) {
@@ -79,7 +89,8 @@ class UIManager {
     }
 
     /**
-     * @returns {void}
+     * Programmatically dismisses active native dropdown menus or overlays by simulating
+     * a click on the backdrop or the body element.
      */
     static closeNativeMenus() {
         const backdrop = document.querySelector('.cdk-overlay-backdrop');
@@ -88,9 +99,11 @@ class UIManager {
     }
 
     /**
-     * @param {HTMLElement} themeButton
-     * @param {string} targetMode
-     * @param {Object} settings
+     * Simulates interactions with the native theme selection menu. It opens the menu,
+     * identifies the correct radio button based on localized keywords, clicks it, and closes the menu.
+     * @param {HTMLElement} themeButton - The DOM button element that triggers the native theme menu.
+     * @param {string} targetMode - The desired theme state ('light', 'dark', or 'auto').
+     * @param {Object} settings - The current extension settings.
      */
     static executeThemeClick(themeButton, targetMode, settings) {
         themeButton.click();
@@ -136,8 +149,10 @@ class UIManager {
     }
 
     /**
-     * @param {string} targetMode
-     * @param {Object} settings
+     * Initiates the process of aligning the native web application's theme with the extension's state.
+     * If the theme button is hidden inside a settings sub-menu, it navigates the UI tree to find and trigger it.
+     * @param {string} targetMode - The target theme mode to apply.
+     * @param {Object} settings - The current extension settings.
      */
     static syncNativeTheme(targetMode, settings) {
         try {

@@ -1,12 +1,21 @@
-/**
- * @fileoverview Adds collapse/expand functionality to code blocks with scroll anchoring and auto-centering.
- * @copyright (c) 2026 Fertwbr
+/*
+ * Copyright (c) 2026 Fernando Vaz
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 
+/**
+ * Scans the DOM for preformatted code blocks and injects interactive buttons that allow users
+ * to toggle their visibility (collapse/expand). It manages scroll anchoring to maintain the
+ * user's viewport position during layout shifts and provides navigational controls between blocks.
+ */
 class CodeCollapser {
     /**
-     * @param {string} path
-     * @returns {string}
+     * Resolves the fully qualified URL for internal extension assets to prevent
+     * Content Security Policy (CSP) violations when injecting images into the host page.
+     * @param {string} path - The relative path to the asset within the extension package.
+     * @returns {string} The CSS-ready URL string, or 'none' if unavailable.
      */
     static getSafeUrl(path) {
         try {
@@ -20,7 +29,9 @@ class CodeCollapser {
     }
 
     /**
-     * @returns {void}
+     * Iterates over unprocessed code blocks in the document. It locates the appropriate header
+     * container, injects a custom collapse button, handles the click event to toggle CSS heights,
+     * and injects directional navigation buttons to jump between neighboring code blocks.
      */
     static process() {
         const blocks = document.querySelectorAll('pre');
@@ -124,7 +135,7 @@ class CodeCollapser {
 
                         if (document.body.classList.contains('bg-auto-center-enabled')) {
                             setTimeout(() => {
-                                anchor.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                anchor.scrollIntoView({behavior: 'smooth', block: 'center'});
                             }, 50);
                         }
 
@@ -185,7 +196,7 @@ class CodeCollapser {
                 downBtn.onclick = (e) => {
                     e.preventDefault();
                     const allProcessed = Array.from(document.querySelectorAll('pre.bg-processed'));
-                    const currentIndex = allProcóøessed.indexOf(block);
+                    const currentIndex = allProcessed.indexOf(block);
                     if (currentIndex < allProcessed.length - 1) {
                         const target = allProcessed[currentIndex + 1];
                         const targetContainer = target.closest('code-block') || target;

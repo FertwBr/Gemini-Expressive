@@ -1,19 +1,29 @@
-/**
- * @fileoverview Injects the extension's settings shortcut into the native UI.
- * @copyright (c) 2026 Fertwbr
+/*
+ * Copyright (c) 2026 Fernando Vaz
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 
+/**
+ * Locates the native application sidebar and settings menus to seamlessly inject a custom
+ * entry point for the Better Gemini extension options. It duplicates native button structures
+ * to ensure styling consistency and handles both desktop and mobile DOM variations.
+ */
 class SettingsShortcut {
     /**
-     * Safely fetches the localized string for the settings menu.
-     * @returns {string}
+     * Safely fetches the localized string for the extension's settings menu label,
+     * providing a fallback in case the localization manager fails to load.
+     * @returns {string} The display name for the settings shortcut.
      */
     static getExpressiveLabel() {
         return (typeof LocaleManager !== 'undefined') ? LocaleManager.getString('expressiveSettings') : 'Expressive Settings';
     }
 
     /**
-     * Injects a settings shortcut button into the Gemini sidebar natively (Supports Desktop and Mobile).
+     * Scans the document for the native settings button, clones its structure to maintain
+     * theme compatibility, modifies its identifiers and listeners, and inserts it adjacent
+     * to the original button. Handles distinct logic paths for sidebars (desktop) and drawers (mobile).
      */
     static inject() {
         const nativeSettingsBtns = document.querySelectorAll(
