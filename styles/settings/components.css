@@ -100,6 +100,38 @@
     gap: 6px;
 }
 
+.setting-title-icon {
+    font-size: 20px;
+    color: var(--md-sys-color-primary);
+    margin-right: 4px;
+}
+
+.setting-badge {
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    margin-left: 4px;
+}
+
+.badge-beta {
+    background-color: rgba(211, 47, 47, 0.1);
+    color: #d32f2f;
+    border: 1px solid rgba(211, 47, 47, 0.2);
+}
+
+.badge-new {
+    background: linear-gradient(135deg, var(--md-sys-color-primary) 0%, var(--md-sys-color-secondary-container) 100%);
+    color: var(--md-sys-color-on-primary);
+    border: none;
+}
+
 .help-tooltip-container {
     position: relative;
     display: inline-flex;

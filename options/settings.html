@@ -63,6 +63,7 @@
                             <div class="setting-row">
                                 <div class="setting-info">
                                     <div class="setting-header-group">
+                                        <span class="material-symbols-outlined setting-title-icon">keyboard</span>
                                         <label class="input-label" data-i18n="snippetPrefixLabel">Snippet Prefix</label>
                                         <div class="help-tooltip-container">
                                             <span class="material-symbols-outlined help-icon-btn">help</span>
@@ -101,7 +102,9 @@
                             <div class="setting-row">
                                 <div class="setting-info">
                                     <div class="setting-header-group">
-                                        <label class="input-label" data-i18n="manageSnippetsLabel">Prompt Snippets</label>
+                                        <span class="material-symbols-outlined setting-title-icon">edit_note</span>
+                                        <label class="input-label" data-i18n="manageSnippetsLabel">Prompt
+                                            Snippets</label>
                                         <div class="help-tooltip-container">
                                             <span class="material-symbols-outlined help-icon-btn">help</span>
                                             <div class="help-tooltip-card">
@@ -132,6 +135,7 @@
                             <div class="setting-row">
                                 <div class="setting-info">
                                     <div class="setting-header-group">
+                                        <span class="material-symbols-outlined setting-title-icon">visibility_off</span>
                                         <label for="hideUpgradeBtn" class="input-label" data-i18n="hideUpgradeLabel">Hide
                                             Upgrade Button</label>
                                         <div class="help-tooltip-container">
@@ -158,8 +162,10 @@
                             <div class="setting-row">
                                 <div class="setting-info">
                                     <div class="setting-header-group">
+                                        <span class="material-symbols-outlined setting-title-icon">file_download_off</span>
                                         <label for="hideDownloadBtn" class="input-label" data-i18n="hideDownloadLabel">Hide
                                             Code Download Button</label>
+                                        <span class="setting-badge badge-beta" data-i18n="badgeBeta">Beta</span>
                                         <div class="help-tooltip-container">
                                             <span class="material-symbols-outlined help-icon-btn">help</span>
                                             <div class="help-tooltip-card">
@@ -186,6 +192,7 @@
                             <div class="setting-row">
                                 <div class="setting-info">
                                     <div class="setting-header-group">
+                                        <span class="material-symbols-outlined setting-title-icon">dark_mode</span>
                                         <label class="input-label" data-i18n="themeModeLabel">Theme Mode</label>
                                         <div class="help-tooltip-container">
                                             <span class="material-symbols-outlined help-icon-btn">help</span>
@@ -209,21 +216,24 @@
                                     </button>
                                     <div id="themeDropdownMenu" class="setting-dropdown-menu">
                                         <button class="setting-menu-item" data-theme="auto">
-                                            <div class="setting-menu-item-leading"><span class="material-symbols-outlined"
-                                                                                         style="font-size: 18px;">brightness_auto</span>
+                                            <div class="setting-menu-item-leading"><span
+                                                    class="material-symbols-outlined"
+                                                    style="font-size: 18px;">brightness_auto</span>
                                             </div>
                                             <span data-i18n="modeAuto">Auto</span>
                                         </button>
                                         <div class="menu-divider"></div>
                                         <button class="setting-menu-item" data-theme="light">
-                                            <div class="setting-menu-item-leading"><span class="material-symbols-outlined"
-                                                                                         style="font-size: 18px;">light_mode</span>
+                                            <div class="setting-menu-item-leading"><span
+                                                    class="material-symbols-outlined"
+                                                    style="font-size: 18px;">light_mode</span>
                                             </div>
                                             <span data-i18n="modeLight">Light</span>
                                         </button>
                                         <button class="setting-menu-item" data-theme="dark">
-                                            <div class="setting-menu-item-leading"><span class="material-symbols-outlined"
-                                                                                         style="font-size: 18px;">dark_mode</span>
+                                            <div class="setting-menu-item-leading"><span
+                                                    class="material-symbols-outlined"
+                                                    style="font-size: 18px;">dark_mode</span>
                                             </div>
                                             <span data-i18n="modeDark">Dark</span>
                                         </button>
@@ -236,6 +246,7 @@
                             <div class="setting-row">
                                 <div class="setting-info">
                                     <div class="setting-header-group">
+                                        <span class="material-symbols-outlined setting-title-icon">palette</span>
                                         <label for="enableDynamicColor" class="input-label"
                                                data-i18n="dynamicColorSwitchLabel">Enable
                                             Dynamic Color</label>
@@ -263,6 +274,7 @@
                             <div class="setting-row color-picker-row" id="colorPickerRow">
                                 <div class="setting-info full-width-info">
                                     <div class="setting-header-group">
+                                        <span class="material-symbols-outlined setting-title-icon">format_color_fill</span>
                                         <label for="themeColorPicker" class="input-label" data-i18n="themeColorLabel">Theme
                                             Color</label>
                                         <div class="help-tooltip-container">
@@ -336,6 +348,7 @@
                             <div class="setting-row">
                                 <div class="setting-info">
                                     <div class="setting-header-group">
+                                        <span class="material-symbols-outlined setting-title-icon">view_timeline</span>
                                         <label for="enableTimeline" class="input-label" data-i18n="timelineLabel">Enable
                                             Timeline Navigation</label>
                                         <div class="help-tooltip-container">
@@ -378,6 +391,7 @@
                             <div class="setting-row">
                                 <div class="setting-info">
                                     <div class="setting-header-group">
+                                        <span class="material-symbols-outlined setting-title-icon">unfold_less</span>
                                         <label for="enableCollapse" class="input-label" data-i18n="collapseLabel">Enable
                                             Code
                                             Collapser</label>
@@ -405,14 +419,19 @@
                             <div class="setting-row">
                                 <div class="setting-info">
                                     <div class="setting-header-group">
-                                        <label for="enableAutoCenter" class="input-label" data-i18n="autoCenterCollapseLabel">Auto-Center on Collapse</label>
+                                        <span class="material-symbols-outlined setting-title-icon">center_focus_strong</span>
+                                        <label for="enableAutoCenter" class="input-label"
+                                               data-i18n="autoCenterCollapseLabel">Auto-Center on Collapse</label>
+                                        <span class="setting-badge badge-new" data-i18n="badgeNew">New</span>
                                         <div class="help-tooltip-container">
                                             <span class="material-symbols-outlined help-icon-btn">help</span>
                                             <div class="help-tooltip-card">
                                                 <span data-i18n="helpAutoCenterCollapse">If you scroll far down a long code block and collapse it, this will smoothly snap the view back so the code header remains centered on your screen.</span>
-                                                <a href="https://tools.fertwbr.com/geminiexpressive/help#code_blocks" target="_blank" class="help-learn-more">
+                                                <a href="https://tools.fertwbr.com/geminiexpressive/help#code_blocks"
+                                                   target="_blank" class="help-learn-more">
                                                     <span data-i18n="learnMore">Learn more in the Help Center</span>
-                                                    <span class="material-symbols-outlined" style="font-size: 14px; margin-left: 4px;">open_in_new</span>
+                                                    <span class="material-symbols-outlined"
+                                                          style="font-size: 14px; margin-left: 4px;">open_in_new</span>
                                                 </a>
                                             </div>
                                         </div>
@@ -428,7 +447,9 @@
                             <div class="setting-row">
                                 <div class="setting-info">
                                     <div class="setting-header-group">
-                                        <label for="enableCodeNav" class="input-label" data-i18n="codeNavLabel">Enable Code
+                                        <span class="material-symbols-outlined setting-title-icon">swap_vert</span>
+                                        <label for="enableCodeNav" class="input-label" data-i18n="codeNavLabel">Enable
+                                            Code
                                             Block Navigation</label>
                                         <div class="help-tooltip-container">
                                             <span class="material-symbols-outlined help-icon-btn">help</span>
@@ -454,6 +475,7 @@
                             <div class="setting-row">
                                 <div class="setting-info">
                                     <div class="setting-header-group">
+                                        <span class="material-symbols-outlined setting-title-icon">code_blocks</span>
                                         <label for="enableHeaders" class="input-label" data-i18n="headersLabel">Enable
                                             Enhanced
                                             Code Headers</label>
@@ -486,8 +508,10 @@
                             <div class="setting-row">
                                 <div class="setting-info">
                                     <div class="setting-header-group">
+                                        <span class="material-symbols-outlined setting-title-icon">save</span>
                                         <label class="input-label" data-i18n="exportBackupTitle">Export Settings
                                             Backup</label>
+                                        <span class="setting-badge badge-new" data-i18n="badgeNew">New</span>
                                     </div>
                                     <span class="setting-description">
                                     <span data-i18n="lastBackupLabel">Last Backup:</span>
@@ -503,8 +527,10 @@
                             <div class="setting-row">
                                 <div class="setting-info">
                                     <div class="setting-header-group">
+                                        <span class="material-symbols-outlined setting-title-icon">restore</span>
                                         <label class="input-label" data-i18n="importBackupTitle">Import Settings
                                             Backup</label>
+                                        <span class="setting-badge badge-new" data-i18n="badgeNew">New</span>
                                     </div>
                                     <span class="setting-description">
                                     <span data-i18n="lastRestoreLabel">Last Restore:</span>
