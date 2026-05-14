@@ -3,18 +3,19 @@
  * @copyright (c) 2026 Fertwbr
  */
 
-import { StorageManager } from './core/StorageManager.js';
-import { Localization } from './core/Localization.js';
-import { ToastNotification } from './components/ToastNotification.js';
-import { DragDropList } from './components/DragDropList.js';
-import { BackupManager } from './components/BackupManager.js';
-import { LanguageSelector } from './components/LanguageSelector.js';
-import { QuickThemeToggle } from './components/QuickThemeToggle.js';
-import { PrefixSelector } from './components/PrefixSelector.js';
-import { VersionDisplay } from './components/VersionDisplay.js';
-import { PageTransition } from './components/PageTransition.js';
+import {StorageManager} from './core/StorageManager.js';
+import {Localization} from './core/Localization.js';
+import {ToastNotification} from './components/ToastNotification.js';
+import {DragDropList} from './components/DragDropList.js';
+import {BackupImporter, BackupExporter} from './components/BackupManager.js';
+import {LanguageSelector} from './components/LanguageSelector.js';
+import {QuickThemeToggle} from './components/QuickThemeToggle.js';
+import {PrefixSelector} from './components/PrefixSelector.js';
+import {VersionDisplay} from './components/VersionDisplay.js';
+import {PageTransition} from './components/PageTransition.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
+    window.LocaleManager.initLanguage();
     Localization.apply();
 
     const snippetsListEl = document.getElementById('snippetsList');
@@ -46,11 +47,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('headerVersionText')
     ]);
 
-    new BackupManager(
-        document.getElementById('importBackupBtn'),
-        document.getElementById('exportBackupBtn'),
+    new BackupImporter(
+        [document.getElementById('importBackupBtn')],
         document.getElementById('importBackupInput'),
-        toast
+        toast,
+        null
+    );
+
+    new BackupExporter(
+        [document.getElementById('exportBackupBtn')],
+        toast,
+        null
     );
 
     PageTransition.bind('a[href="settings.html"]', 'settings.html');
@@ -68,13 +75,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('currentLangLabel'),
         'auto',
         async (lang) => {
-            await StorageManager.saveSettings({ language: lang });
-            LocaleManager.currentLanguage = lang === 'auto' ? navigator.language.split('-')[0] : lang;
-            if (!LocaleManager.BG_LOCALES || !LocaleManager.BG_LOCALES[LocaleManager.currentLanguage]) {
-                LocaleManager.currentLanguage = 'en';
+            await StorageManager.saveSettings({language: lang});
+            window.LocaleManager.currentLanguage = lang === 'auto' ? navigator.language.split('-')[0] : lang;
+            if (!window.LocaleManager.BG_LOCALES || !window.LocaleManager.BG_LOCALES[window.LocaleManager.currentLanguage]) {
+                window.LocaleManager.currentLanguage = 'en';
             }
             Localization.apply();
-            toast.show(LocaleManager.getString('statusSaved'));
+            toast.show(window.LocaleManager.getString('statusSaved'));
         }
     );
 
@@ -85,8 +92,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         currentPrefix,
         async (prefix) => {
             currentPrefix = prefix;
-            await StorageManager.saveSettings({ snippetPrefix: prefix });
-            toast.show(LocaleManager.getString('statusSaved'));
+            await StorageManager.saveSettings({snippetPrefix: prefix});
+            toast.show(window.LocaleManager.getString('statusSaved'));
             renderList();
         }
     );
@@ -97,14 +104,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         selectedThemeMode,
         async (theme) => {
             selectedThemeMode = theme;
-            await StorageManager.saveSettings({ themeMode: theme });
+            await StorageManager.saveSettings({themeMode: theme});
             if (typeof ThemeUtils !== 'undefined') {
                 const currentSettings = await StorageManager.getSettings();
                 if (currentSettings.dynamicColorEnabled) {
                     ThemeUtils.applyMaterialTheme(currentSettings.themeColor || '#0b57d0', theme);
                 }
             }
-            toast.show(LocaleManager.getString('statusSavedRefresh'), true);
+            toast.show(window.LocaleManager.getString('statusSavedRefresh'), true);
         }
     );
 
@@ -123,7 +130,7 @@ document.addEventListener('DOMContentLoaded', async () => {
      * @returns {string}
      */
     function parseMarkdownToHTML(text) {
-        if (!text || !text.trim()) return `<div class="preview-empty">${LocaleManager.getString('previewEmpty')}</div>`;
+        if (!text || !text.trim()) return `<div class="preview-empty">${window.LocaleManager.getString('previewEmpty')}</div>`;
 
         let html = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
@@ -216,7 +223,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
 
         if (needsMigration) {
-            await StorageManager.setLocalData({ geminiSnippets: snippets });
+            await StorageManager.setLocalData({geminiSnippets: snippets});
         }
 
         renderList();
@@ -234,7 +241,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const emptyStateTitle = document.createElement('div');
             emptyStateTitle.className = 'empty-state-title';
             emptyStateTitle.setAttribute('data-i18n', 'noSnippetsFound');
-            emptyStateTitle.textContent = LocaleManager.getString('noSnippetsFound');
+            emptyStateTitle.textContent = window.LocaleManager.getString('noSnippetsFound');
 
             emptyStateWrapper.appendChild(emptyStateIcon);
             emptyStateWrapper.appendChild(emptyStateTitle);
@@ -251,7 +258,7 @@ document.addEventListener('DOMContentLoaded', async () => {
      * @returns {Promise<void>}
      */
     async function saveSnippets(callback) {
-        await StorageManager.setLocalData({ geminiSnippets: snippets });
+        await StorageManager.setLocalData({geminiSnippets: snippets});
         if (callback) {
             callback();
         }
@@ -303,7 +310,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 upIconSpan.className = 'material-symbols-outlined';
                 upIconSpan.textContent = 'arrow_upward';
                 upBtn.appendChild(upIconSpan);
-                upBtn.title = LocaleManager.getString('moveUp');
+                upBtn.title = window.LocaleManager.getString('moveUp');
                 upBtn.onclick = (e) => {
                     e.stopPropagation();
                     const temp = snippets[index];
@@ -321,7 +328,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 downIconSpan.className = 'material-symbols-outlined';
                 downIconSpan.textContent = 'arrow_downward';
                 downBtn.appendChild(downIconSpan);
-                downBtn.title = LocaleManager.getString('moveDown');
+                downBtn.title = window.LocaleManager.getString('moveDown');
                 downBtn.onclick = (e) => {
                     e.stopPropagation();
                     const temp = snippets[index];
@@ -338,7 +345,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             delIconSpan.className = 'material-symbols-outlined';
             delIconSpan.textContent = 'delete';
             delItemBtn.appendChild(delIconSpan);
-            delItemBtn.title = LocaleManager.getString('deleteSnippetBtn');
+            delItemBtn.title = window.LocaleManager.getString('deleteSnippetBtn');
             delItemBtn.onclick = (e) => {
                 e.stopPropagation();
                 snippetToDelete = snippet.id;
@@ -367,15 +374,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             contentInput.value = snippet.content;
 
             editorTitleIcon.textContent = 'edit';
-            editorTitleText.textContent = LocaleManager.getString('editSnippetTitle');
-            saveSnippetBtnText.textContent = LocaleManager.getString('saveChangesBtn');
+            editorTitleText.textContent = window.LocaleManager.getString('editSnippetTitle');
+            saveSnippetBtnText.textContent = window.LocaleManager.getString('saveChangesBtn');
             editorCard.classList.remove('is-new');
 
             editorCard.style.display = 'flex';
             deleteBtn.style.display = 'inline-flex';
             renderList();
             if (window.innerWidth < 800) {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                window.scrollTo({top: 0, behavior: 'smooth'});
             }
         }
     }
@@ -387,8 +394,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         contentInput.value = '';
 
         editorTitleIcon.textContent = 'add_circle';
-        editorTitleText.textContent = LocaleManager.getString('createSnippetTitle');
-        saveSnippetBtnText.textContent = LocaleManager.getString('createBtn');
+        editorTitleText.textContent = window.LocaleManager.getString('createSnippetTitle');
+        saveSnippetBtnText.textContent = window.LocaleManager.getString('createBtn');
         editorCard.classList.add('is-new');
 
         editorCard.style.display = 'flex';
@@ -396,7 +403,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         keywordInput.focus();
         renderList();
         if (window.innerWidth < 800) {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.scrollTo({top: 0, behavior: 'smooth'});
         }
     };
 
@@ -407,7 +414,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const cleanKw = rawKw.replace(/^[/*!#@]+/, '');
 
         if (!cleanKw || !ct) {
-            toast.show(LocaleManager.getString('errorEmptySnippet'));
+            toast.show(window.LocaleManager.getString('errorEmptySnippet'));
             return;
         }
 
@@ -429,11 +436,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         saveSnippets(() => {
-            toast.show(LocaleManager.getString('statusSaved'));
+            toast.show(window.LocaleManager.getString('statusSaved'));
 
             editorTitleIcon.textContent = 'edit';
-            editorTitleText.textContent = LocaleManager.getString('editSnippetTitle');
-            saveSnippetBtnText.textContent = LocaleManager.getString('saveChangesBtn');
+            editorTitleText.textContent = window.LocaleManager.getString('editSnippetTitle');
+            saveSnippetBtnText.textContent = window.LocaleManager.getString('saveChangesBtn');
             editorCard.classList.remove('is-new');
             deleteBtn.style.display = 'inline-flex';
 
