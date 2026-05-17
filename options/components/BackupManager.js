@@ -9,16 +9,16 @@ import {StorageManager} from '../core/StorageManager.js';
 
 /**
  * Facilitates the exportation of application data to a downloadable JSON file.
- * It interacts with the local storage manager to retrieve current user configurations,
- * appends a timestamp indicating when the backup was created, and triggers a file
- * download natively in the browser.
+ * It aggregates both local device-specific data and synchronized user preferences,
+ * packages them into a versioned JSON payload, appends a creation timestamp,
+ * and triggers a native browser file download.
  */
 export class BackupExporter {
     /**
-     * Initializes the exporter with the necessary UI elements.
-     * @param {Array<HTMLElement>|HTMLElement} exportBtns - The button or array of buttons that trigger the export.
-     * @param {Object} toast - The notification system used to display success or error messages.
-     * @param {HTMLElement} [lastBackupEl=null] - The DOM element where the last backup date is displayed.
+     * Initializes the BackupExporter instance and binds necessary UI interactions.
+     * * @param {HTMLElement|HTMLElement[]} exportBtns - A single DOM element or an array of DOM elements that trigger the export process when clicked.
+     * @param {Object} toast - The notification manager instance used to display operation success or failure messages.
+     * @param {HTMLElement|null} [lastBackupEl=null] - The optional DOM element used to display the formatted date of the most recent backup.
      */
     constructor(exportBtns, toast, lastBackupEl = null) {
         this.exportBtns = Array.isArray(exportBtns) ? exportBtns : [exportBtns];
@@ -30,8 +30,8 @@ export class BackupExporter {
     }
 
     /**
-     * Binds the click event listeners to the export buttons.
-     * @private
+     * Attaches click event listeners to all registered export buttons to initiate the data export sequence.
+     * * @private
      * @returns {void}
      */
     _initEvents() {
@@ -45,9 +45,9 @@ export class BackupExporter {
     }
 
     /**
-     * Retrieves the last backup date from local storage and updates the UI element to reflect it.
-     * @private
-     * @returns {Promise<void>}
+     * Retrieves the timestamp of the last successful backup from local storage and updates the corresponding UI element.
+     * * @private
+     * @returns {Promise<void>} A promise that resolves when the UI has been updated with the stored date.
      */
     async _loadDate() {
         const data = await StorageManager.getLocalData(['lastBackupDate']);
@@ -57,24 +57,32 @@ export class BackupExporter {
     }
 
     /**
-     * Gathers all local storage data, updates the backup timestamp, and generates a downloadable JSON blob.
-     * Displays a toast notification based on the success or failure of the operation.
-     * @private
-     * @returns {Promise<void>}
+     * Orchestrates the data gathering, payload structuring, and file download processes.
+     * Combines both local storage data and synchronized settings into a version 2 backup structure,
+     * updates the local backup timestamp, creates a Blob, and simulates a click to download the JSON file.
+     * * @private
+     * @returns {Promise<void>} A promise that resolves when the export process completes or fails, triggering a toast notification.
      */
     async _handleExport() {
         try {
-            const currentData = await StorageManager.getLocalData(null);
+            const localData = await StorageManager.getLocalData(null) || {};
+            const syncData = await StorageManager.getSettings(null) || {};
             const backupDate = Date.now();
-            currentData.lastBackupDate = backupDate;
 
+            localData.lastBackupDate = backupDate;
             await StorageManager.setLocalData({lastBackupDate: backupDate});
 
             if (this.lastBackupEl) {
                 this.lastBackupEl.textContent = new Date(backupDate).toLocaleString();
             }
 
-            const dataStr = JSON.stringify(currentData, null, 2);
+            const backupPayload = {
+                version: 2,
+                local: localData,
+                sync: syncData
+            };
+
+            const dataStr = JSON.stringify(backupPayload, null, 2);
             const dataBlob = new Blob([dataStr], {type: 'application/json'});
             const url = URL.createObjectURL(dataBlob);
             const link = document.createElement('a');
@@ -90,17 +98,17 @@ export class BackupExporter {
 }
 
 /**
- * Handles the importation and restoration of application data from a JSON file.
- * Validates the uploaded file format, overwrites the local storage with the new data,
- * updates the restoration timestamp, and reloads the application to apply the changes.
+ * Handles the importation and restoration of application data from a previously exported JSON file.
+ * It validates the file structure, manages backwards compatibility for older unversioned backups,
+ * distributes data to local and synchronized storage appropriately, and reloads the application to apply changes.
  */
 export class BackupImporter {
     /**
-     * Initializes the importer with UI components and the hidden file input element.
-     * @param {Array<HTMLElement>|HTMLElement} importBtns - The visible button(s) that trigger the hidden file input.
-     * @param {HTMLInputElement} importInput - The hidden file input element that accepts the JSON file.
-     * @param {Object} toast - The notification system for displaying operation status.
-     * @param {HTMLElement} [lastRestoreEl=null] - The DOM element displaying the last restoration date.
+     * Initializes the BackupImporter instance and configures the hidden file input mechanisms.
+     * * @param {HTMLElement|HTMLElement[]} importBtns - The visible DOM element(s) that act as proxies to trigger the hidden file input.
+     * @param {HTMLInputElement} importInput - The hidden file input element responsible for accepting the JSON file.
+     * @param {Object} toast - The notification manager instance used to display operation status updates.
+     * @param {HTMLElement|null} [lastRestoreEl=null] - The optional DOM element used to display the formatted date of the most recent restoration.
      */
     constructor(importBtns, importInput, toast, lastRestoreEl = null) {
         this.importBtns = Array.isArray(importBtns) ? importBtns : [importBtns];
@@ -113,8 +121,8 @@ export class BackupImporter {
     }
 
     /**
-     * Binds the necessary event listeners to trigger the file selector and handle the file upload change event.
-     * @private
+     * Binds click events on proxy buttons to trigger the file selector, and attaches the change listener to the file input to process the upload.
+     * * @private
      * @returns {void}
      */
     _initEvents() {
@@ -134,9 +142,9 @@ export class BackupImporter {
     }
 
     /**
-     * Retrieves the last restore date from local storage and updates the corresponding UI element.
-     * @private
-     * @returns {Promise<void>}
+     * Retrieves the timestamp of the last successful restoration from local storage and visually updates the associated UI element.
+     * * @private
+     * @returns {Promise<void>} A promise that resolves when the UI reflects the loaded restore date.
      */
     async _loadDate() {
         const data = await StorageManager.getLocalData(['lastRestoreDate']);
@@ -146,10 +154,11 @@ export class BackupImporter {
     }
 
     /**
-     * Processes the selected file, parses its JSON content, validates its structure,
-     * saves the new configuration to local storage, and triggers a page reload with a transition.
-     * @private
-     * @param {Event} event - The file input change event.
+     * Processes the uploaded JSON file, parsing and validating its contents.
+     * Routes data to local and sync storage based on the backup payload version, updates the restoration timestamp,
+     * triggers a success notification, and initiates a UI transition followed by a page reload.
+     * * @private
+     * @param {Event} event - The DOM event triggered when a file is selected via the file input.
      * @returns {void}
      */
     _handleImport(event) {
@@ -166,9 +175,19 @@ export class BackupImporter {
                 }
 
                 const restoreDate = Date.now();
-                data.lastRestoreDate = restoreDate;
 
-                await StorageManager.setLocalData(data);
+                if (data.version === 2) {
+                    const localPayload = data.local || {};
+                    localPayload.lastRestoreDate = restoreDate;
+                    await StorageManager.setLocalData(localPayload);
+
+                    if (data.sync && Object.keys(data.sync).length > 0) {
+                        await StorageManager.saveSettings(data.sync);
+                    }
+                } else {
+                    data.lastRestoreDate = restoreDate;
+                    await StorageManager.setLocalData(data);
+                }
 
                 if (this.lastRestoreEl) {
                     this.lastRestoreEl.textContent = new Date(restoreDate).toLocaleString();
