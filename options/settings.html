@@ -23,7 +23,7 @@
     <div class="app-layout-container">
         <header class="page-header-container">
             <div class="header-content-wrapper">
-                <img src="../assets/icon.png" alt="Gemini Expressive Icon" class="header-icon">
+                <img src="../assets/icon.png" data-i18n-alt="altGeminiLogo" alt="Gemini Expressive Icon" class="header-icon">
                 <div class="header-text-content">
                     <div class="header-title-row">
                         <h1 class="viewer-title" data-i18n="settingsTitle">Gemini Expressive</h1>
@@ -47,7 +47,7 @@
                         <span data-i18n="exportBackup">Backup</span>
                         <span class="custom-tooltip-text" data-i18n="exportBackupTitle">Export Settings Backup</span>
                     </button>
-                    <input type="file" id="importBackupInput" accept=".json" class="hidden-input">
+                    <input type="file" id="importBackupInput" accept=".json" class="hidden-input" aria-label="Import Backup">
                 </div>
             </div>
         </header>
@@ -171,25 +171,25 @@
                                         </button>
                                         <div id="themeDropdownMenu" class="setting-dropdown-menu">
                                             <button class="setting-menu-item" data-theme="auto">
-                                                <div class="setting-menu-item-leading"><span
+                                                <span class="setting-menu-item-leading"><span
                                                         class="material-symbols-outlined"
                                                         style="font-size: 18px;">brightness_auto</span>
-                                                </div>
+                                                </span>
                                                 <span data-i18n="modeAuto">Auto</span>
                                             </button>
                                             <div class="menu-divider"></div>
                                             <button class="setting-menu-item" data-theme="light">
-                                                <div class="setting-menu-item-leading"><span
+                                                <span class="setting-menu-item-leading"><span
                                                         class="material-symbols-outlined"
                                                         style="font-size: 18px;">light_mode</span>
-                                                </div>
+                                                </span>
                                                 <span data-i18n="modeLight">Light</span>
                                             </button>
                                             <button class="setting-menu-item" data-theme="dark">
-                                                <div class="setting-menu-item-leading"><span
+                                                <span class="setting-menu-item-leading"><span
                                                         class="material-symbols-outlined"
                                                         style="font-size: 18px;">dark_mode</span>
-                                                </div>
+                                                </span>
                                                 <span data-i18n="modeDark">Dark</span>
                                             </button>
                                         </div>
@@ -636,47 +636,47 @@
                     <h3 class="footer-heading" data-i18n="languageLabel">Language</h3>
                     <div class="footer-dropdown-wrapper">
                         <button id="langDropdownBtn" class="footer-dropdown-btn">
-                            <img id="currentFlag" src="" alt="Flag" class="flag-icon"/>
+                            <img id="currentFlag" src="" data-i18n-alt="altFlag" alt="Flag" class="flag-icon"/>
                             <span id="currentLangLabel">Auto</span>
                             <span class="material-symbols-outlined footer-dropdown-icon">expand_more</span>
                         </button>
                         <div id="langDropdownMenu" class="footer-dropdown-menu align-right">
                             <div class="footer-dropdown-scroll-area">
                                 <button class="footer-menu-item" data-lang="auto">
-                                    <div class="footer-menu-item-leading"><span class="material-symbols-outlined"
-                                                                                style="font-size: 18px;">auto_awesome</span>
-                                    </div>
+                                    <span class="footer-menu-item-leading"><span class="material-symbols-outlined"
+                                                                                 style="font-size: 18px;">auto_awesome</span>
+                                    </span>
                                     <span data-i18n="lang_auto">Auto</span>
                                 </button>
                                 <div class="menu-divider"></div>
                                 <button class="footer-menu-item" data-lang="en">
-                                    <div class="footer-menu-item-leading"><img src="https://flagcdn.com/w40/us.png"
-                                                                               class="flag-icon"/></div>
+                                    <span class="footer-menu-item-leading"><img src="https://flagcdn.com/w40/us.png"
+                                                                                class="flag-icon" data-i18n-alt="altFlagUS" alt="US Flag"/></span>
                                     <span data-i18n="lang_en">English</span>
                                 </button>
                                 <button class="footer-menu-item" data-lang="pt">
-                                    <div class="footer-menu-item-leading"><img src="https://flagcdn.com/w40/br.png"
-                                                                               class="flag-icon"/></div>
+                                    <span class="footer-menu-item-leading"><img src="https://flagcdn.com/w40/br.png"
+                                                                                class="flag-icon" data-i18n-alt="altFlagBR" alt="Brazil Flag"/></span>
                                     <span data-i18n="lang_pt">Português</span>
                                 </button>
                                 <button class="footer-menu-item" data-lang="es">
-                                    <div class="footer-menu-item-leading"><img src="https://flagcdn.com/w40/es.png"
-                                                                               class="flag-icon"/></div>
+                                    <span class="footer-menu-item-leading"><img src="https://flagcdn.com/w40/es.png"
+                                                                                class="flag-icon" data-i18n-alt="altFlagES" alt="Spain Flag"/></span>
                                     <span data-i18n="lang_es">Español</span>
                                 </button>
                                 <button class="footer-menu-item" data-lang="de">
-                                    <div class="footer-menu-item-leading"><img src="https://flagcdn.com/w40/de.png"
-                                                                               class="flag-icon"/></div>
+                                    <span class="footer-menu-item-leading"><img src="https://flagcdn.com/w40/de.png"
+                                                                                class="flag-icon" data-i18n-alt="altFlagDE" alt="Germany Flag"/></span>
                                     <span data-i18n="lang_de">Deutsch</span>
                                 </button>
                                 <button class="footer-menu-item" data-lang="hi">
-                                    <div class="footer-menu-item-leading"><img src="https://flagcdn.com/w40/in.png"
-                                                                               class="flag-icon"/></div>
+                                    <span class="footer-menu-item-leading"><img src="https://flagcdn.com/w40/in.png"
+                                                                                class="flag-icon" data-i18n-alt="altFlagIN" alt="India Flag"/></span>
                                     <span data-i18n="lang_hi">हिन्दी</span>
                                 </button>
                                 <button class="footer-menu-item" data-lang="ja">
-                                    <div class="footer-menu-item-leading"><img src="https://flagcdn.com/w40/jp.png"
-                                                                               class="flag-icon"/></div>
+                                    <span class="footer-menu-item-leading"><img src="https://flagcdn.com/w40/jp.png"
+                                                                                class="flag-icon" data-i18n-alt="altFlagJP" alt="Japan Flag"/></span>
                                     <span data-i18n="lang_ja">日本語</span>
                                 </button>
                             </div>

@@ -151,7 +151,15 @@ class LocaleManager {
             lastRestoreLabel: "Last Restore:",
             neverAction: "Never",
             badgeNew: "New",
-            badgeBeta: "Beta"
+            badgeBeta: "Beta",
+            altGeminiLogo: "Gemini Expressive Logo",
+            altFlag: "Language Flag",
+            altFlagUS: "United States Flag",
+            altFlagBR: "Brazil Flag",
+            altFlagES: "Spain Flag",
+            altFlagDE: "Germany Flag",
+            altFlagIN: "India Flag",
+            altFlagJP: "Japan Flag"
         },
         pt: {
             settingsTitle: "Gemini Expressive",
@@ -284,7 +292,15 @@ class LocaleManager {
             lastRestoreLabel: "Última Restauração:",
             neverAction: "Nunca",
             badgeNew: "Novo",
-            badgeBeta: "Beta"
+            badgeBeta: "Beta",
+            altGeminiLogo: "Logotipo do Gemini Expressive",
+            altFlag: "Bandeira do Idioma",
+            altFlagUS: "Bandeira dos Estados Unidos",
+            altFlagBR: "Bandeira do Brasil",
+            altFlagES: "Bandeira da Espanha",
+            altFlagDE: "Bandeira da Alemanha",
+            altFlagIN: "Bandeira da Índia",
+            altFlagJP: "Bandeira do Japão"
         },
         es: {
             settingsTitle: "Gemini Expressive",
@@ -417,7 +433,15 @@ class LocaleManager {
             lastRestoreLabel: "Última Restauración:",
             neverAction: "Nunca",
             badgeNew: "Nuevo",
-            badgeBeta: "Beta"
+            badgeBeta: "Beta",
+            altGeminiLogo: "Gemini Expressive Logo",
+            altFlag: "Language Flag",
+            altFlagUS: "United States Flag",
+            altFlagBR: "Brazil Flag",
+            altFlagES: "Spain Flag",
+            altFlagDE: "Germany Flag",
+            altFlagIN: "India Flag",
+            altFlagJP: "Japan Flag"
         },
         de: {
             settingsTitle: "Gemini Expressive",
@@ -550,7 +574,15 @@ class LocaleManager {
             lastRestoreLabel: "Letzte Wiederherstellung:",
             neverAction: "Niemals",
             badgeNew: "Neu",
-            badgeBeta: "Beta"
+            badgeBeta: "Beta",
+            altGeminiLogo: "Gemini Expressive Logo",
+            altFlag: "Language Flag",
+            altFlagUS: "United States Flag",
+            altFlagBR: "Brazil Flag",
+            altFlagES: "Spain Flag",
+            altFlagDE: "Germany Flag",
+            altFlagIN: "India Flag",
+            altFlagJP: "Japan Flag"
         },
         hi: {
             settingsTitle: "Gemini Expressive",
@@ -683,7 +715,15 @@ class LocaleManager {
             lastRestoreLabel: "अंतिम पुनर्स्थापना:",
             neverAction: "कभी नहीं",
             badgeNew: "नया",
-            badgeBeta: "बीटा"
+            badgeBeta: "बीटा",
+            altGeminiLogo: "Gemini Expressive Logo",
+            altFlag: "Language Flag",
+            altFlagUS: "United States Flag",
+            altFlagBR: "Brazil Flag",
+            altFlagES: "Spain Flag",
+            altFlagDE: "Germany Flag",
+            altFlagIN: "India Flag",
+            altFlagJP: "Japan Flag"
         },
         ja: {
             settingsTitle: "Gemini Expressive",
@@ -816,7 +856,15 @@ class LocaleManager {
             lastRestoreLabel: "最終復元:",
             neverAction: "なし",
             badgeNew: "新機能",
-            badgeBeta: "ベータ"
+            badgeBeta: "ベータ",
+            altGeminiLogo: "Gemini Expressive Logo",
+            altFlag: "Language Flag",
+            altFlagUS: "United States Flag",
+            altFlagBR: "Brazil Flag",
+            altFlagES: "Spain Flag",
+            altFlagDE: "Germany Flag",
+            altFlagIN: "India Flag",
+            altFlagJP: "Japan Flag"
         }
     };
 
