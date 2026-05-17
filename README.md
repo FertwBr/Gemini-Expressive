@@ -103,6 +103,18 @@ injected directly into your Gemini left sidebar to access the full settings dash
 
 ---
 
+## ✅ Testing
+
+Run the automated suite with:
+
+```bash
+npm test
+```
+
+This executes all `*.test.js` files under `tests/` using Node's built-in test runner.
+
+---
+
 ## 🤝 Contributing
 
 Pull requests are always welcome! For major changes, please open an issue first to discuss what you would like to change
