@@ -1,0 +1,10 @@
+{
+  "extensionName": {
+    "message": "Gemini Expressive",
+    "description": "The name of the extension."
+  },
+  "extensionDescription": {
+    "message": "एक टाइमलाइन, बंधनेवाला कोड ब्लॉक और गतिशील Material You थीम के साथ जेमिनी वेब यूआई को बढ़ाता है।",
+    "description": "The description of the extension."
+  }
+}

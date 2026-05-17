@@ -1,0 +1,10 @@
+{
+  "extensionName": {
+    "message": "Gemini Expressive",
+    "description": "The name of the extension."
+  },
+  "extensionDescription": {
+    "message": "Aprimora a interface web do Gemini com uma linha do tempo, blocos de código retráteis e temas dinâmicos do Material You.",
+    "description": "The description of the extension."
+  }
+}

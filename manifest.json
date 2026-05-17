@@ -1,8 +1,9 @@
 {
   "manifest_version": 3,
-  "name": "Gemini Expressive",
+  "name": "__MSG_extensionName__",
   "version": "3.0.0",
-  "description": "Enhances the Gemini web UI with a timeline, collapsible code blocks, and dynamic Material You theming.",
+  "default_locale": "en",
+  "description": "__MSG_extensionDescription__",
   "permissions": [
     "storage"
   ],
@@ -59,16 +60,16 @@
       ],
       "js": [
         "scripts/locales/LocaleManager.js",
-        "scripts/utils/ThemeUtils.js",
-        "scripts/utils/CodeUtils.js",
-        "scripts/core/ExtensionState.js",
         "scripts/core/UIManager.js",
+        "scripts/core/ExtensionState.js",
         "scripts/core/DomObserver.js",
-        "scripts/features/CodeHeaderEnhancer.js",
-        "scripts/features/TimelineBuilder.js",
+        "scripts/utils/CodeUtils.js",
+        "scripts/utils/ThemeUtils.js",
         "scripts/features/CodeCollapser.js",
+        "scripts/features/CodeHeaderEnhancer.js",
         "scripts/features/SettingsShortcut.js",
         "scripts/features/SnippetInjector.js",
+        "scripts/features/TimelineBuilder.js",
         "scripts/content_main.js"
       ]
     }
