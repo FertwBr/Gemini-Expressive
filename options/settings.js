@@ -58,6 +58,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const timelineSwitch = document.getElementById('enableTimeline');
     const collapseSwitch = document.getElementById('enableCollapse');
     const autoCenterSwitch = document.getElementById('enableAutoCenter');
+    const autoCenterRow = document.getElementById('autoCenterRow');
+    const autoCenterScrim = document.getElementById('autoCenterScrim');
     const codeNavSwitch = document.getElementById('enableCodeNav');
     const headersSwitch = document.getElementById('enableHeaders');
     const dynamicColorSwitch = document.getElementById('enableDynamicColor');
@@ -73,6 +75,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     dynamicColorSwitch.checked = initialSettings.dynamicColorEnabled;
     hideUpgradeSwitch.checked = initialSettings.hideUpgradeEnabled;
     hideDownloadSwitch.checked = initialSettings.hideDownloadEnabled;
+
+    /**
+     * @returns {void}
+     */
+    const updateCollapseDependency = () => {
+        if (collapseSwitch.checked) {
+            autoCenterRow.classList.remove('disabled');
+        } else {
+            autoCenterRow.classList.add('disabled');
+        }
+    };
+
+    updateCollapseDependency();
 
     /**
      * @param {boolean} [isThemeToggle=false]
@@ -204,8 +219,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     timelineSwitch.addEventListener('change', () => saveSettings(false));
-    collapseSwitch.addEventListener('change', () => saveSettings(false));
+
+    collapseSwitch.addEventListener('change', () => {
+        updateCollapseDependency();
+        saveSettings(false);
+    });
+
     autoCenterSwitch.addEventListener('change', () => saveSettings(false));
+
+    autoCenterScrim.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toast.show(window.LocaleManager.getString('errorDependencyCollapse'));
+    });
+
     codeNavSwitch.addEventListener('change', () => saveSettings(false));
     headersSwitch.addEventListener('change', () => saveSettings(false));
     dynamicColorSwitch.addEventListener('change', () => saveSettings(true));
