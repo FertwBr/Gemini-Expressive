@@ -117,8 +117,11 @@ This executes all `*.test.js` files under `tests/` using Node's built-in test ru
 
 ## 🤝 Contributing
 
-Pull requests are always welcome! For major changes, please open an issue first to discuss what you would like to change
-or propose new features.
+We love our community! Pull requests are always welcome.
+
+If you'd like to help improve Gemini Expressive, please read our [Contributing Guidelines](CONTRIBUTING.md) first. It covers our branching strategy, how to set up the project locally, and the process for submitting Pull Requests.
+
+For major changes, please open an issue to discuss what you would like to change before starting your work.
 
 ## 📄 License
 
