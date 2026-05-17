@@ -63,6 +63,10 @@ export class Localization {
      * * @returns {void}
      */
     static apply() {
+        if (window.LocaleManager && window.LocaleManager.currentLanguage) {
+            document.documentElement.lang = window.LocaleManager.currentLanguage;
+        }
+
         document.querySelectorAll('[data-i18n]').forEach(el => {
             const key = el.getAttribute('data-i18n');
             const translated = LocaleManager.getString(key);
