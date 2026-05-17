@@ -74,6 +74,36 @@
     border-radius: 24px;
 }
 
+.dependent-row {
+    position: relative;
+    transition: opacity 0.2s ease;
+}
+
+.dependent-row.disabled {
+    opacity: 0.5;
+}
+
+.dependent-row.disabled .setting-icon-wrapper,
+.dependent-row.disabled .setting-info,
+.dependent-row.disabled .setting-action-wrapper {
+    pointer-events: none;
+}
+
+.scrim-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    display: none;
+    background: transparent;
+    border-radius: inherit;
+}
+
+.dependent-row.disabled .scrim-overlay {
+    display: block;
+    pointer-events: auto;
+    cursor: not-allowed;
+}
+
 .setting-icon-wrapper {
     display: flex;
     align-items: center;
